@@ -1,5 +1,14 @@
 const newsService = require('../services/news');
 
+const create = async (req, res, next) => {
+  try {
+    const body = req.body;
+    const newNovelty = await newsService.create(body);
+    res.status(200).json(newNovelty);
+  } catch (error) {
+    next(error);
+  }
+};
 
 const remove = async (req, res, next) => {
   try {
@@ -12,5 +21,6 @@ const remove = async (req, res, next) => {
 };
 
 module.exports = {
+  create,
   remove
 };
