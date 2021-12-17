@@ -1,5 +1,18 @@
 const db = require('../models');
 
+const create = async (slide) => {
+  const data = await db.Slides.create({
+    imageUrl : slide.urlImage,
+    text : slide.text,
+    order : slide.order,
+    organizationId : slide.idOrg
+
+  });
+  console.log(data)
+  return data
+
+}
+
 const remove = async (id) => {
   const data = await db.Slides.destroy({
     where: { id }
@@ -8,5 +21,6 @@ const remove = async (id) => {
 };
 
 module.exports = {
+  create,
   remove
 };
