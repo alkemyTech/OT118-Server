@@ -13,6 +13,11 @@ const create = async (slide) => {
 
 }
 
+const getAll = async () => {
+  const data = await db.Slides.findAll()
+  return data
+}
+
 const remove = async (id) => {
   const data = await db.Slides.destroy({
     where: { id }
@@ -22,5 +27,6 @@ const remove = async (id) => {
 
 module.exports = {
   create,
+  getAll,
   remove
 };
