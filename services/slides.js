@@ -2,15 +2,21 @@ const slidesRepository = require('../repositories/slides');
 
 const create = async(body) => {
 
-  //logica a implementar
   if(body.order == undefined){
     const slides = await slidesRepository.getAll();
 
-    console.log("slides", slides)
+    let orderArray = []
 
-    body.order = slides[slides.length - 1].order + 1
+    slides.forEach(slide => {
+      orderArray.push(slide.order);
+    });
+
+    let maxOrder = Math.max(...orderArray)
+
+    body.order = maxOrder + 1
 
   }
+
   
   const slide = {
     urlImage : body.imageUrl,
@@ -23,11 +29,6 @@ const create = async(body) => {
 
 } 
 
-const getAll = async () => {
-  await slidesRepository.getAll();
-};
-
-
 const remove = async (id) => {
   await slidesRepository.remove(id);
 };
@@ -35,6 +36,5 @@ const remove = async (id) => {
 
 module.exports = {
   create,
-  remove
-  
+  remove  
 };
