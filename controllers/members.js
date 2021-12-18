@@ -12,6 +12,17 @@ const getAll = async (req, res, next) => {
   }
 };
 
+const create = async (req, res, next) => {
+  try {
+    const data = await membersService.create(req.body);
+    res
+      .status(201)
+      .json({ msg: `Member ${data.id} created succesfully`, data });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const remove = async (req, res, next) => {
   try {
     await membersService.remove(req.params.id);
@@ -25,5 +36,6 @@ const remove = async (req, res, next) => {
 
 module.exports = {
   getAll,
+  create,
   remove,
 };
