@@ -7,5 +7,6 @@ const authMiddleware = require('../middlewares/auth');
 
 
 router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
+router.get('/:id', authMiddleware.isAuth, newsController.getById);
 
 module.exports = router;
