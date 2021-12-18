@@ -8,7 +8,18 @@ const remove = async (req, res, next) => {
     next(error);
   }
 };
+const create = async (req, res, next) => {
+  try {
+    const body = req.body
+    const newComment = await commentsService.create(body)
+    res.status(200).json(newComment)
+  }
+  catch (error){
+    next(error)
+  }
+}
 
 module.exports = {
-  remove
+  remove,
+  create
 };

@@ -6,5 +6,6 @@ const commentsController = require('../controllers/comments');
 const commentsMiddleware = require('../middlewares/comments');
 
 router.delete('/:id', commentsMiddleware.isOwnComment, commentsController.remove);
+router.post('/', commentsController.create)
 
 module.exports = router;
