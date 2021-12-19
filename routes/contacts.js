@@ -4,7 +4,7 @@ const validateCreateContacts = require("../middlewares/contactsNew")
 
 const contactsController = require('../controllers/contacts');
 
-router.post("/create",validateCreateContacts, contactsController.create)
+router.post("/",validateCreateContacts, contactsController.create)
 
 
 
