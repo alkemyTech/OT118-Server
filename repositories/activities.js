@@ -1,7 +1,8 @@
 const db = require('../models');
 
 const create = async (data) => {
-    await db.Activities.create(data);
+    const newActivitie = await db.Activities.create(data);
+    return newActivitie;
 };
 
 module.exports = {

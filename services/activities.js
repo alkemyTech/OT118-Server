@@ -1,7 +1,8 @@
 const activitiesRepository = require('../repositories/activities');
 
 const create = async (data) => {
-    await activitiesRepository.create(data);
+    const newActivitie = await activitiesRepository.create(data);
+    return newActivitie;
 }
 
 module.exports = {
