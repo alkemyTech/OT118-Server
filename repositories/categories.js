@@ -9,7 +9,7 @@ const create = async (body) => {
 
 // Delete category
 const remove = async (id) => {
-  await db.Categories.destroy({ where: { id } });
+  await db.Categories.destroy({ where: {id:id} });
 };
 
 module.exports = {

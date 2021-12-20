@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
-const fileUpload = require('express-fileupload');
+////// Remove this comment before pull request
+//const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./routes/index');
 
@@ -21,10 +22,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: '/tmp/'
-}));
+////// Remove this comments before pull request
+//app.use(fileUpload({
+//  useTempFiles: true,
+//  tempFileDir: '/tmp/'
+//}));
 
 app.use('/', indexRouter);
 

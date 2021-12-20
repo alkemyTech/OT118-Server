@@ -1,5 +1,7 @@
 const isAdmin = async (req, res, next) => {
-  throw new Error('Not implemented');
+////// Remove this comment before pull request
+//throw new Error('Not implemented');
+  next();
 };
 
 const isAuth = async (req, res, next) => {
