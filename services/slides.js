@@ -3,7 +3,22 @@ const slidesRepository = require('../repositories/slides');
 
 
 const getAll = async () => {
-  await slidesRepository.getAll()
+  let slides = [];
+  let data = await slidesRepository.getAll();
+
+  data.forEach(slide => {
+    slides.push({
+      id : slide.id,
+      imageUrl : slide.imageUrl,
+      text : slide.text,
+      order : slide.order,
+      organizationId : slide.organizationId
+    })
+    
+  });
+
+  return slides
+
 }
 
 
