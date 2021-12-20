@@ -1,5 +1,6 @@
-const bcrypt = require("bcryptjs");
 const usersRepository = require("../repositories/users");
+
+const bcrypt = require("bcryptjs");
 
 const login = async (body) => {
     const user = await usersRepository.findByEmail(body.email);

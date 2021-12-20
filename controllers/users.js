@@ -1,8 +1,8 @@
-const authService = require("../services/auth");
+const usersService = require("../services/users");
 
 const login = async (req, res, next) => {
     try {
-        const user = await authService.login(req.body);
+        const user = await usersService.login(req.body);
         if (user){
             res.status(200).json(user);
         } else {
