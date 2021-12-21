@@ -2,7 +2,7 @@ const categoriesRepository = require('../repositories/categories');
 
 // Create category 
 const create = async (body) => {
-  await categoriesRepository.create(body);
+  return await categoriesRepository.create(body);
 };
 
 // Delete category 

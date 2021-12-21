@@ -2,14 +2,12 @@ const db = require('../models');
 
 // Create category
 const create = async (body) => {
-  const data = await db.Categories.create(body);
-
-  return data;
+  return await db.Categories.create(body);
 };
 
 // Delete category
 const remove = async (id) => {
-  await db.Categories.destroy({ where: {id:id} });
+  await db.Categories.destroy({ where: { id } });
 };
 
 module.exports = {
