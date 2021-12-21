@@ -1,6 +1,5 @@
 const db = require('../models');
 
-// Read all categories in DB.
 const getAll = async () => {
   const data = await db.Categories.findAll({
     attributes: ['name'],
