@@ -14,14 +14,10 @@ const create = async (slide) => {
 
 }
 
-const getMaxOrder = async () => {
-  return await db.Slides.findAll({
-    attributes : [
-      [Sequelize.fn('max', Sequelize.col('order')), 'order']
-    ]
-  })
 
-  
+const getMaxOrder = async () => {
+  return await db.Slides.max('order')
+
 }
 
 const getAll = async () => {

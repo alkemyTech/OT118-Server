@@ -7,8 +7,7 @@ const create = async(body) => {
   if(body.order == undefined){
     let maxOrder = await slidesRepository.getMaxOrder()
 
-    body.order = maxOrder[0].order + 1
-
+    body.order = maxOrder + 1
 
   }
 
