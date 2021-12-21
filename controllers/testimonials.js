@@ -10,10 +10,9 @@ const remove = async (req, res, next) => {
 };
 
 module.exports = {
-////// Remove this comment before pull request
-//  getAll,
-//  getById,
-//  create,
-//  update,
+  getAll,
+  getById,
+  create,
+  update,
 remove
 };
