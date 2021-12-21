@@ -9,6 +9,8 @@ const membersRoute = require('./members');
 const commentsRoutes = require('./comments');
 const slidesRoute = require('./slides');
 const activitiesRoutes = require('./activities');
+const newsRoute = require('./news');
+
 
 router.use('/organizations', organizationRoutes);
 router.use('/categories', categoriesRoutes);
@@ -17,5 +19,6 @@ router.use('/members', membersRoute);
 router.use('/comments', commentsRoutes);
 router.use('/slides', slidesRoute);
 router.use('/activities', activitiesRoutes)
+router.use('/news', newsRoute);
 
 module.exports = router;
