@@ -9,6 +9,18 @@ const remove = async (req, res, next) => {
   }
 };
 
+const getAll = async (req, res, next) => {
+  try {
+    const response = await commentsService.getAll();
+    res.status(200).json({msg: `All comments were successfully displayed`, response})
+     
+  }
+  catch(error) {
+    next(error)
+  }
+}
+
 module.exports = {
-  remove
+  remove,
+  getAll
 };
