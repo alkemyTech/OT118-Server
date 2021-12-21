@@ -20,7 +20,7 @@ router.use('/testimonials', testimonialsRoutes);
 router.use('/members', membersRoute);
 router.use('/comments', commentsRoutes);
 router.use('/slides', slidesRoute);
-router.use("/contacts", contactsRoutes)
+router.use("/contacts", contactsRoutes);
 router.use('/activities', activitiesRoutes)
 router.use('/news', newsRoute);
 router.use('/auth', authRoute);
