@@ -7,5 +7,7 @@ const commentsMiddleware = require('../middlewares/comments');
 
 router.delete('/:id', commentsMiddleware.isOwnComment, commentsController.remove);
 router.post('/', commentsMiddleware.validationFields, commentsController.create)
+router.delete('/:id', commentsMiddleware.isOwnComment , commentsController.remove);
+router.get('/', commentsController.getAll)
 
 module.exports = router;
