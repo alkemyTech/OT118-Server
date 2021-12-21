@@ -8,14 +8,7 @@ const getAll = async () => {
 };
 
 const create = async (user) => {
-  return await Models.Users.create({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: user.password,
-    image: user.image || null,
-    roleId: 2, // Standard User (default)
-  });
+  return await Models.Users.create(user);
 };
 
 const getById = async (id) => {
