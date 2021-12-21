@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken')
 const usersRepository = require('../repositories/users')
 
 const isAdmin = async (req, res, next) => {
-  const token = req.headers["token"];
+ 
+const token = req.headers["token"];
 
   try {
     const verifyToken = jwt.verify(token,"secretWord");
