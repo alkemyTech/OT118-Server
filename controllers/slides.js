@@ -1,5 +1,5 @@
 const slidesService = require('../services/slides');
-const {validationResult} = require('express-validator')
+
 
 const create = async (req, res, next) => {
   try {
