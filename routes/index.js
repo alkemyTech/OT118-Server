@@ -10,6 +10,7 @@ const commentsRoutes = require('./comments');
 const slidesRoute = require('./slides');
 const activitiesRoutes = require('./activities');
 const newsRoute = require('./news');
+const authRoute = require('./auth');
 
 router.use('/organizations', organizationRoutes);
 router.use('/categories', categoriesRoutes);
@@ -19,5 +20,6 @@ router.use('/comments', commentsRoutes);
 router.use('/slides', slidesRoute);
 router.use('/activities', activitiesRoutes)
 router.use('/news', newsRoute);
+router.use('/auth', authRoute);
 
 module.exports = router;
