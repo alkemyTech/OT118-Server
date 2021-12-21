@@ -1,4 +1,5 @@
 const db = require('../models');
+const {Sequelize} = require('sequelize')
 
 const create = async (slide) => {
   const data = await db.Slides.create({
@@ -11,6 +12,16 @@ const create = async (slide) => {
   console.log(data)
   return data
 
+}
+
+const getMaxOrder = async () => {
+  return await db.Slides.findAll({
+    attributes : [
+      [Sequelize.fn('max', Sequelize.col('order')), 'order']
+    ]
+  })
+
+  
 }
 
 const getAll = async () => {
@@ -28,5 +39,6 @@ const remove = async (id) => {
 module.exports = {
   create,
   getAll,
+  getMaxOrder,
   remove
 };

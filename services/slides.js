@@ -2,18 +2,13 @@ const slidesRepository = require('../repositories/slides');
 
 const create = async(body) => {
 
+
+
   if(body.order == undefined){
-    const slides = await slidesRepository.getAll();
+    let maxOrder = await slidesRepository.getMaxOrder()
 
-    let orderArray = []
+    body.order = maxOrder[0].order + 1
 
-    slides.forEach(slide => {
-      orderArray.push(slide.order);
-    });
-
-    let maxOrder = Math.max(...orderArray)
-
-    body.order = maxOrder + 1
 
   }
 
