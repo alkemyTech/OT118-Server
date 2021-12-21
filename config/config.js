@@ -2,6 +2,7 @@ require('dotenv').config();
 
 module.exports = {
     organizationId: 1,
+    newsCategoryName: "news",
     "development": {
         "username": process.env.DB_USER,
         "password": process.env.DB_PASSWORD,
