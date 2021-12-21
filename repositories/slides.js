@@ -3,8 +3,10 @@ const db = require('../models');
 
 
 const getAll = async () => {
-  const data = await db.Slides.findAll()
-  return data
+  return await db.Slides.findAll({
+    attributes: ['imageUrl', 'text', 'order', 'organizationId']
+  })
+  
 }
 
 
