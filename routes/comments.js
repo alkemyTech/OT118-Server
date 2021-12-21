@@ -3,9 +3,9 @@ const express = require('express');
 const router = express.Router();
 
 const commentsController = require('../controllers/comments');
-////// Remove this comment before pull request
-//const commentsMiddleware = require('../middlewares/comments');
+const commentsMiddleware = require('../middlewares/comments');
 
-router.delete('/:id', commentsMiddleware.isOwnComment, commentsController.remove);
+router.delete('/:id', commentsMiddleware.isOwnComment , commentsController.remove);
+router.get('/', commentsController.getAll)
 
 module.exports = router;

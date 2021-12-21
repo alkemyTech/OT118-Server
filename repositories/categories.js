@@ -1,5 +1,9 @@
 const db = require('../models');
 
+const create = async (body) => {
+  return await db.Categories.create(body);
+};
+
 const getAll = async () => {
   const data = await db.Categories.findAll({
     attributes: ['name'],
@@ -12,6 +16,7 @@ const remove = async (id) => {
 };
 
 module.exports = {
+  create,
   getAll,
   remove
 };
