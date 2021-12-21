@@ -6,14 +6,16 @@ const categoriesRoutes = require('./categories');
 const testimonialsRoutes = require('./testimonials');
 const organizationRoutes = require('./organizations');
 const membersRoute = require('./members');
-const commentsRoutes = require('./comments');
+////// Remove this comment before pull request
+//const commentsRoutes = require('./comments');
 const slidesRoute = require('./slides');
 
 router.use('/organizations', organizationRoutes);
 router.use('/categories', categoriesRoutes);
 router.use('/testimonials', testimonialsRoutes);
 router.use('/members', membersRoute);
-router.use('/comments', commentsRoutes);
+////// Remove this comment before pull request
+//router.use('/comments', commentsRoutes);
 router.use('/slides', slidesRoute);
 
 module.exports = router;
