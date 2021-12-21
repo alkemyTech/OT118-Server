@@ -1,11 +1,35 @@
-const {check, body} = require("express-validator");
+const {check, body, validationResult} = require("express-validator");
 
-module.exports = [
-    check('text')
+
+const validationText = check('text')
     .notEmpty()
-    .withMessage('Texto requerido'),
+    .withMessage('Texto requerido')
 
-    check('organizationId')
+
+const validationOrg = check('organizationId')
     .notEmpty()
     .withMessage("Organizacion requerida")
+
+
+const validationFields = [
+    validationText,
+    validationOrg,
+    async (req, res, next) => {
+
+        let validationErrors = validationResult(req);
+
+        if(!validationErrors.isEmpty()){
+            console.log("validations not empty")
+            res.status(400).json({
+                errors : validationErrors.mapped()
+            })
+
+        }
+
+        next()
+    }
 ]
+
+module.exports = {
+    validationFields, 
+}
