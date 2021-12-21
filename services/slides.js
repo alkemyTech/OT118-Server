@@ -2,8 +2,6 @@ const slidesRepository = require('../repositories/slides');
 
 const create = async(body) => {
 
-
-
   if(body.order == undefined){
     let maxOrder = await slidesRepository.getMaxOrder()
 
@@ -23,12 +21,25 @@ const create = async(body) => {
 
 } 
 
+
+const getAll = async () => {
+  
+  return await slidesRepository.getAll();
+
+
+}
+
+
 const remove = async (id) => {
   await slidesRepository.remove(id);
 };
 
 
 module.exports = {
+
   create,
-  remove  
+  remove,
+  getAll,
+  remove
+
 };
