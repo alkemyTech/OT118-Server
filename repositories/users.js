@@ -7,11 +7,17 @@ const getAll = async () => {
   return data;
 };
 
-const create = async (body) => {
-  const data = await Models.Users.create(body);
-
-  return data;
+const create = async (user) => {
+  return await Models.Users.create({
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    password: user.password,
+    image: user.image || null,
+    roleId: 2, // Standard User (default)
+  });
 };
+
 const getById = async (id) => {
   const user = await Models.Users.findByPk(id, {
     attributes: {
@@ -30,7 +36,7 @@ const findByEmail = async (userEmail) => {
 };
 
 const remove = async (id) => {
-  await Models.Users.destroy({ where: { id:id } });
+  await Models.Users.destroy({ where: { id: id } });
   return true;
 };
 
@@ -39,7 +45,7 @@ const update = async (id, changes) => {
     { firstName: changes.firstName, lastName: changes.lastName },
     {
       where: {
-        id:id,
+        id: id,
       },
     }
   );
