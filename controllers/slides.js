@@ -4,9 +4,12 @@ const slidesService = require('../services/slides');
 const create = async (req, res, next) => {
   try {
 
-    await slidesService.create(req.body);
+    const data = await slidesService.create(req.body);
 
-    res.status(200).json({msg : 'Slide created succesfully'})
+    res.status(200).json({
+      msg : 'Slide created succesfully',
+      data : data
+    })
 
   } catch (error) {
     next(error)

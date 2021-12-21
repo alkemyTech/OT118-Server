@@ -19,7 +19,7 @@ const create = async(body) => {
     idOrg : body.organizationId
   }
 
-  await slidesRepository.create(slide)
+  return await slidesRepository.create(slide)  
 
 } 
 
