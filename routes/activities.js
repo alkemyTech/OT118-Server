@@ -6,7 +6,6 @@ const activitiesValidation = require('../middlewares/activities')
 const router = express.Router();
 
 router.post('/',
-    authMiddleware.isAuth, 
     authMiddleware.isAdmin, 
     activitiesValidation.validationFields , 
     activitiesController.create);
