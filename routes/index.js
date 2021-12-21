@@ -12,6 +12,7 @@ const activitiesRoutes = require('./activities');
 const newsRoute = require('./news');
 const authRoute = require('./auth');
 
+
 router.use('/organizations', organizationRoutes);
 router.use('/categories', categoriesRoutes);
 router.use('/testimonials', testimonialsRoutes);
