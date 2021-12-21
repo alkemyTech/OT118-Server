@@ -5,7 +5,7 @@ const remove = async (id) => {
 };
 
 const create = async (body) => {
-  await commentsRepository.create(body)
+  return await commentsRepository.create(body)
 }
 
 module.exports = {
