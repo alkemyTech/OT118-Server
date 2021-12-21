@@ -5,7 +5,7 @@ const remove = async (id) => {
 };
 
 const getAll = async () => {
-  await db.Comments.findAll()
+  return await db.Comments.findAll()
 }
 
 module.exports = {
