@@ -8,9 +8,14 @@ const create = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+
+// Get all categoies
+const getAll = async (req, res, next) => {
+  try {
+    const response = await categoriesService.getAll();
+    res.status(200).json({ msg: `Categories succesfully listed`, response});
 };
 
-// Delete category
 const remove = async (req, res, next) => {
   try {
     await categoriesService.remove(req.params.id);
@@ -22,5 +27,6 @@ const remove = async (req, res, next) => {
 
 module.exports = {
   create,
+  getAll,
   remove
 };
