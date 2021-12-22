@@ -3,29 +3,24 @@ const isAdmin = async (req, res, next) => {
 };
 
 const isAuth = async (req, res, next) => {
-  try {
-    const token = !req.headers['authorization'];
-    const decodedToken = jwtService.verify(token);
-    if (!decodedToken) {
-      const error = {
-        status: 403,
-        msg: "Invalid Token"
-      }
-      throw error
-    }
-    next()
-  } catch (error) {
-    const error = {
-      status: 403,
-      msg: "Invalid or expire Token"
-    }
-    next(error)
+  const token = req.headers['authorization'];
+  if (!token) {
+    const error = new Error('No Token provied');
+    error.status = 401;
+    throw error
   }
+  const decodedToken = jwtService.verify(token);
+  if(!decodedToken){
+    const error = new Error('Please enter a valid token provied at login')
+    error.status = 403;
+    throw error;
+  }
+  return decodedToken.id
 };
 
 
 module.exports = {
   isAdmin,
   isAuth,
-  
+
 };
