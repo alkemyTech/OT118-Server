@@ -8,12 +8,16 @@ const create = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+}
 
 // Get all categoies
 const getAll = async (req, res, next) => {
   try {
     const response = await categoriesService.getAll();
     res.status(200).json({ msg: `Categories succesfully listed`, response});
+  } catch (error) {
+    next(error);
+  }
 };
 
 const remove = async (req, res, next) => {

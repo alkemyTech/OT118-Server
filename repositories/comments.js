@@ -6,6 +6,7 @@ const remove = async (id) => {
 
 const create = async (body) => {
   return await db.Comments.create(body)
+}
 
 const getAll = async () => {
   return await db.Comments.findAll()

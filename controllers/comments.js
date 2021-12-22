@@ -32,8 +32,6 @@ const getAll = async (req, res, next) => {
 
 module.exports = {
   remove,
-
   create,
-
   getAll
 };
