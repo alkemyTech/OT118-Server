@@ -1,9 +1,7 @@
 const db = require('../models');
 
 const create = async (body) => {
-   const newContact =  await db.Contacts.create(body)
-   return newContact
-
+   return newContact =  await db.Contacts.create(body)
 };
 
 module.exports = {
