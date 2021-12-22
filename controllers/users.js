@@ -11,9 +11,9 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const user = await usersService.login(req.body);
-        if (user){
-            res.status(200).json(user);
+        const accessToken = await usersService.login(req.body);
+        if (accessToken){
+            res.status(200).json({access_token: accessToken});
         } else {
             res.status(401).json({ok: false});
         }
