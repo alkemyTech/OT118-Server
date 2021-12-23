@@ -4,7 +4,7 @@ const create = async (req, res, next) => {
   try {
     const body = req.body;
     const newNovelty = await newsService.create(body);
-    res.status(200).json(newNovelty);
+    res.status(201).json({msg: "Novelty created successfully", data: newNovelty});
   } catch (error) {
     next(error);
   }
@@ -24,7 +24,7 @@ const getById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const novelty = await newsService.getById(id);
-    res.status(200).json(novelty);
+    res.status(200).json({data: novelty});
   } catch (error) {
     next(error);
   }
