@@ -4,7 +4,7 @@ const categoriesService = require('../services/categories');
 const create = async (req, res, next) => {
   try {
     const category = await categoriesService.create(req.body);
-    res.status(200).json({msg: 'Category created succesfully', category});
+    res.status(201).json({msg: `Category ${category.name} created succesfully`, category});
   } catch (error) {
     next(error);
   }
@@ -14,7 +14,7 @@ const create = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   try {
     const response = await categoriesService.getAll();
-    res.status(200).json({ msg: `Categories succesfully listed`, response});
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
