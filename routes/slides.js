@@ -6,7 +6,7 @@ const slidesValidation = require('../middlewares/slideValidator')
 const router = express.Router();
 
 
-router.post('/create', slidesValidation.validationFields ,slidesController.create)
+router.post('/', slidesValidation.validationFields ,slidesController.create)
 router.get('/', slidesController.getAll);
 router.delete('/:id', authMiddleware.isAdmin, slidesController.remove);
 
