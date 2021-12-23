@@ -3,10 +3,7 @@ const membersService = require("../services/members");
 const getAll = async (req, res, next) => {
   try {
     const data = await membersService.getAll();
-    if (data) {
-      res.status(200).json(data);
-    }
-    res.status(204).send();
+    res.status(200).json({ data });
   } catch (error) {
     next(error);
   }
@@ -17,7 +14,7 @@ const create = async (req, res, next) => {
     const data = await membersService.create(req.body);
     res
       .status(201)
-      .json({ msg: `Member ${data.id} created succesfully`, data });
+      .json({ msg: `Member ${data.name} created succesfully`, data });
   } catch (error) {
     next(error);
   }

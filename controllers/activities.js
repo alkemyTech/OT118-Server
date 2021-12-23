@@ -3,7 +3,7 @@ const activitiesService = require('../services/activities');
 const create = async (req, res, next) => {
     try {
         const newActivity = await activitiesService.create(req.body);
-        res.status(200).json({
+        res.status(201).json({
             msg: `Activity created succesfully`,
             data: newActivity,
         })        
@@ -14,8 +14,9 @@ const create = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
+
     const data = await activitiesService.getAll();
-    res.status(200).json({ data: data});
+    res.status(200).json({ data });
   } catch (error) {
     next(error);
   }

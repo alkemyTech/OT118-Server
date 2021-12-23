@@ -21,7 +21,7 @@ const validationFields = [
         if(!validationErrors.isEmpty()){
             console.log("validations not empty")
             res.status(400).json({
-                errors : validationErrors.mapped()
+                errors : validationErrors.array()
             })
 
         }

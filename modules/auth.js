@@ -11,7 +11,8 @@ exports.generateToken = (info) => {
 
 exports.validateToken = (token) => {
     try {
-        return jwt.verify(token, privateKey, {
+        var filteredToken = token.split(" ")[1];
+        return jwt.verify(filteredToken, privateKey, {
             expiresIn: authExpiration
         });
     } catch(error) {

@@ -8,6 +8,6 @@ const authMiddleware = require('../middlewares/auth');
 
 router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
 router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
-router.get('/:id', authMiddleware.isAuth, newsController.getById);
+router.get('/:id', authMiddleware.isAdmin, newsController.getById);
 
 module.exports = router;

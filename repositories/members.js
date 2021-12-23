@@ -5,14 +5,7 @@ const getAll = async () => {
 };
 
 const create = async (member) => {
-  return await db.Members.create({
-    name: member.name,
-    image: member.image,
-    facebookUrl: member.facebookUrl || null,
-    instagramUrl: member.instagramUrl || null,
-    linkedinUrl: member.linkedinUrl || null,
-    description: member.description || null,
-  });
+  return await db.Members.create(member);
 };
 
 const remove = async (id) => {

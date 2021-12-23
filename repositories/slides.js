@@ -7,13 +7,11 @@ const create = async (slide) => {
     text : slide.text,
     order : slide.order,
     organizationId : slide.idOrg
-
   });
   console.log(data)
   return data
 
 }
-
 
 const getMaxOrder = async () => {
   return await db.Slides.max('order')
@@ -21,19 +19,11 @@ const getMaxOrder = async () => {
 }
 
 const getAll = async () => {
-  const data = await db.Slides.findAll()
-  return data
-}
-
-
-
-const getAll = async () => {
   return await db.Slides.findAll({
     attributes: ['imageUrl', 'text', 'order', 'organizationId']
   })
   
 }
-
 
 const remove = async (id) => {
   const data = await db.Slides.destroy({
@@ -45,7 +35,6 @@ const remove = async (id) => {
 module.exports = {
 
   create,
-  getAll,
   getMaxOrder,
   getAll,
   remove
