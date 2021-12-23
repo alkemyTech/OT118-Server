@@ -1,9 +1,9 @@
 const {check, validationResult} = require('express-validator');
 
-const validationNewUserId = check('news_id', 'News must be not empty')
+const validationNewUserId = check('novelty_id', 'News must be not empty')
     .notEmpty()
     .isInt()
-    .withMessage('NNes mus be exists')
+    .withMessage('News must be exists')
 
 const validationUser = check('user_id', 'User must be not empty')
     .notEmpty()
