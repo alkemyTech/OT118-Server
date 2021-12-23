@@ -1,6 +1,7 @@
 
 const auth = require('../modules/auth');
 const usersServices = require("../services/users")
+const rolesRepository = require("../repositories/roles");
 
 const isAdmin = async (req, res, next) => {
   throw new Error('Not implemented');
@@ -28,8 +29,10 @@ const inOwnUser = async (req, res, next) => {
   }
 
   const userBdRoleId = userBd.roleId
+  const rolAdmin = rolesRepository.findByName("Admin")
+  const rolAdminId = rolAdmin.id
 
-  if( userBdRoleId === 1){ 
+  if( userBdRoleId === rolAdminId){
     return next ()
   }
 
