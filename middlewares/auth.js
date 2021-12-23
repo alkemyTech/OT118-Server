@@ -1,12 +1,14 @@
-const jwt = require('jsonwebtoken')
 const usersRepository = require('../repositories/users')
+const {validateToken} = require('../modules/auth')
 
 const isAdmin = async (req, res, next) => {
  
-const token = req.headers["token"];
+  const token = req.headers["authorization"];
 
-  try {
-    const verifyToken = jwt.verify(token,"secretWord");
+  const verifyToken = validateToken(token);
+
+  if(verifyToken){
+    console.log(verifyToken)
     const user = await usersRepository.getById(verifyToken.id);
 
     if(!user){
@@ -17,39 +19,29 @@ const token = req.headers["token"];
       })
     } else if(user.roleId != 1){
       return res.status(403).json({
-        data : {
-          msg : 'Access denied'
-        }
+        
+        msg : 'Access denied'
+        
       })
 
     }
 
     next()
 
-
-
-  } catch (error) {
-
-    if(!error.expiredAt) {
-      return res.status(401).json({
-        data : {
-          msg : "invalid token"
-        }
-      })
-    }
-
+  } else {
     res.status(400).json({
-      data : {
-        msg : 'expired token'
-      }
+      
+      msg : 'expired or invalid token'
+      
     })
-    
+
   }
-};
+}
 
 const isAuth = async (req, res, next) => {
   throw new Error('Not implemented');
 };
+
 
 module.exports = {
   isAdmin,
