@@ -19,7 +19,12 @@ const login = async (body) => {
     return generateToken({id: user.id});
 };
 
+const getProfile = async (id) => {
+  return await usersRepository.getById(id);
+}
+
 module.exports = {
   create,
   login,
+  getProfile,
 };
