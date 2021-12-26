@@ -18,9 +18,14 @@ const getAll = async () => {
   return await db.Comments.findAll()
 }
 
+const getById = async (id) => {
+  return await db.Comments.findByPk(id)
+}
+
 module.exports = {
   remove,
   create,
   getAll,
-  update
+  update,
+  getById
 };

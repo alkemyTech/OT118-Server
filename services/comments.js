@@ -13,7 +13,7 @@ const create = async (body) => {
 
 const update = async(body, id) => {
   const comment = await commentsRepository.getById(id)
-  if(!comments){
+  if(!comment){
     const error = new Error('Comment not found')
     error.status = 409
     throw error
