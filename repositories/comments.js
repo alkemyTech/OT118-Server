@@ -8,6 +8,12 @@ const create = async (body) => {
   return await db.Comments.create(body)
 }
 
+const update = async(body, id) => {
+  return await db.Comments.update(body, {
+    where: {id}
+  })
+}
+
 const getAll = async () => {
   return await db.Comments.findAll()
 }
@@ -15,5 +21,6 @@ const getAll = async () => {
 module.exports = {
   remove,
   create,
-  getAll
+  getAll,
+  update
 };
