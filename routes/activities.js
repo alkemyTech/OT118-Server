@@ -11,5 +11,6 @@ router.post('/',
     activitiesController.create);
 
 router.get('/', authMiddleware.isAdmin, activitiesController.getAll);
+router.patch('/:id', authMiddleware.isAdmin, activitiesController.update)
 
 module.exports = router;
