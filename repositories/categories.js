@@ -15,6 +15,10 @@ const getAll = async () => {
   return data;
 };
 
+const getById = async (id) => {
+  return await db.Categories.findOne({ where: { id } });
+};
+
 const remove = async (id) => {
   await db.Categories.destroy({ where: { id } });
 };
@@ -28,5 +32,6 @@ module.exports = {
   create,
   update,
   getAll,
+  getById,
   remove
 };
