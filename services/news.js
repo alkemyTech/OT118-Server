@@ -24,8 +24,12 @@ const getById = async (id) => {
     return novelty;
 };
 
+const getAll = async () => {
+    return await newsRepository.getAll()
+};
 module.exports = {
     create,
     remove,
-    getById
+    getById,
+    getAll
 };
