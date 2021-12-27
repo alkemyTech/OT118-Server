@@ -36,6 +36,7 @@ const getCommentsByNews = async (req, res, next) => {
     const response = await newsService.getCommentsByNews(id);
     res.status(200).json(response)
   } catch (error) {
+    console.log(error)
     next(error)
   }
 }
