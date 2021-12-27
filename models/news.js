@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // News.belongsTo(models.Category, {as: 'category'});
-      News.belongsTo(models.Comments, {as: 'Comments'})
+      News.hasMany(models.Comments, {as: 'Comments', foreignKey: 'novelty_id'})
     }
   }
 
