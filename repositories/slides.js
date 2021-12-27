@@ -2,12 +2,7 @@ const db = require('../models');
 const {Sequelize} = require('sequelize')
 
 const create = async (slide) => {
-  const data = await db.Slides.create({
-    imageUrl : slide.urlImage,
-    text : slide.text,
-    order : slide.order,
-    organizationId : slide.idOrg
-  });
+  const data = await db.Slides.create(slide);
   
   return data
 
@@ -19,7 +14,7 @@ const getMaxOrder = async () => {
 }
 
 const getById = async (id) => {
-  return await db.slide.findByPk(id)
+  return await db.Slides.findByPk(id)
 }
 
 const getAll = async () => {
