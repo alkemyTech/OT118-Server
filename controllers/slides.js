@@ -26,8 +26,7 @@ const update = async (req, res, next) => {
   try {
     const data = await slidesService.update(req.params.id, req.body)
     return res.status(200).json({
-      msg : 'slide updated successfully',
-      data : data
+      msg : 'slide updated successfully'
     })
     
   } catch (error) {
