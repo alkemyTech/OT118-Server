@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.post('/', slidesValidation.validationFields ,slidesController.create)
 router.get('/', slidesController.getAll);
+router.get('/:id', authMiddleware.isAdmin, slidesController.getById)
 router.delete('/:id', authMiddleware.isAdmin, slidesController.remove);
 
 module.exports = router;
