@@ -15,10 +15,9 @@ const getById = async (id) => {
 };
 
 const getAll = async () => {
-  const data = await db.News.findAll({
-    attributes: ['name','content','image'],
+  return await db.News.findAll({
+    attributes: ['name', 'content', 'image'],
   });
-  return data;
 };module.exports = {
   create,
   remove,
