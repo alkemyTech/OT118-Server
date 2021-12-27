@@ -30,8 +30,20 @@ const getById = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const body = req.body;
+    const id = req.params.id;
+    const updatedNovelty = await newsService.update(id,body);
+    res.status(200).json({msg: "Novelty updated successfully", data: updatedNovelty});
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
   remove,
-  getById
+  getById,
+  update
 };
