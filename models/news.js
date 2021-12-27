@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // News.belongsTo(models.Category, {as: 'category'});
+      News.belongsTo(models.Comments, {as: 'Comments'})
     }
   }
 

@@ -14,8 +14,17 @@ const getById = async (id) => {
   });
 };
 
+const getCommentsByNews = async (id) => {
+  return await db.News.findByPk(id, {
+    include: [
+      'Comments'
+    ]
+  })
+}
+
 module.exports = {
   create,
   remove,
-  getById
+  getById,
+  getCommentsByNews,
 };

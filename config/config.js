@@ -8,7 +8,7 @@ module.exports = {
     newsCategoryName: "news",
     "development": {
         "username": process.env.DB_USER,
-        "password": process.env.DB_PASSWORD,
+        "password": null,
         "database":  process.env.DB_NAME,
         "host": process.env.DB_HOST,
         "port": process.env.DB_PORT,
