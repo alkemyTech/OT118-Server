@@ -7,9 +7,10 @@ const invalidUserMsg = "email or password is invalid.";
 
 const create = async (user) => {
   user.password = bcrypt.hashSync(user.password, 10);
-  let role = await rolesRepository.findByName("Standard")
+  let role = await rolesRepository.findByName("Standard");
   user.roleId = role.id;
-  return await usersRepository.create(user);
+  const newUser = await usersRepository.create(user);
+  return generateToken({id: newUser.id})
 };
 
 const login = async (body) => {
