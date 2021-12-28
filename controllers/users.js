@@ -22,7 +22,17 @@ const login = async (req, res, next) => {
     }
 };
 
+const remove = async (req, res, next) => {
+  try{
+    const response = await usersService.remove(req.params.id)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    remove,
 };

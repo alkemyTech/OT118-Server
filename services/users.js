@@ -19,7 +19,18 @@ const login = async (body) => {
     return generateToken({id: user.id});
 };
 
+const remove = async (id) => {
+  const user = await usersRepository.getById(id)
+  if (!user){
+    const error = new Error(`User doesn't exist`)
+    error.status = 404
+    throw error
+  }
+  return await usersRepository.remove(id)
+}
+
 module.exports = {
   create,
   login,
+  remove,
 };
