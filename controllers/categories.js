@@ -1,6 +1,5 @@
 const categoriesService = require("../services/categories");
 
-// Create category
 const create = async (req, res, next) => {
   try {
     const data = await categoriesService.create(req.body);
@@ -10,7 +9,6 @@ const create = async (req, res, next) => {
   }
 };
 
-// Get all categoies
 const getAll = async (req, res, next) => {
   try {
     const data = await categoriesService.getAll();
