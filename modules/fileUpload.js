@@ -1,11 +1,10 @@
-const {aws3} = require('../modules/s3');
+const aws3 = require('../modules/s3');
 
-const upload = async (req) => {
-    const file = req.files.file;
+const upload = async (file) => {
 
     var link;
     try {
-        const link = await aws3.uploadToBucket(file);
+        const link = await aws3(file);
         return link.Location;
     } catch (error) {
         throw error;
