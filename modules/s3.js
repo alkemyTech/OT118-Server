@@ -12,16 +12,16 @@ const s3 = new AWS.S3({
     region: awsS3.region,
 });
 
-const uploadToBucket = async (file, bucketName = undefined) => {
+const uploadToBucket = async (file) => {
     let uploadedFile;
     try {
         const stream = fs.createReadStream(file.tempFilePath);
         const extension = path.extname(file.name).toLowerCase();
         uploadedFile = await s3.upload(
             {
-                Bucket: bucketName || awsS3.defaultBucketName,
+                Bucket: awsS3.bucketName,
                 Key: uuidv4() + extension,
-                Body: stream
+                Body: stream,
             }).promise();
         return uploadedFile;
     } catch (err) {
