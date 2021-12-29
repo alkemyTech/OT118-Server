@@ -1,5 +1,5 @@
 
-const db = require('../models');
+const Models = require("../models/index");
 
 const findByName = async (roleName) => {
   return await Models.Roles.findOne({

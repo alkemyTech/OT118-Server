@@ -1,6 +1,6 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('activities', [{
+    await queryInterface.bulkInsert('Activities', [{
       name: 'Apoyo escolar: Primario',
       content: 'Se realizan los talleres de lunes a jueves de 10 a 12 horas y de 14 a 16 horas en el contraturno',
       image: '',
