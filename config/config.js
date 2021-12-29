@@ -10,7 +10,7 @@ module.exports = {
         accessKey: process.env.AWS_ACCESS_KEY,
         secretKey: process.env.AWS_SECRET_KEY,
         region: process.env.AWS_REGION,
-        defaultBucketName: process.env.AWS_BUCKET_NAME
+        bucketName: process.env.AWS_BUCKET_NAME
     },
     "development": {
         "username": process.env.DB_USER,
