@@ -8,6 +8,7 @@
     "db": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.6.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -16,8 +17,8 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-validator": "^6.14.0",
-    "jsonwebtoken": "^8.5.1",
     "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "~1.9.1",
     "mysql2": "^2.3.3",
     "node-pre-gyp": "^0.17.0",
