@@ -14,6 +14,12 @@ const getById = async (id) => {
   });
 };
 
+const getAll = async () => {
+  return await db.News.findAll({
+    attributes: ['name', 'content', 'image'],
+  });
+}
+
 const update = async (id, body) => {
   return await db.News.update(body, {
     where: {
@@ -25,6 +31,7 @@ const update = async (id, body) => {
 module.exports = {
   create,
   remove,
+  update,
   getById,
-  update
+  getAll
 };

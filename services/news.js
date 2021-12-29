@@ -44,9 +44,14 @@ const update = async (id, {name, content, image, categoryId}) => {
     }
 };
 
+const getAll = async () => {
+    return await newsRepository.getAll()
+};
+
 module.exports = {
     create,
     remove,
+    update,
     getById,
-    update
+    getAll
 };
