@@ -1,5 +1,19 @@
-const contactsService = require('../services/contacts');
-const { validationResult} = require("express-validator")
+
+
+const contactsService = require("../services/contacts");
+const { validationResult} = require("express-validator");
+
+const getAll = async (req, res, next) => {
+  try {
+    const listContacts = await contactsService.getAll();
+    return res.status(200).json({
+      data: listContacts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 const create = async (req, res, next) =>{
     try{
@@ -15,8 +29,7 @@ const create = async (req, res, next) =>{
 }
 
 
-
-
 module.exports = {
+  getAll,
   create
 };
