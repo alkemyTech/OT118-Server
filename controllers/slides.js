@@ -13,6 +13,7 @@ const create = async (req, res, next) => {
     next(error)
   }
 }
+
 const getAll = async (req, res, next) => {
   try {
     const data = await slidesService.getAll()
@@ -21,6 +22,7 @@ const getAll = async (req, res, next) => {
     next(error)
   }
 }
+
 
 const update = async (req, res, next) => {
   try {
@@ -32,6 +34,23 @@ const update = async (req, res, next) => {
   } catch (error) {
     next(error)
   }
+
+}
+
+const getById = async (req, res, next) => {
+  try {
+    const data = await slidesService.getById(req.params.id)
+    return res.status(200).json({
+      data : data
+    })
+
+  } catch (error) {
+    res.status(404).json({
+      msg: error.message
+    })
+  
+  }
+  
 }
 
 const remove = async (req, res, next) => {
@@ -47,5 +66,6 @@ module.exports = {
   create,  
   getAll,
   update,
+  getById,
   remove
 };

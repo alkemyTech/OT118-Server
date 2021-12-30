@@ -8,6 +8,12 @@ const create = async (slide) => {
 
 }
 
+const getById = async (id) => {
+  return await db.Slides.findByPk(id, {
+    attributes: ['imageUrl', 'text', 'order', 'organizationId']
+  })
+}
+
 const getMaxOrder = async () => {
   return await db.Slides.max('order')
 
