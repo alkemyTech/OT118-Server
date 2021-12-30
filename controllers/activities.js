@@ -1,5 +1,4 @@
 const activitiesService = require("../services/activities");
-const activitiesRepository = require("../repositories/activities");
 
 const create = async (req, res, next) => {
   try {
@@ -25,20 +24,14 @@ const getAll = async (req, res, next) => {
 const update = async (req, res, next) => {
   const { id } = req.params;
   const body = req.body;
-
-  const activity = await activitiesRepository.getById(id);
-  if(activity) {
-    try {
-      const updateActivity = await activitiesService.update(id, body);
-      res.status(201).json({
-        msg: `Activity with ID ${req.params.id} updated succesfully`,
-        data: updateActivity,
-      });
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    res.status(404).json({ msg: "Activity not found"});
+  try {
+    const updateActivity = await activitiesService.update(id, body);
+    res.status(201).json({
+      msg: `Activity with ID ${req.params.id} updated succesfully`,
+      data: updateActivity,
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
