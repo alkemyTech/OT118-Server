@@ -1,3 +1,4 @@
+
 const usersRepository = require("../repositories/users");
 const rolesRepository = require("../repositories/roles");
 const bcrypt = require("bcryptjs");
@@ -7,9 +8,10 @@ const invalidUserMsg = "email or password is invalid.";
 
 const create = async (user) => {
   user.password = bcrypt.hashSync(user.password, 10);
-  let role = await rolesRepository.findByName("Standard")
+  let role = await rolesRepository.findByName("Standard");
   user.roleId = role.id;
-  return await usersRepository.create(user);
+  const newUser = await usersRepository.create(user);
+  return generateToken({id: newUser.id})
 };
 
 const login = async (body) => {
@@ -19,6 +21,7 @@ const login = async (body) => {
     return generateToken({id: user.id});
 };
 
+<<<<<<< HEAD
 const remove = async (id) => {
   const user = await usersRepository.getById(id)
   if (!user){
@@ -33,4 +36,22 @@ module.exports = {
   create,
   login,
   remove,
+=======
+const getProfile = async (id) => {
+  return await usersRepository.getById(id);
+};
+
+const getById = async(id) =>{
+  const dataUser = await usersRepository.getById(id)
+  return dataUser
+}
+
+
+
+module.exports = {
+  create,
+  login,
+  getProfile,
+  getById,
+>>>>>>> dev
 };

@@ -7,6 +7,19 @@ const remove = async (id) => {
   return data;
 };
 
+const getAll = async () => {
+  const data = await db.Testimonials.findAll({
+    attributes: { exclude: ['deletedAt'] }
+    });
+  return data;
+};
+
+const create = async (body) => {
+  return await db.Testimonials.create(body);
+};
+
 module.exports = {
-  remove
+  remove,
+  create,
+  getAll
 };
