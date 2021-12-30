@@ -6,6 +6,8 @@ module.exports = {
     rounds: process.env.AUTH_ROUNDS || 10,
     organizationId: 1,
     newsCategoryName: "news",
+    sendGrid_key: process.env.SENDGRID_KEY,
+    sendGrid_mail: process.env.SENDGRID_MAIL,
     "development": {
         "username": process.env.DB_USER,
         "password": process.env.DB_PASSWORD,

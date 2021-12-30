@@ -4,6 +4,10 @@ const create = async (body) => {
   return await db.Categories.create(body);
 };
 
+const update = async (id, body) => {
+  return await db.Categories.update(body, { where: { id },});
+}
+
 const getAll = async () => {
   const data = await db.Categories.findAll({
     attributes: ['name'],
@@ -28,6 +32,7 @@ const getByName = async (name) => {
 module.exports = {
   getByName,
   create,
+  update,
   getAll,
   getById,
   remove

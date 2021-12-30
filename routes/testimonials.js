@@ -5,7 +5,6 @@ const authMiddleware = require('../middlewares/auth');
 const testimonialsController = require('../controllers/testimonials');
 const testimonialsMiddleware = require('../middlewares/testimonials');
 
-
 router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
 router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidation ,  testimonialsController.update);
 router.delete('/:id', authMiddleware.isAdmin, testimonialsController.remove);
