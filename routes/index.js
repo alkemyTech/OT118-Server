@@ -12,6 +12,7 @@ const contactsRoutes = require("./contacts");
 const activitiesRoutes = require('./activities');
 const newsRoute = require('./news');
 const authRoute = require('./auth');
+const usersRoute = require('./users');
 
 
 
@@ -25,6 +26,7 @@ router.use("/contacts", contactsRoutes);
 router.use('/activities', activitiesRoutes)
 router.use('/news', newsRoute);
 router.use('/auth', authRoute);
+router.use('/users', usersRoute);
 
 
 

@@ -20,6 +20,13 @@ const login = async (body) => {
     if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
     return generateToken({id: user.id});
 };
+const getAll = async () => {
+  const data = await usersRepository.getAll();
+  return data;
+
+
+
+};
 
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
@@ -35,6 +42,7 @@ const getById = async(id) =>{
 module.exports = {
   create,
   login,
+  getAll,  
   getProfile,
-  getById,
+  getById
 };

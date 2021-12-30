@@ -12,7 +12,6 @@ const getById = async (id) => {
       throw error;
   }
     return testimonial;
-
 }
 
 const update = async (id, body) => {
@@ -21,13 +20,10 @@ const update = async (id, body) => {
       const error = new Error('Testimonials not found.');
       error.status = 404;
       throw error;
-
-
     }
       await testimonialsRepo.update(id, body);
       const testimonialUpdated = await testimonialsRepo.getById(id); 
       return testimonialUpdated;
-
   };
 
 const getAll = async () => {
@@ -38,6 +34,7 @@ const getAll = async () => {
 const create = async (body) => {
   return await testimonialsRepo.create(body);
 };
+
 module.exports = {
   remove,
   create,

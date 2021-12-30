@@ -23,6 +23,18 @@ const login = async (req, res, next) => {
     }
 };
 
+const getAll = async (req, res, next) =>{
+  try{
+      const getData = await usersService.getAll();
+      res.status(200).json({ getData });
+      }catch(e){
+        next(e);
+      };
+
+
+
+};
+
 const getProfile = async (req, res, next) => {
   try {
     const token = req.headers["authorization"];
@@ -32,10 +44,12 @@ const getProfile = async (req, res, next) => {
   } catch(error) {
     next(error)
   }
-}
+};
+
 
 module.exports = {
     register,
     login,
+    getAll,
     getProfile
 };

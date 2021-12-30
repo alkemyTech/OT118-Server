@@ -16,7 +16,6 @@ const update = async (req , res ,next) => {
   }catch (e) {
     next(e);
   }
-
 };
 
   const getById = async (req, res , next) => {
@@ -24,17 +23,10 @@ const update = async (req , res ,next) => {
       const testimonial = await testimonialsService.getById(req.params.id);
       res.status(200).json({
         data: testimonial
-
       });
-
-
     }catch(e){
       next(e);
-
-
     }
-
-
   };
 
 const getAll = async (req, res, next) => {
@@ -55,6 +47,8 @@ const create = async (req, res, next) => {
   }
 };
 module.exports = {
+  getById,
+  update,
    getAll,
   create,
    getById,
