@@ -10,5 +10,6 @@ router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsCon
 router.get('/', authMiddleware.isAuth, newsController.getAll);
 router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
 router.get('/:id', authMiddleware.isAdmin, newsController.getById);
+router.put('/:id', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.update);
 
 module.exports = router;
