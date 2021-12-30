@@ -21,7 +21,7 @@ const update = async (id, body) => {
       return await activitiesRepository.getById(id);
     }
 };
-
+ 
 module.exports = {
   getAll,
   create,
