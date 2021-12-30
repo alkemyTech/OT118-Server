@@ -28,10 +28,19 @@ const getCommentsByNews = async (id) => {
   })
 }
 
+const update = async (id, body) => {
+  return await db.News.update(body, {
+    where: {
+      id
+    },
+  });
+}
+
 module.exports = {
-  getCommentsByNews,
   create,
   remove,
+  update,
   getById,
   getAll,
+  getCommentsByNews,
 }

@@ -23,6 +23,20 @@ const getAll = async (req, res, next) => {
   }
 }
 
+
+const update = async (req, res, next) => {
+  try {
+    const data = await slidesService.update(req.params.id, req.body)
+    return res.status(200).json({
+      msg : 'slide updated successfully'
+    })
+    
+  } catch (error) {
+    next(error)
+  }
+
+}
+
 const getById = async (req, res, next) => {
   try {
     const data = await slidesService.getById(req.params.id)
@@ -51,6 +65,7 @@ const remove = async (req, res, next) => {
 module.exports = {
   create,  
   getAll,
+  update,
   getById,
   remove
 };

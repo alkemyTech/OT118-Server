@@ -19,12 +19,25 @@ const create = async (body) => {
   return await categoriesRepository.create(body);
 };
 
+const update = async (id, body) => {
+  const categoryId = await categoriesRepository.getById(id);
+  console.log(categoryId);
+  if (categoryId) {
+    return await categoriesRepository.update(id, body);
+  }  else {
+    const error = new Error('Category not found.');
+      error.status = 404;
+      throw error;
+  }
+};
+
 const remove = async (id) => {
   await categoriesRepository.remove(id);
 };
 
 module.exports = {
   create,
+  update,
   getAll,
   getById,
   remove

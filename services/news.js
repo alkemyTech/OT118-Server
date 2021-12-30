@@ -24,7 +24,25 @@ const getById = async (id) => {
     return novelty;
 };
 
-
+const update = async (id, {name, content, image, categoryId}) => {
+    const body = {name, content, image, categoryId};
+    const category = await categoryRepository.getById(categoryId);
+    if (!category) {
+        const error = new Error('Category is invalid.');
+        error.status = 400;
+        throw error;
+    }
+    const noveltyToUpdate =  await newsRepository.getById(id);
+    if(!noveltyToUpdate[0]) {
+        const error = new Error('Novelty not found.');
+        error.status = 404;
+        throw error;
+    }
+    const updatedNovelty = await newsRepository.update(id, body);
+    if (updatedNovelty[0] === 1){
+        return await newsRepository.getById(id);
+    }
+};
 
 const getAll = async () => {
     return await newsRepository.getAll()
@@ -33,6 +51,7 @@ const getAll = async () => {
 module.exports = {
     create,
     remove,
+    update,
     getById,
     getAll,
 };
