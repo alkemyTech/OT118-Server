@@ -33,7 +33,7 @@ const update = async (id, {name, content, image, categoryId}) => {
         throw error;
     }
     const noveltyToUpdate =  await newsRepository.getById(id);
-    if(!noveltyToUpdate[0]) {
+    if(!noveltyToUpdate) {
         const error = new Error('Novelty not found.');
         error.status = 404;
         throw error;
