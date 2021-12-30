@@ -1,3 +1,5 @@
+
+// Validation Middleware
 const { check, validationResult } = require('express-validator');
 
 const nameValidationChain = check('name', 'name must be not empty')
@@ -14,8 +16,6 @@ const imageValidationChain = check('image','image must be not empty')
     .exists().bail()
     .notEmpty().bail()
     .isLength({min: 3, max: 1234}).withMessage("image must be between 3 to 1234 characters long");
-
-
 
 
 const inputValidation = [
