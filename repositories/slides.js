@@ -1,11 +1,8 @@
 const db = require('../models');
-const {Sequelize} = require('sequelize')
 
 const create = async (slide) => {
   const data = await db.Slides.create(slide);
-  
   return data
-
 }
 
 const getById = async (id) => {
@@ -17,10 +14,6 @@ const getById = async (id) => {
 const getMaxOrder = async () => {
   return await db.Slides.max('order')
 
-}
-
-const getById = async (id) => {
-  return await db.Slides.findByPk(id)
 }
 
 const getAll = async () => {
@@ -44,7 +37,6 @@ const remove = async (id) => {
 };
 
 module.exports = {
-
   create,
   update,
   getMaxOrder,
