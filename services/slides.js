@@ -29,6 +29,15 @@ const getAll = async () => {
 
 }
 
+const getById = async (id) => {
+  const data = await slidesRepository.getById(id)
+
+  if(!data){
+    throw new Error("slide not fund")
+  }
+
+  return data
+}
 
 const remove = async (id) => {
   await slidesRepository.remove(id);
@@ -40,6 +49,6 @@ module.exports = {
   create,
   remove,
   getAll,
-  remove
+  getById
 
 };
