@@ -14,8 +14,13 @@ const getById = async (id) => {
   });
 };
 
-module.exports = {
+const getAll = async () => {
+  return await db.News.findAll({
+    attributes: ['name', 'content', 'image'],
+  });
+};module.exports = {
   create,
   remove,
-  getById
+  getById,
+  getAll
 };
