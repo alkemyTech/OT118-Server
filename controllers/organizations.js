@@ -11,6 +11,12 @@ const update = async (req, res, next) => {
   }
 };
 
+const getPublicInfo = async (req, res, next) => {
+  const data = await organizationService.getPublicInfo(configuration.organizationId);
+  res.status(200).json({ data })
+}
+
 module.exports = {
   update,
+  getPublicInfo
 };

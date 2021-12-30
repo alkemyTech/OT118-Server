@@ -16,7 +16,9 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  return await db.Categories.findOne({ where: { id } });
+  return await db.Categories.findByPk(id, {
+    "attributes": { exclude: ['deletedAt'] }
+  });
 };
 
 const remove = async (id) => {
