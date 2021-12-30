@@ -26,8 +26,17 @@ const getById = async (id) => {
 
 
 
+const getAll = async () => {
+    return await newsRepository.getAll()
+};
+
 module.exports = {
     create,
     remove,
     getById,
+<<<<<<< HEAD
+=======
+    getCommentsByNews,
+    getAll,
+>>>>>>> 44d00a068fdad188cfd6884131c5de36adac4def
 };
