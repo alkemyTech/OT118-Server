@@ -1,3 +1,4 @@
+
 const usersRepository = require("../repositories/users");
 const rolesRepository = require("../repositories/roles");
 const bcrypt = require("bcryptjs");
@@ -29,11 +30,19 @@ const getAll = async () => {
 
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
+};
+
+const getById = async(id) =>{
+  const dataUser = await usersRepository.getById(id)
+  return dataUser
 }
+
+
 
 module.exports = {
   create,
   login,
-  getAll,
-  getProfile
+  getAll,  
+  getProfile,
+  getById
 };
