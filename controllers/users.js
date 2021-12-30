@@ -23,9 +23,6 @@ const login = async (req, res, next) => {
     }
 };
 
-<<<<<<< HEAD
-=======
-
 const remove = async (req, res, next) => {
   try{
     const response = await usersService.remove(req.params.id)
@@ -35,7 +32,15 @@ const remove = async (req, res, next) => {
   }
 }
 
->>>>>>> 14017526f0cc4c6801c00e2a61aed511c31b78f0
+const getAll = async (req, res, next) =>{
+  try{
+      const getData = await usersService.getAll();
+      res.status(200).json({ getData });
+      }catch(e){
+        next(e);
+      };
+};
+
 const getProfile = async (req, res, next) => {
   try {
     const token = req.headers["authorization"];
@@ -45,15 +50,13 @@ const getProfile = async (req, res, next) => {
   } catch(error) {
     next(error)
   }
-}
+};
+
 
 module.exports = {
     register,
     login,
-<<<<<<< HEAD
-    getProfile
-=======
+    getAll,
     remove,
     getProfile,
->>>>>>> 14017526f0cc4c6801c00e2a61aed511c31b78f0
 };

@@ -6,6 +6,14 @@ module.exports = {
     rounds: process.env.AUTH_ROUNDS || 10,
     organizationId: 1,
     newsCategoryName: "news",
+    awsS3: {
+        accessKey: process.env.AWS_ACCESS_KEY,
+        secretKey: process.env.AWS_SECRET_KEY,
+        region: process.env.AWS_REGION,
+        bucketName: process.env.AWS_BUCKET_NAME
+    },
+    sendGrid_key: process.env.SENDGRID_KEY,
+    sendGrid_mail: process.env.SENDGRID_MAIL,
     "development": {
         "username": process.env.DB_USER,
         "password": process.env.DB_PASSWORD,

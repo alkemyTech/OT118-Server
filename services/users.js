@@ -20,11 +20,14 @@ const login = async (body) => {
     if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
     return generateToken({id: user.id});
 };
+const getAll = async () => {
+  const data = await usersRepository.getAll();
+  return data;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 14017526f0cc4c6801c00e2a61aed511c31b78f0
+
+
+};
+
 const remove = async (id) => {
   const user = await usersRepository.getById(id)
   if (!user){
@@ -35,12 +38,6 @@ const remove = async (id) => {
   return await usersRepository.remove(id)
 }
 
-<<<<<<< HEAD
-module.exports = {
-  create,
-  login,
-  remove,
-=======
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
 };
@@ -48,10 +45,10 @@ const getProfile = async (id) => {
 const getById = async(id) =>{
   const dataUser = await usersRepository.getById(id)
   return dataUser
-=======
+}
+
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
->>>>>>> 14017526f0cc4c6801c00e2a61aed511c31b78f0
 }
 
 
@@ -59,12 +56,8 @@ const getProfile = async (id) => {
 module.exports = {
   create,
   login,
-<<<<<<< HEAD
   getProfile,
   getById,
->>>>>>> dev
-=======
   remove,
-  getProfile,
->>>>>>> 14017526f0cc4c6801c00e2a61aed511c31b78f0
+  getAll,  
 };
