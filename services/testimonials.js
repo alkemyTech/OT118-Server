@@ -30,8 +30,20 @@ const update = async (id, body) => {
 
   }
 
+
+const getAll = async () => {
+  const listTestimonials = await testimonialsRepo.getAll();
+  return listTestimonials
+};
+
+
+const create = async (body) => {
+  return await testimonialsRepo.create(body);
+};
 module.exports = {
   remove,
+  create,
+  getAll,
   getById,
   update
 };

@@ -4,7 +4,7 @@ const { validateToken } = require('../modules/auth')
 const register = async (req, res, next) => {
   try {
     const data = await usersService.create(req.body);
-    res.status(201).json({ msg: `User created succesfully`, data });
+    res.status(201).json({ msg: `User created succesfully`, access_token : data });
   } catch (error) {
     next(error);
   }
