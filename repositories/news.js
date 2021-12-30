@@ -18,9 +18,7 @@ const getCommentsByNews = async (id) => {
   return await db.Comments.findAll({
     where:{
       novelty_id: id
-    }}, 
-    order: ['createdAt', 'DESC'],
-    attributes: ['body']
+    },
   })
 }
 
