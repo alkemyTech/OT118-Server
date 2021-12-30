@@ -17,8 +17,10 @@ const update = async(body, id) => {
     const error = new Error('Comment not found')
     error.status = 409
     throw error
+  }else{
+    await commentsRepository.update(body, id)
   }
-  await commentsRepository.update(body, id)
+  
   return comment
 }
 
