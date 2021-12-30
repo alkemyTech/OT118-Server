@@ -7,6 +7,22 @@ const update = async (id, body) => {
   return data;
 };
 
+const getPublicInfo = async (id) => {
+  return await db.Organization.findByPk(id, {
+
+    attributes: ["name", "image", "phone", "address"],
+    include: [
+      {
+        association: 'Slides',
+        order: ['order', 'DESC'],
+        attributes : ["imageUrl", "text", "order", "organizationId"]
+      }
+    ]
+
+  });
+}
+
 module.exports = {
-  update
+  update,
+  getPublicInfo
 };

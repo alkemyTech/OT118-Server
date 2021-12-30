@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
 
+
 const indexRouter = require('./routes/index');
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.use('/', indexRouter);
 
@@ -38,5 +40,8 @@ app.use((err, req, res) => {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+app.listen(3000);
 
 module.exports = app;
