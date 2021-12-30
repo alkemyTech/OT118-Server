@@ -14,6 +14,12 @@ const getById = async (id) => {
   });
 };
 
+const getAll = async () => {
+  return await db.News.findAll({
+    attributes: ['name', 'content', 'image'],
+  });
+}
+
 const getCommentsByNews = async (id) => {
   return await db.Comments.findAll({
     where:{
@@ -23,8 +29,9 @@ const getCommentsByNews = async (id) => {
 }
 
 module.exports = {
+  getCommentsByNews,
   create,
   remove,
   getById,
-  getCommentsByNews,
+  getAll,
 };

@@ -11,6 +11,12 @@ const getAll = async () => {
   return data;
 };
 
+const getById = async (id) => {
+  return await db.Categories.findByPk(id, {
+    "attributes": { exclude: ['deletedAt'] }
+  });
+};
+
 const remove = async (id) => {
   await db.Categories.destroy({ where: { id } });
 };
@@ -23,5 +29,6 @@ module.exports = {
   getByName,
   create,
   getAll,
+  getById,
   remove
 };

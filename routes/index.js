@@ -14,6 +14,7 @@ const newsRoute = require('./news');
 const authRoute = require('./auth');
 
 
+
 router.use('/organizations', organizationRoutes);
 router.use('/categories', categoriesRoutes);
 router.use('/testimonials', testimonialsRoutes);
@@ -24,6 +25,7 @@ router.use("/contacts", contactsRoutes);
 router.use('/activities', activitiesRoutes)
 router.use('/news', newsRoute);
 router.use('/auth', authRoute);
+
 
 
 module.exports = router;
