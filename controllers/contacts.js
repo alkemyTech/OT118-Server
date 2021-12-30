@@ -1,7 +1,7 @@
-
-
 const contactsService = require("../services/contacts");
-const { validationResult} = require("express-validator");
+const { send } = require("../modules/emailSender");
+const { organizationId } = require('../config/config' );
+const { getTemplateMail } = require("../modules/contactMail");
 
 const getAll = async (req, res, next) => {
   try {
@@ -14,22 +14,24 @@ const getAll = async (req, res, next) => {
   }
 };
 
+const create = async (req, res, next) => {
+  try {
+    const newContact = await contactsService.create(req.body);
 
-const create = async (req, res, next) =>{
-    try{
-      const newContact = await contactsService.create(req.body);
-      return res.status(200).json({
-         newContact : newContact,
-         message : "contact created successfully"
-        })
-      }  catch (error){
-         next(error);
-     }
-
-}
-
+    const template = await getTemplateMail(organizationId);
+    let subject = "Email de confirmación";
+    await send(newContact.email, template, subject)
+    
+    return res.status(201).json({
+      msg: "contact created successfully",
+      data: newContact,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getAll,
-  create
+  create,
 };
