@@ -9,6 +9,7 @@ const update = async (id, body) => {
 
 const getPublicInfo = async (id) => {
   return await db.Organization.findByPk(id, {
+
     attributes: ["name", "image", "phone", "address"],
     include: [
       {
@@ -17,6 +18,7 @@ const getPublicInfo = async (id) => {
         attributes : ["imageUrl", "text", "order", "organizationId"]
       }
     ]
+
   });
 }
 
