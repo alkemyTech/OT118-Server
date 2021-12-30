@@ -15,14 +15,12 @@ const getById = async (id) => {
 };
 
 const getCommentsByNews = async (id) => {
-  return await db.News.findByPk(id, {
-    include: [
-      {
-        association: 'Comments',
-        order: ['createdAt', 'DESC'],
-        attributes: ['body']
-      }
-    ]
+  return await db.Comments.findAll({
+    where:{
+      novelty_id: id
+    }}, 
+    order: ['createdAt', 'DESC'],
+    attributes: ['body']
   })
 }
 
