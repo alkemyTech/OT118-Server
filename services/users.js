@@ -26,8 +26,13 @@ const getAll = async () => {
 
 };
 
+const getProfile = async (id) => {
+  return await usersRepository.getById(id);
+}
+
 module.exports = {
   create,
   login,
-  getAll
+  getAll,
+  getProfile
 };

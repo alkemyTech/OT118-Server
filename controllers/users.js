@@ -1,4 +1,5 @@
 const usersService = require('../services/users');
+const { validateToken } = require('../modules/auth')
 
 const register = async (req, res, next) => {
   try {
@@ -34,8 +35,21 @@ const getAll = async (req, res, next) =>{
 
 };
 
+const getProfile = async (req, res, next) => {
+  try {
+    const token = req.headers["authorization"];
+    const verifyToken = validateToken(token);
+    const data = await usersService.getProfile(verifyToken.id);
+    res.status(200).json({ data });
+  } catch(error) {
+    next(error)
+  }
+};
+
+
 module.exports = {
     register,
     login,
-    getAll
+    getAll,
+    getProfile
 };
