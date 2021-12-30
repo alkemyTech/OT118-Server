@@ -18,9 +18,20 @@ const getAll = async () => {
   return await db.News.findAll({
     attributes: ['name', 'content', 'image'],
   });
-};module.exports = {
+}
+
+const update = async (id, body) => {
+  return await db.News.update(body, {
+    where: {
+      id
+    },
+  });
+}
+
+module.exports = {
   create,
   remove,
+  update,
   getById,
   getAll
 };

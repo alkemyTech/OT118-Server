@@ -1,3 +1,4 @@
+
 // Validation Middleware
 const { check, validationResult } = require('express-validator');
 
@@ -16,11 +17,6 @@ const imageValidationChain = check('image','image must be not empty')
     .notEmpty().bail()
     .isLength({min: 3, max: 1234}).withMessage("image must be between 3 to 1234 characters long");
 
-/*const categoryIdValidationChain =  check('categoryId', 'categoryId must not be empty')
-    .exists().bail()
-    .notEmpty().bail()
-    .isNumeric({no_symbols: true}).withMessage("categoryId must be a valid integer value");
-*/
 
 const inputValidation = [
     nameValidationChain,

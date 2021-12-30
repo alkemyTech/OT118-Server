@@ -5,7 +5,26 @@ const remove = async (id) => {
     where: { id }
   });
   return data;
-};
+}
+
+const getById = async (id) => {
+  const getTestimonial = await db.Testimonials.findByPk(id);
+   return getTestimonial;
+
+}
+
+const update = async(id , body ) => {
+
+  const testimonialUpdated = await db.Testimonials.update(body , {
+
+      where: { id }
+  });
+
+    return testimonialUpdated;
+
+
+}
+
 
 const getAll = async () => {
   const data = await db.Testimonials.findAll({
@@ -20,6 +39,8 @@ const create = async (body) => {
 
 module.exports = {
   remove,
+  getById,
+  update,
   create,
   getAll
 };

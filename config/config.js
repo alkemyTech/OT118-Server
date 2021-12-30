@@ -12,6 +12,8 @@ module.exports = {
         region: process.env.AWS_REGION,
         bucketName: process.env.AWS_BUCKET_NAME
     },
+    sendGrid_key: process.env.SENDGRID_KEY,
+    sendGrid_mail: process.env.SENDGRID_MAIL,
     "development": {
         "username": process.env.DB_USER,
         "password": process.env.DB_PASSWORD,
