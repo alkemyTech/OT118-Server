@@ -12,8 +12,17 @@ const getAll = async () => {
   return await db.Comments.findAll()
 }
 
+const getCommentsByNews = async (id) => {
+  return await db.Comments.findAll({
+    where:{
+      novelty_id: id
+    },
+  })
+}
+
 module.exports = {
   remove,
   create,
-  getAll
+  getAll,
+  getCommentsByNews
 };

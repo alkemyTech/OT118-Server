@@ -29,8 +29,19 @@ const getAll = async (req, res, next) => {
   }
 }
 
+const getCommentsByNews = async (req, res, next) => {
+  try{
+    const id = req.params.id
+    const response = await newsService.getCommentsByNews(id);
+    res.status(200).json(response)
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = {
   remove,
   create,
   getAll,
+  getCommentsByNews
 };

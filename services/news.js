@@ -24,13 +24,10 @@ const getById = async (id) => {
     return novelty;
 };
 
-const getCommentsByNews = async (id) => {
-    return await newsRepository.getCommentsByNews(id)
-}
+
 
 module.exports = {
     create,
     remove,
     getById,
-    getCommentsByNews,
 };
