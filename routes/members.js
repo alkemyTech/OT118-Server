@@ -7,6 +7,7 @@ const memberMiddleware = require("../middlewares/memberValidator");
 
 router.get("/", authMiddleware.isAdmin, membersController.getAll);
 router.post( "/",  [authMiddleware.isAuth, memberMiddleware], membersController.create);
+router.put("/:id", authMiddleware.isAuth, membersController.update);
 router.delete("/:id", authMiddleware.isAdmin, membersController.remove);
 
 module.exports = router;
