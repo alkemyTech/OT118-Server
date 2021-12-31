@@ -1,9 +1,10 @@
 const usersService = require('../services/users');
+const { validateToken } = require('../modules/auth')
 
 const register = async (req, res, next) => {
   try {
     const data = await usersService.create(req.body);
-    res.status(201).json({ msg: `User created succesfully`, data });
+    res.status(201).json({ msg: `User created succesfully`, access_token : data });
   } catch (error) {
     next(error);
   }
@@ -22,7 +23,33 @@ const login = async (req, res, next) => {
     }
 };
 
+const getAll = async (req, res, next) =>{
+  try{
+      const getData = await usersService.getAll();
+      res.status(200).json({ getData });
+      }catch(e){
+        next(e);
+      };
+
+
+
+};
+
+const getProfile = async (req, res, next) => {
+  try {
+    const token = req.headers["authorization"];
+    const verifyToken = validateToken(token);
+    const data = await usersService.getProfile(verifyToken.id);
+    res.status(200).json({ data });
+  } catch(error) {
+    next(error)
+  }
+};
+
+
 module.exports = {
     register,
-    login
+    login,
+    getAll,
+    getProfile
 };

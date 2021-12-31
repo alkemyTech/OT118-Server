@@ -14,8 +14,24 @@ const getById = async (id) => {
   });
 };
 
+const getAll = async () => {
+  return await db.News.findAll({
+    attributes: ['name', 'content', 'image'],
+  });
+}
+
+const update = async (id, body) => {
+  return await db.News.update(body, {
+    where: {
+      id
+    },
+  });
+}
+
 module.exports = {
   create,
   remove,
-  getById
+  update,
+  getById,
+  getAll
 };

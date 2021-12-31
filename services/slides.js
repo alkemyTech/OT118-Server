@@ -9,18 +9,21 @@ const create = async(body) => {
 
   }
 
-  
-  const slide = {
-    urlImage : body.imageUrl,
-    text : body.text,
-    order : body.order,
-    idOrg : body.organizationId
-  }
-
-  return await slidesRepository.create(slide)  
+  return await slidesRepository.create(body)  
 
 } 
 
+const update = async (id, body) => {
+  const slide = await slidesRepository.getById(id);
+
+  if(!slide) {
+    throw new Error('slide not fund')
+    
+  }
+
+  return await slidesRepository.update(body, id)
+  
+}
 
 const getAll = async () => {
   
@@ -29,6 +32,15 @@ const getAll = async () => {
 
 }
 
+const getById = async (id) => {
+  const data = await slidesRepository.getById(id)
+
+  if(!data){
+    throw new Error("slide not fund")
+  }
+
+  return data
+}
 
 const remove = async (id) => {
   await slidesRepository.remove(id);
@@ -40,6 +52,9 @@ module.exports = {
   create,
   remove,
   getAll,
+  getById,
+  update,
   remove
 
+  
 };
