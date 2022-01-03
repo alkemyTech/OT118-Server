@@ -11,7 +11,7 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const data = await categoriesService.update(req.params.id, req.body);
+    const data = await categoriesService.update(req.params.id, req.body, res);
     res.status(200).json({ msg: `Category updated succesfully`, data: data });
   } catch (error) {
     next(error);

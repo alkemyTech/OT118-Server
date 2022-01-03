@@ -19,16 +19,14 @@ const create = async (body) => {
   return await categoriesRepository.create(body);
 };
 
-const update = async (id, body) => {
+const update = async (id, body, res) => {
   const categoryId = await categoriesRepository.getById(id);
-  console.log(categoryId);
-  if (categoryId) {
-    return await categoriesRepository.update(id, body);
-  }  else {
-    const error = new Error('Category not found.');
-      error.status = 404;
-      throw error;
+  if (!categoryId) {
+    res.status(404).json({ msg: 'Category does not exists' });
+  } else {
+    await categoriesRepository.update(id, body);
   }
+  return await categoriesRepository.getById(id);
 };
 
 const remove = async (id) => {
