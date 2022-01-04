@@ -92,52 +92,52 @@ Regular users
 ``` 
 
 Name: Pepe
-Email: testEmail1@gmail.com
+Email: testEmail@gmail.com
 Password: passwordOT118!
 
 
 Name: Rosa
-Email: testEmail2@gmail.com
+Email: testEmail1@gmail.com
 Password: passwordOT118!
 
 
 Name: Jorge
-Email: testEmail3@gmail.com
+Email: testEmail2@gmail.com
 Password: passwordOT118!
 
 
 Name: Abel
-Email: testEmail4@gmail.com
+Email: testEmail3@gmail.com
 Password: passwordOT118!
 
 
 Name: Martin
-Email: testAEmail5@gmail.com
+Email: testAEmail4@gmail.com
 Password: passwordOT118!
 
 
 Name: Belen
-Email: testEmail6@gmail.com
+Email: testEmail5@gmail.com
 Password: passwordOT118!
 
 
 Name: Prinscila
-Email: testEmail7@gmail.com
+Email: testEmail6@gmail.com
 Password: passwordOT118!
 
 
 Name: Gabriel
-Email: testmail8@gmail.com
+Email: testmail7@gmail.com
 Password: passwordOT118!
 
 
 Name: Brian
-Email: testEmail9@gmail.com
+Email: testEmail8@gmail.com
 Password: passwordOT118!
 
 
 Name: Anastasia
-Email: testEmail10@gmail.com
+Email: testEmail9@gmail.com
 Password: passwordOT118!
 
 
