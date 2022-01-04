@@ -8,15 +8,14 @@ const nameValidationChain = check('name', 'name must be not empty')
 const imageValidationChain = check('image','image must be not empty')
     .exists().bail()
     .notEmpty().bail()
-    .isLength({min: 3, max: 1234}).withMessage("phone must be between 3 to 1234 characters long");
+    .isLength({min: 3, max: 1234}).withMessage("image must be between 3 to 1234 characters long");
 const phoneValidationChain = check('phone','phone must be not empty')
     .exists().bail()
     .notEmpty().bail()
-    .isLength({min: 3, max: 1234}).withMessage("phone must be between 3 to 1234 characters long");
 const addressValidationChain = check('address','address must be not empty')
     .exists().bail()
     .notEmpty().bail()
-    .isLength({min: 5}).withMessage("address must at least 5 characters long")
+    .isLength({min: 5, max: 255}).withMessage("address must be between 3 to 255 characters long")
 const emailValidationChain = check('email','email must be not empty')
     .exists().bail()
     .notEmpty().bail()
