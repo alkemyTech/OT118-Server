@@ -24,6 +24,8 @@ const getCommentsByNews = async (id) => {
       novelty_id: id
     },
   })
+}
+
 const getById = async (id) => {
   return await db.Comments.findByPk(id)
 }
@@ -32,7 +34,7 @@ module.exports = {
   remove,
   create,
   getAll,
-  getCommentsByNews
+  getCommentsByNews,
   update,
   getById
 };

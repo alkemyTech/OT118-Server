@@ -20,14 +20,6 @@ const getAll = async () => {
   });
 }
 
-const getCommentsByNews = async (id) => {
-  return await db.Comments.findAll({
-    where:{
-      novelty_id: id
-    },
-  })
-}
-
 const update = async (id, body) => {
   return await db.News.update(body, {
     where: {
@@ -42,5 +34,4 @@ module.exports = {
   update,
   getById,
   getAll,
-  getCommentsByNews,
 }

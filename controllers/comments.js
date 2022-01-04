@@ -58,6 +58,6 @@ module.exports = {
   remove,
   create,
   getAll,
-  getCommentsByNews
-  update
+  getCommentsByNews,
+  update,
 };
