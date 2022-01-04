@@ -1,5 +1,5 @@
-// Validation Middleware
-const { check, validationResult } = require('express-validator');
+const { check } = require('express-validator');
+const {checkValidationResults} = require("./validation");
 
 const nameValidationChain = check('name', 'name must be not empty')
     .exists().bail()
@@ -27,16 +27,7 @@ const inputValidation = [
     contentValidationChain,
     imageValidationChain,
     categoryIdValidationChain,
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                msg: 'Body params invalid.',
-                errors: errors.array() }
-            );
-        }
-        next();
-    }
+    checkValidationResults
 ];
 
 module.exports = {
