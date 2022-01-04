@@ -33,5 +33,5 @@ module.exports = {
   remove,
   update,
   getById,
-  getAll
-};
+  getAll,
+}
