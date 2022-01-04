@@ -1,4 +1,3 @@
-
 const usersRepository = require("../repositories/users");
 const rolesRepository = require("../repositories/roles");
 const bcrypt = require("bcryptjs");
@@ -20,12 +19,10 @@ const login = async (body) => {
     if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
     return generateToken({id: user.id});
 };
+
 const getAll = async () => {
   const data = await usersRepository.getAll();
   return data;
-
-
-
 };
 
 const remove = async (id) => {
@@ -50,8 +47,6 @@ const getById = async(id) =>{
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
 }
-
-
 
 module.exports = {
   create,
