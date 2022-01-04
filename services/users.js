@@ -1,9 +1,8 @@
-
 const usersRepository = require("../repositories/users");
 const rolesRepository = require("../repositories/roles");
 const bcrypt = require("bcryptjs");
-const {generateToken} = require("../modules/auth");
-
+const { generateToken } = require("../modules/auth");
+const { paginate } = require("../modules/pagination");
 const invalidUserMsg = "email or password is invalid.";
 
 const create = async (user) => {
@@ -11,38 +10,35 @@ const create = async (user) => {
   let role = await rolesRepository.findByName("Standard");
   user.roleId = role.id;
   const newUser = await usersRepository.create(user);
-  return generateToken({id: newUser.id})
+  return generateToken({ id: newUser.id });
 };
 
 const login = async (body) => {
-    const user = await usersRepository.findByEmail(body.email);
-    if (!user) throw new Error(invalidUserMsg);
-    if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
-    return generateToken({id: user.id});
+  const user = await usersRepository.findByEmail(body.email);
+  if (!user) throw new Error(invalidUserMsg);
+  if (!bcrypt.compareSync(body.password, user.password))
+    throw new Error(invalidUserMsg);
+  return generateToken({ id: user.id });
 };
-const getAll = async () => {
-  const data = await usersRepository.getAll();
-  return data;
 
-
-
+const getAll = async (req) => {
+  const limit = 2;
+  return await paginate(req, limit, usersRepository);
 };
 
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
 };
 
-const getById = async(id) =>{
-  const dataUser = await usersRepository.getById(id)
-  return dataUser
-}
-
-
+const getById = async (id) => {
+  const dataUser = await usersRepository.getById(id);
+  return dataUser;
+};
 
 module.exports = {
   create,
   login,
-  getAll,  
+  getAll,
   getProfile,
-  getById
+  getById,
 };
