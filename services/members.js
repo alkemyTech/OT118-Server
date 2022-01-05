@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const membersRepository = require("../repositories/members");
 
 const getAll = async () => {
@@ -10,15 +11,14 @@ const create = async (member) => {
 
 const update = async (id, data) => {
   const member = await membersRepository.getById(id);
-  if (!member) {
-    throw new Error("Member not found");
-  }
+  if (!member) throw createError(404, { msg: "Member not found" });
   await membersRepository.update(id, data);
   return await membersRepository.getById(id);
 };
 
 const remove = async (id) => {
-  await membersRepository.remove(id);
+  if (!await membersRepository.remove(id))
+    throw createError(404, { msg: "Member not found" });
 };
 
 module.exports = {
