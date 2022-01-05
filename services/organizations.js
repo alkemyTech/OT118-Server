@@ -1,12 +1,9 @@
+const createError = require("http-errors");
 const organizationRepository = require('../repositories/organizations');
 
 const getById = async (id) => {
   const organization = await organizationRepository.getById(id);
-  if (!organization) {
-    const error = new Error(`No existe la organización`);
-    error.status = 404;
-    throw error;
-  }
+  if (!organization) throw createError(404, { msg: "Organization not found" })
   return organization;
 };
 

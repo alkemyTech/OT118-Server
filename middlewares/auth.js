@@ -1,6 +1,6 @@
 
 const usersRepository = require('../repositories/users')
-const {validateToken} = require('../modules/auth')
+const { validateToken } = require('../modules/auth')
 const auth = require('../modules/auth');
 const usersServices = require("../services/users")
 const rolesRepository = require("../repositories/roles");
@@ -46,7 +46,7 @@ const isAdmin = async (req, res, next) => {
 const isAuth = async (req, res, next) => {
   const token = req.headers['authorization'];
   try{
-    const verifyToken = jwtService.verify(token);
+    const verifyToken = validateToken(token);
     const user = await usersRepository.getById(verifyToken.id)
 
     if (!user) {

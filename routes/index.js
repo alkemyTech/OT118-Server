@@ -13,6 +13,9 @@ const activitiesRoutes = require('./activities');
 const newsRoute = require('./news');
 const authRoute = require('./auth');
 const usersRouter = require('./users')
+const backofficeRouter = require('./backoffice')
+
+
 
 
 router.use('/organizations', organizationRoutes);
@@ -26,6 +29,8 @@ router.use('/activities', activitiesRoutes)
 router.use('/news', newsRoute);
 router.use('/auth', authRoute);
 router.use('/users', usersRouter)
+router.use('/backoffice', backofficeRouter);
+
 
 
 module.exports = router;
