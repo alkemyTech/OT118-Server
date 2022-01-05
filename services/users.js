@@ -44,9 +44,6 @@ const getById = async(id) =>{
   return dataUser
 }
 
-const getProfile = async (id) => {
-  return await usersRepository.getById(id);
-}
 
 module.exports = {
   create,
