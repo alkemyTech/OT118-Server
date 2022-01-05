@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const { generateToken } = require("../modules/auth");
 const { paginate } = require("../modules/pagination");
 const invalidUserMsg = "email or password is invalid.";
+const pageLimit = 10;
 
 const create = async (user) => {
   user.password = bcrypt.hashSync(user.password, 10);
@@ -21,9 +22,8 @@ const login = async (body) => {
   return generateToken({ id: user.id });
 };
 
-const getAll = async (req) => {
-  const limit = 2;
-  return await paginate(req, limit, usersRepository);
+const getAll = async ({ baseUrl, page }) => {
+  return await paginate(baseUrl, page, pageLimit, usersRepository);
 };
 
 const getProfile = async (id) => {

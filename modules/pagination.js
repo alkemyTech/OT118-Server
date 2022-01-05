@@ -1,38 +1,36 @@
-const paginate = async (req, limit, repository) => {
+const createError = require("http-errors");
+
+const paginationParams = (req) => {
   let { page } = req.query;
-  page = page || 1  // page default value if undefined
+  page = page || 1; // page default value if undefined
+  const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
+  return {
+    page,
+    baseUrl,
+  };
+};
+
+const paginate = async (baseUrl, page, limit, repository) => {
   const count = await repository.count();
   const maxPage = Math.ceil(count / limit);
-  if (page > maxPage) {
-    const error = new Error('Parameter "page" is out of range');
-    error.status = 400;
-    throw error;
-  }
-  if (page < 1) {
-    const error = new Error('Parameter "page" cannot be negative or zero');
-    error.status = 400;
-    throw error;
-  }
-  if (isNaN(page)) {
-    const error = new Error(
-      'The "page" parameter must be an integer greater than zero'
-    );
-    error.status = 400;
-    throw error;
-  }
-  page = Number(page)
+  if (page > maxPage)
+    throw createError(400, { msg: "Parameter 'page' is out of range" });
+
+  page = Number(page);
   const offset = limit * (page - 1),
     prev = page - 1,
     next = page + 1,
-    baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`,
     data = await repository.getAll(limit, offset);
-  
+
+  const prevUrl = prev == 0 ? null : `${baseUrl}?page=${prev}`;
+  const nextUrl = next < maxPage ? `${baseUrl}?page=${next}` : null;
+
   return {
-    prev: `${baseUrl}?page=${prev == 0 ? 1 : prev}`,
-    next: `${baseUrl}?page=${next < maxPage ? next : maxPage}`,
+    prev: prevUrl,
+    next: nextUrl,
     pages: maxPage,
     data,
   };
 };
 
-module.exports = { paginate };
+module.exports = { paginationParams, paginate };

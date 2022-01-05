@@ -1,5 +1,6 @@
 const usersService = require("../services/users");
 const { validateToken } = require("../modules/auth");
+const { paginationParams } = require("../modules/pagination");
 
 const register = async (req, res, next) => {
   try {
@@ -28,7 +29,7 @@ const login = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const data = await usersService.getAll(req);
+    const data = await usersService.getAll(paginationParams(req));
     res.status(200).json( data );
   } catch (e) {
     next(e);
