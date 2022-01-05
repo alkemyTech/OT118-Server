@@ -13,7 +13,8 @@ const create = async (body) => {
 }
 
 const remove = async (id) => {
-    throw new Error('Not implemented');
+    const wasRemoved = await newsRepository.remove(id);
+    if (!wasRemoved) throw createError(400, "Novelty couldn't be removed.")
 }
 
 const getById = async (id) => {
