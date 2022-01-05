@@ -1,10 +1,8 @@
-const organizationRepository = require('../repositories/organizations');
 const path = require('path');
 const ejs = require('ejs');
 
-const createWecolmeEmailTemplate = async (id) => {
+const createWecolmeEmailTemplate = async (dataOrg) => {
 
-    const dataOrg = await organizationRepository.getById(id);
     const data = {
         logo: dataOrg.image,
         name: dataOrg.name,
@@ -13,8 +11,7 @@ const createWecolmeEmailTemplate = async (id) => {
         phone: dataOrg.phone,
         email: dataOrg
     }
-
-    return await ejs.renderFile(path.resolve(__dirname, 'views / welcome-mail.ejs'), data);
+    return await ejs.renderFile(path.join(__dirname, "..", "views", "welcome-email.ejs", data));
 }
 
 module.exports = {
