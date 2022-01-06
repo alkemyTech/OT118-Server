@@ -4,7 +4,7 @@ const router = express.Router();
 
 const contactsController = require('../controllers/contacts');
 const authMiddleware = require('../middlewares/auth');
-const validateCreateContacts = require("../middlewares/contactsNew")
+const validateCreateContacts = require("../middlewares/contacts")
 
 
 router.get("/", contactsController.getAll)
