@@ -30,9 +30,6 @@ const getAll = async (req, res, next) =>{
       }catch(e){
         next(e);
       };
-
-
-
 };
 
 const getProfile = async (req, res, next) => {
