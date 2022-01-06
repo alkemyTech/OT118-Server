@@ -22,8 +22,14 @@ const login = async (body) => {
   return generateToken({ id: user.id });
 };
 
-const getAll = async ({ baseUrl, page }) => {
-  return await paginate(baseUrl, page, pageLimit, usersRepository);
+const getAll = async ({baseUrl, page}) => {
+  const count = await usersRepository.count();
+  const paginatedResult = await paginate(baseUrl,page, pageLimit, count);
+  if (count > 0) {
+    paginatedResult.data = await usersRepository.getAll(pageLimit, paginatedResult.offset);
+  }
+  delete paginatedResult.offset;
+  return paginatedResult;
 };
 
 const getProfile = async (id) => {
