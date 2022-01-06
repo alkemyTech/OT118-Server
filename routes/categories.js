@@ -4,7 +4,7 @@ const router = express.Router();
 
 const categoriesController = require('../controllers/categories');
 const authMiddleware = require('../middlewares/auth');
-const categoryValidator = require('../middlewares/categoryValidator');
+const categoryValidator = require('../middlewares/categories');
 
 router.post('/', authMiddleware.isAdmin, categoryValidator.nameOk, categoriesController.create);
 router.get('/', categoriesController.getAll);
