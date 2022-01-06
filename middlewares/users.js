@@ -1,10 +1,12 @@
-const {validationResult, check} = require("express-validator");
+const { check } = require("express-validator");
+const { checkValidationResults } = require("./validation");
 
 const emailValidationChain = check('email')
     .exists().bail()
     .notEmpty().bail()
     .isEmail().bail()
     .normalizeEmail();
+
 const passwordValidationChain = check('password')
     .exists().bail()
     .notEmpty().bail();
@@ -12,13 +14,17 @@ const passwordValidationChain = check('password')
 const loginValidation = [
     emailValidationChain,
     passwordValidationChain,
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ error: errors.array() });
-        }
-        next();
-    }
+    checkValidationResults
 ];
 
-module.exports = loginValidation;
+const registerValidation = [
+    check('firstName', 'firstName is required').notEmpty(),
+    check('lastName', 'lastName is required').notEmpty(),
+    check('email', 'email is required').notEmpty(),
+    check('email', 'email format is invalid').isEmail(),
+    check('password', 'password is required').notEmpty(),
+    check('password', 'password is not strong').isStrongPassword(),
+    checkValidationResults,
+]
+
+module.exports = { loginValidation, registerValidation };
