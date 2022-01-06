@@ -1,6 +1,6 @@
 const createError = require("http-errors");
 
-const paginationParams = (req) => {
+const generatePaginationParams = (req) => {
   let { page } = req.query;
   page = page || 1; // page default value if undefined
   const baseUrl = `${req.protocol}://${req.get("host")}${req.baseUrl}`;
@@ -33,4 +33,4 @@ const paginate = async (baseUrl, page, limit, repository) => {
   };
 };
 
-module.exports = { paginationParams, paginate };
+module.exports = { generatePaginationParams, paginate };
