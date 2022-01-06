@@ -22,6 +22,7 @@ const uploadToBucket = async (file) => {
                 Bucket: awsS3.bucketName,
                 Key: uuidv4() + extension,
                 Body: stream,
+                ACL: "public-read"
             }).promise();
         return uploadedFile;
     } catch (err) {
