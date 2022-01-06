@@ -1,4 +1,5 @@
 const categoriesRepository = require('../repositories/categories');
+const createError = require("http-errors");
 
 const getAll = async () => {
   const listCategories = await categoriesRepository.getAll();
@@ -7,11 +8,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const categoryId = await categoriesRepository.getById(id);
-  if (!categoryId) {
-    const error = new Error('Category not found.');
-      error.status = 404;
-      throw error;
-  }
+  if (!categoryId) throw createError(404, "Category not found.")
   return categoryId;
 };
 
@@ -25,9 +22,7 @@ const update = async (id, body) => {
   if (categoryId) {
     return await categoriesRepository.update(id, body);
   }  else {
-    const error = new Error('Category not found.');
-      error.status = 404;
-      throw error;
+    throw createError(404, "Category not found.")
   }
 };
 
