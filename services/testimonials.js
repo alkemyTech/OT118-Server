@@ -1,4 +1,5 @@
 const testimonialsRepo = require('../repositories/testimonials');
+const createError = require("http-errors");
 
 const remove = async (id) => {
   await testimonialsRepo.remove(id);
@@ -6,25 +7,17 @@ const remove = async (id) => {
 
 const getById = async (id) => {
   const testimonial = await testimonialsRepo.getById(id);
-  if(!testimonial){
-    const error = new Error('testimonial not found.');
-      error.status = 404;
-      throw error;
-  }
-    return testimonial;
+  if(!testimonial) throw createError(404, "Testimonial not found.");
+  return testimonial;
 }
 
 const update = async (id, body) => {
   const Testimonials = await testimonialsRepo.getById(id);
-    if(!Testimonials){
-      const error = new Error('Testimonials not found.');
-      error.status = 404;
-      throw error;
-    }
-      await testimonialsRepo.update(id, body);
-      const testimonialUpdated = await testimonialsRepo.getById(id); 
-      return testimonialUpdated;
-  };
+  if(!Testimonials) throw createError(404, "Testimonial not found.")
+  await testimonialsRepo.update(id, body);
+  const testimonialUpdated = await testimonialsRepo.getById(id);
+  return testimonialUpdated;
+};
 
 const getAll = async () => {
   const listTestimonials = await testimonialsRepo.getAll();
