@@ -1,4 +1,5 @@
-const {check, body, validationResult} = require("express-validator");
+const {check} = require("express-validator");
+const {checkValidationResults} = require("./validation");
 
 
 const validationText = check('text')
@@ -14,20 +15,8 @@ const validationOrg = check('organizationId')
 const validationFields = [
     validationText,
     validationOrg,
-    async (req, res, next) => {
+    checkValidationResults
 
-        let validationErrors = validationResult(req);
-
-        if(!validationErrors.isEmpty()){
-            console.log("validations not empty")
-            res.status(400).json({
-                errors : validationErrors.array()
-            })
-
-        }
-
-        next()
-    }
 ]
 
 module.exports = {

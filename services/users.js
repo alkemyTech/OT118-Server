@@ -1,8 +1,8 @@
+const createError = require("http-errors");
 const usersRepository = require("../repositories/users");
 const rolesRepository = require("../repositories/roles");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../modules/auth");
-const createError = require("http-errors");
 const invalidUserMsg = "email or password is invalid.";
 
 const create = async (user) => {
@@ -15,17 +15,14 @@ const create = async (user) => {
 
 const login = async (body) => {
   const user = await usersRepository.findByEmail(body.email);
-  if (!user) throw new Error(invalidUserMsg);
-  if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
+  if (!user) throw createError(401, invalidUserMsg);
+  if (!bcrypt.compareSync(body.password, user.password)) throw createError(401, invalidUserMsg);
   return generateToken({ id: user.id });
 };
 
 const getAll = async () => {
   const data = await usersRepository.getAll();
   return data;
-
-
-
 };
 
 const getProfile = async (id) => {
