@@ -1,22 +1,16 @@
 const {check} = require("express-validator");
 const {checkValidationResults} = require("./validation");
 
+const validationText = check('text', 'text is required.')
+    .notEmpty();
 
-const validationText = check('text')
-    .notEmpty()
-    .withMessage('Texto requerido')
-
-
-const validationOrg = check('organizationId')
-    .notEmpty()
-    .withMessage("Organizacion requerida")
-
+const validationOrg = check('organizationId', "organizationId is required.")
+    .notEmpty();
 
 const validationFields = [
     validationText,
     validationOrg,
     checkValidationResults
-
 ]
 
 module.exports = {
