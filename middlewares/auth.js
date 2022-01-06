@@ -1,7 +1,6 @@
 const createError = require('http-errors');
 const usersRepository = require('../repositories/users')
 const {validateToken} = require('../modules/auth')
-const auth = require('../modules/auth');
 const usersServices = require('../services/users')
 const rolesRepository = require('../repositories/roles');
 
@@ -40,7 +39,7 @@ const inOwnUser = async (req, res, next) => {
 
     if (!token) next(createError(401, invalidTokenMsg));
 
-    const userToken = auth.validateToken(token)
+    const userToken = validateToken(token)
     const userTokenId = userToken.id
     if (userTokenId === idUser) {
         return next()
