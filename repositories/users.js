@@ -1,7 +1,8 @@
 const Models = require('../models/index');
 
-const getAll = async () => {
+const getAll = async (limit, offset) => {
   const data = await Models.Users.findAll({
+    limit, offset,
     attributes: ['firstName', 'email', 'image'],
   });
   return data;
@@ -9,6 +10,10 @@ const getAll = async () => {
 
 const create = async (user) => {
   return await Models.Users.create(user);
+};
+
+const count = async () => {
+  return await Models.Users.count();
 };
 
 const getById = async (id) => {
@@ -49,6 +54,7 @@ module.exports = {
   getAll,
   getById,
   findByEmail,
+  count,
   create,
   remove,
   update,

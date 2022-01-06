@@ -13,8 +13,7 @@ const update = async (id, body) => {
 
 const getPublicInfo = async (id) => {
   return await db.Organization.findByPk(id, {
-
-    attributes: ["name", "image", "phone", "address"],
+    attributes: ["name", "image", "phone", "address", "urlFacebook", "urlInstagram", "urlLinkedin"],
     include: [
       {
         association: 'Slides',
