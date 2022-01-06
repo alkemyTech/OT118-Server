@@ -23,7 +23,9 @@ const create = async (body) => {
 const update = async (id, body, res) => {
   const categoryId = await categoriesRepository.getById(id);
   if (!categoryId) {
-    res.status(404).json({ msg: 'Category does not exists' });
+    const error = new Error('Category not found.');
+      error.status = 404;
+      throw error;
   } else {
     await categoriesRepository.update(id, body);
   }
