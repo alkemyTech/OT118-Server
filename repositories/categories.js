@@ -1,5 +1,27 @@
 const db = require('../models');
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      Categories:
+ *          type: object
+ *          properties:
+ *              name:
+ *                  type: string
+ *                  description: the category name
+ *              description:
+ *                  type: string
+ *                  description: the category description
+ *              image:
+ *                  type: string
+ *                  description: the category image
+ *          required:
+ *              - name
+ *          example:
+ *              name: Kevin McKallister
+ */
+
 const create = async (body) => {
   return await db.Categories.create(body);
 };
