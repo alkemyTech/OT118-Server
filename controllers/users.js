@@ -36,15 +36,6 @@ const remove = async (req, res, next) => {
   }
 }
 
-const getAll = async (req, res, next) =>{
-  try{
-      const getData = await usersService.getAll();
-      res.status(200).json({ getData });
-      }catch(e){
-        next(e);
-      };
-}
-
 const getAll = async (req, res, next) => {
   try {
     const params = paginationParams.generate(req);
@@ -66,10 +57,24 @@ const getProfile = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+
+  try {
+    const updateUser = await usersService.update(req.params.id, req.body);
+    res.status(200).json({
+      msg: `User with ID ${req.params.id} updated succesfully`,
+      data: updateUser
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
     register,
     login,
     getAll,
     remove,
+    update,
     getProfile,
 };
