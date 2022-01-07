@@ -20,7 +20,7 @@ const create = async (body) => {
   return await categoriesRepository.create(body);
 };
 
-const update = async (id, body, res) => {
+const update = async (id, body) => {
   const categoryId = await categoriesRepository.getById(id);
   if (!categoryId) {
     const error = new Error('Category not found.');
