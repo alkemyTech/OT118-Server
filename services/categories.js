@@ -1,5 +1,6 @@
 const createError = require('http-errors');
 const categoriesRepository = require('../repositories/categories');
+const imageUpload = require('../modules/fileUpload');
 const { paginate } = require("../modules/pagination");
 
 const pageLimit = 10;
@@ -24,8 +25,10 @@ const getById = async (id) => {
   return categoryId;
 };
 
-const create = async (body) => {
-  return await categoriesRepository.create(body);
+const create = async (image, fields) => {
+  const imageLink = await imageUpload.upload(image);
+  const newCategory = {...fields, image: imageLink};
+  return await categoriesRepository.create(newCategory);
 };
 
 const update = async (id, body) => {

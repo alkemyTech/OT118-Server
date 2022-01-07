@@ -8,6 +8,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const options = require('./docs/swaggerOptions');
 require('dotenv').config();
+const fileUpload = require('express-fileUpload');
 
 const indexRouter = require('./routes/index');
 const SPECS = swaggerJsDoc(options)
@@ -18,6 +19,11 @@ app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+app.use(fileUpload({
+  useTempFiles: true,
+  tempFileDir: '/tmp/'
+}));
 
 app.use(logger('dev'));
 app.use(express.json());
