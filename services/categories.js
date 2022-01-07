@@ -1,3 +1,4 @@
+const createError = require('http-errors');
 const categoriesRepository = require('../repositories/categories');
 const { paginate } = require("../modules/pagination");
 
@@ -29,14 +30,14 @@ const create = async (body) => {
 
 const update = async (id, body) => {
   const categoryId = await categoriesRepository.getById(id);
-  console.log(categoryId);
-  if (categoryId) {
-    return await categoriesRepository.update(id, body);
-  }  else {
+  if (!categoryId) {
     const error = new Error('Category not found.');
       error.status = 404;
       throw error;
+  } else {
+    await categoriesRepository.update(id, body);
   }
+  return await categoriesRepository.getById(id);
 };
 
 const remove = async (id) => {
