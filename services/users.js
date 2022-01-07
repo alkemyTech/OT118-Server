@@ -17,11 +17,8 @@ const create = async (user) => {
   let role = await rolesRepository.findByName("Standard");
   user.roleId = role.id;
   const data = await usersRepository.create(user);
-  if (!data) {
-    const error = new Error();
-    error.status = 400;
-    throw error;
-  }
+  if (!data) throw createError(400);
+
   const dataOrg = await organizationRepository.getById(config.organizationId);
   const template = createWecolmeEmailTemplate(dataOrg);
   await send(data.email, template, "¡Bienvenido!");
