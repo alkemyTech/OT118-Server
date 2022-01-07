@@ -8,7 +8,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const options = require('./docs/swaggerOptions');
 require('dotenv').config();
-const fileUpload = require('express-fileUpload');
+const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./routes/index');
 const SPECS = swaggerJsDoc(options)
@@ -41,11 +41,13 @@ app.use((req, res, next) => {
 
 // error handler
 app.use((err, req, res,next) => {
-  const isDevEnv = req.app.get('env') === 'development';
-  if(isDevEnv) err.stackTrace = err.stack;
   if (!err.msg) err.msg = err.message;
   delete err.message;
-  res.status(err.status).json(err);
+
+  const isDevEnv = req.app.get('env') === 'development';
+  if(isDevEnv) err.stackTrace = err.stack.split("\n");
+
+  res.status(err.status || 500).json(err);
 });
 
 

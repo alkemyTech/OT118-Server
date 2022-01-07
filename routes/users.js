@@ -7,9 +7,8 @@ const usersController = require('../controllers/users');
 const usersMiddleware = require('../middlewares/users')
 
 router.delete('/:id', authMiddleware.inOwnUser, usersController.remove);
-router.get('/', authMiddleware.isAdmin, usersController.getAll);
 router.get('/', authMiddleware.isAdmin, paginationMiddleware.validator, usersController.getAll);
-router.put('/:id' , usersMiddleware, usersController.update );
+router.put('/:id' , usersMiddleware.registerValidation, usersController.update );
 
 
 module.exports = router;

@@ -6,7 +6,9 @@ const privateKey = secret;
 const authExpiration = expires;
 
 exports.generateToken = (info) => {
-    return jwt.sign(info, privateKey);
+    return jwt.sign(info, privateKey, {
+        expiresIn: authExpiration
+    });
 };
 
 exports.validateToken = (token) => {

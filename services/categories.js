@@ -1,8 +1,8 @@
 const createError = require('http-errors');
 const categoriesRepository = require('../repositories/categories');
+
 const imageUpload = require('../modules/fileUpload');
 const { paginate } = require("../modules/pagination");
-
 const pageLimit = 10;
 
 const getAll = async ({baseUrl, page}) => {
@@ -17,11 +17,7 @@ const getAll = async ({baseUrl, page}) => {
 
 const getById = async (id) => {
   const categoryId = await categoriesRepository.getById(id);
-  if (!categoryId) {
-    const error = new Error('Category not found.');
-      error.status = 404;
-      throw error;
-  }
+  if (!categoryId) throw createError(404, "Category not found.")
   return categoryId;
 };
 
@@ -34,9 +30,7 @@ const create = async (image, fields) => {
 const update = async (id, body) => {
   const categoryId = await categoriesRepository.getById(id);
   if (!categoryId) {
-    const error = new Error('Category not found.');
-      error.status = 404;
-      throw error;
+    throw createError(404, "Category not found.")
   } else {
     await categoriesRepository.update(id, body);
   }
