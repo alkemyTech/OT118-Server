@@ -21,6 +21,12 @@ const create = async (user) => {
     error.status = 400;
     throw error;
   }
+
+  const dataOrg = await organizationRepository.getById(config.organizationId);
+  const template = createWecolmeEmailTemplate(dataOrg);
+  await send(data.email, template, "¡Bienvenido!");
+
+  return generateToken({ id: data.id });
 }
 
 const login = async (body) => {
@@ -59,11 +65,27 @@ const getById = async(id) =>{
   return dataUser
 }
 
+const update = async (id, body) => {
+  const userExists = await usersRepository.getById(id);
+  console.log(userExists);
+  if (userExists) {
+    body.password = bcrypt.hashSync(body.password, 10);
+    await usersRepository.update(id, body);
+    const userUpdated = await usersRepository.getById(id);
+    return userUpdated
+  }  else {
+    const error = new Error('User not found.');
+      error.status = 404;
+      throw error;
+  }
+};
+
 module.exports = {
-  create,
-  login,
-  getProfile,
-  getById,
-  remove,
-  getAll,  
+    create,
+    login,
+    update,
+    getProfile,
+    getById,
+    remove,
+    getAll,
 };

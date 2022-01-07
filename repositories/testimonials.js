@@ -13,6 +13,10 @@ const getById = async (id) => {
 
 }
 
+const count = async () => {
+  return await db.Testimonials.count();
+};
+
 const update = async(id , body ) => {
 
   const testimonialUpdated = await db.Testimonials.update(body , {
@@ -26,8 +30,9 @@ const update = async(id , body ) => {
 }
 
 
-const getAll = async () => {
+const getAll = async (limit, offset) => {
   const data = await db.Testimonials.findAll({
+    limit, offset,
     attributes: { exclude: ['deletedAt'] }
     });
   return data;
@@ -42,5 +47,6 @@ module.exports = {
   getById,
   update,
   create,
-  getAll
+  getAll,
+  count
 };

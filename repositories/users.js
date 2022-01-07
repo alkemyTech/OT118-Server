@@ -38,9 +38,9 @@ const remove = async (id) => {
   return true;
 };
 
-const update = async (id, changes) => {
+const update = async (id, body) => {
   const userUpdate = await Models.Users.update(
-    { firstName: changes.firstName, lastName: changes.lastName },
+    { firstName: body.firstName, lastName: body.lastName, email: body.email, image: body.image, password: body.password  },
     {
       where: {
         id: id,
