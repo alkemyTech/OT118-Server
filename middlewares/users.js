@@ -1,24 +1,50 @@
-const {validationResult, check} = require("express-validator");
+const { check } = require("express-validator");
+const { checkValidationResults } = require("./validation");
 
-const emailValidationChain = check('email')
-    .exists().bail()
-    .notEmpty().bail()
-    .isEmail().bail()
-    .normalizeEmail();
-const passwordValidationChain = check('password')
-    .exists().bail()
-    .notEmpty().bail();
+const firstNameValidationChain = check("firstName", "first name is required")
+  .exists()
+  .bail()
+  .notEmpty()
+  .bail();
 
-const loginValidation = [
-    emailValidationChain,
-    passwordValidationChain,
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ error: errors.array() });
-        }
-        next();
-    }
+const lastNameValidationChain = check("lastName", "last name is required")
+  .exists()
+  .bail()
+  .notEmpty()
+  .bail();
+
+const emailValidationChain = check("email", "email format is required.")
+  .exists()
+  .bail()
+  .notEmpty()
+  .bail()
+  .isEmail()
+  .bail()
+  .normalizeEmail();
+
+const passwordValidationChain = check(
+  "password",
+  "password format is required."
+)
+  .exists()
+  .bail()
+  .notEmpty()
+  .bail();
+
+const registerValidation = [
+  firstNameValidationChain,
+  lastNameValidationChain,
+  emailValidationChain,
+  passwordValidationChain
+    .isStrongPassword()
+    .withMessage("password is not strong"),
+  checkValidationResults,
 ];
 
-module.exports = loginValidation;
+const loginValidation = [
+  emailValidationChain,
+  passwordValidationChain,
+  checkValidationResults,
+];
+
+module.exports = { loginValidation, registerValidation };

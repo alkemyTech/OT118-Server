@@ -1,3 +1,4 @@
+const createError = require("http-errors");
 const usersRepository = require("../repositories/users");
 const rolesRepository = require("../repositories/roles");
 const organizationRepository = require('../repositories/organizations');
@@ -16,11 +17,7 @@ const create = async (user) => {
   let role = await rolesRepository.findByName("Standard");
   user.roleId = role.id;
   const data = await usersRepository.create(user);
-  if (!data) {
-    const error = new Error();
-    error.status = 400;
-    throw error;
-  }
+  if (!data) throw createError(400);
 
   const dataOrg = await organizationRepository.getById(config.organizationId);
   const template = createWecolmeEmailTemplate(dataOrg);
@@ -30,11 +27,11 @@ const create = async (user) => {
 }
 
 const login = async (body) => {
-  const user = await usersRepository.findByEmail(body.email);
-  if (!user) throw new Error(invalidUserMsg);
-  if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
-  return generateToken({id: user.id});
-}
+    const user = await usersRepository.findByEmail(body.email);
+    if (!user) throw createError(401, invalidUserMsg);
+    if (!bcrypt.compareSync(body.password, user.password)) throw createError(401, invalidUserMsg);
+    return generateToken({ id: user.id });
+};
 
 const getAll = async ({baseUrl, page}) => {
     const count = await usersRepository.count();
@@ -46,19 +43,49 @@ const getAll = async ({baseUrl, page}) => {
     return paginatedResult;
 };
 
+const remove = async (id) => {
+  const user = await usersRepository.getById(id)
+  if (!user){
+    const error = new Error(`User doesn't exist`)
+    error.status = 404
+    throw error
+  }
+  return await usersRepository.remove(id)
+}
+
 const getProfile = async (id) => {
-  return await usersRepository.getById(id);
+  const data = await usersRepository.getById(id);
+  if (!data) throw createError(404, { msg: "User not found" });
+  return data;
 };
 
-const getById = async(id) =>{
-  const dataUser = await usersRepository.getById(id)
-  return dataUser
-}
+const getById = async (id) => {
+  const data = await usersRepository.getById(id);
+  if (!data) throw createError(404, { msg: "User not found" });
+  return data;
+};
+
+const update = async (id, body) => {
+  const userExists = await usersRepository.getById(id);
+  console.log(userExists);
+  if (userExists) {
+    body.password = bcrypt.hashSync(body.password, 10);
+    await usersRepository.update(id, body);
+    const userUpdated = await usersRepository.getById(id);
+    return userUpdated
+  }  else {
+    const error = new Error('User not found.');
+      error.status = 404;
+      throw error;
+  }
+};
 
 module.exports = {
-  create,
-  login,
-  getAll,  
-  getProfile,
-  getById,
-}
+    create,
+    login,
+    update,
+    getProfile,
+    getById,
+    remove,
+    getAll,
+};

@@ -5,7 +5,7 @@ const create = async (body) => {
 };
 
 const remove = async (id) => {
-  await db.News.destroy({ where: { id } });
+  return await db.News.destroy({ where: { id } });
 };
 
 const getById = async (id) => {
