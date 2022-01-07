@@ -65,11 +65,27 @@ const getById = async (id) => {
   return data;
 };
 
+const update = async (id, body) => {
+  const userExists = await usersRepository.getById(id);
+  console.log(userExists);
+  if (userExists) {
+    body.password = bcrypt.hashSync(body.password, 10);
+    await usersRepository.update(id, body);
+    const userUpdated = await usersRepository.getById(id);
+    return userUpdated
+  }  else {
+    const error = new Error('User not found.');
+      error.status = 404;
+      throw error;
+  }
+};
+
 module.exports = {
-  create,
-  login,
-  getAll,
-  getProfile,
-  getById,
-  remove,
+    create,
+    login,
+    update,
+    getProfile,
+    getById,
+    remove,
+    getAll,
 };

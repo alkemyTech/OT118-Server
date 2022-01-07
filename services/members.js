@@ -1,8 +1,19 @@
 const createError = require("http-errors");
 const membersRepository = require("../repositories/members");
+const { paginate } = require("../modules/pagination");
+const pageLimit = 10;
 
-const getAll = async () => {
-  return await membersRepository.getAll();
+const getAll = async ({ baseUrl, page }) => {
+  const count = await membersRepository.count();
+  const paginatedResult = await paginate(baseUrl, page, pageLimit, count);
+  if (count > 0) {
+    paginatedResult.data = await membersRepository.getAll(
+      pageLimit,
+      paginatedResult.offset
+    );
+  }
+  delete paginatedResult.offset;
+  return paginatedResult;
 };
 
 const create = async (member) => {
