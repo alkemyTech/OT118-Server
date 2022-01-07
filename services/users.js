@@ -22,7 +22,6 @@ const create = async (user) => {
     error.status = 400;
     throw error;
   }
-
   const dataOrg = await organizationRepository.getById(config.organizationId);
   const template = createWecolmeEmailTemplate(dataOrg);
   await send(data.email, template, "¡Bienvenido!");
@@ -47,6 +46,16 @@ const getAll = async ({baseUrl, page}) => {
     return paginatedResult;
 };
 
+const remove = async (id) => {
+  const user = await usersRepository.getById(id)
+  if (!user){
+    const error = new Error(`User doesn't exist`)
+    error.status = 404
+    throw error
+  }
+  return await usersRepository.remove(id)
+}
+
 const getProfile = async (id) => {
   const data = await usersRepository.getById(id);
   if (!data) throw createError(404, { msg: "User not found" });
@@ -65,4 +74,5 @@ module.exports = {
   getAll,
   getProfile,
   getById,
-}
+  remove,
+};
