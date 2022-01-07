@@ -1,4 +1,5 @@
 const newsService = require('../services/news');
+const paginationParams = require("../modules/paginationParams")
 
 const create = async (req, res, next) => {
   try {
@@ -41,7 +42,8 @@ const update = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const news = await newsService.getAll();
+    const params = paginationParams.generate(req)
+    const news = await newsService.getAll(params);
     res.status(200).json({data: news});
   } catch (error) {
     next(error);
