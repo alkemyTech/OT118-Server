@@ -1,8 +1,16 @@
 const categoriesRepository = require('../repositories/categories');
+const { paginate } = require("../modules/pagination");
 
-const getAll = async () => {
-  const listCategories = await categoriesRepository.getAll();
-  return listCategories
+const pageLimit = 10;
+
+const getAll = async ({baseUrl, page}) => {
+  const count = await categoriesRepository.count();
+  const paginatedResult = await paginate(baseUrl, page, pageLimit, count);
+  if (count > 0) {
+      paginatedResult.data = await categoriesRepository.getAll(pageLimit, paginatedResult.offset);
+  }
+  delete paginatedResult.offset;
+  return paginatedResult;
 };
 
 const getById = async (id) => {
