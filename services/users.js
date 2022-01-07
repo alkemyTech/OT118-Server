@@ -46,6 +46,16 @@ const getAll = async ({baseUrl, page}) => {
     return paginatedResult;
 };
 
+const remove = async (id) => {
+  const user = await usersRepository.getById(id)
+  if (!user){
+    const error = new Error(`User doesn't exist`)
+    error.status = 404
+    throw error
+  }
+  return await usersRepository.remove(id)
+}
+
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
 };
@@ -71,11 +81,11 @@ const update = async (id, body) => {
 };
 
 module.exports = {
-  create,
-  login,
-  getAll,  
-  getProfile,
-  getById,
-  update
-}
-
+    create,
+    login,
+    update,
+    getProfile,
+    getById,
+    remove,
+    getAll,
+};

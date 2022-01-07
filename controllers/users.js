@@ -27,6 +27,15 @@ const login = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try{
+    const response = await usersService.remove(req.params.id)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+}
+
 const getAll = async (req, res, next) => {
   try {
     const params = paginationParams.generate(req);
@@ -49,7 +58,7 @@ const getProfile = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
-  
+
   try {
     const updateUser = await usersService.update(req.params.id, req.body);
     res.status(200).json({
@@ -62,9 +71,10 @@ const update = async (req, res, next) => {
 };
 
 module.exports = {
-  register,
-  login,
-  getAll,
-  getProfile,
-  update
+    register,
+    login,
+    getAll,
+    remove,
+    update,
+    getProfile,
 };
