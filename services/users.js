@@ -24,23 +24,6 @@ const create = async (user) => {
 }
 
 const login = async (body) => {
-    const user = await usersRepository.findByEmail(body.email);
-    if (!user) throw new Error(invalidUserMsg);
-    if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
-    return generateToken({id: user.id});
-};
-
-const getAll = async () => {
-  const data = await usersRepository.getAll();
-  return data;
-  const dataOrg = await organizationRepository.getById(config.organizationId);
-  const template = createWecolmeEmailTemplate(dataOrg);
-  await send(data.email, template, "¡Bienvenido!");
-
-  return generateToken({ id: data.id });
-}
-
-const login = async (body) => {
   const user = await usersRepository.findByEmail(body.email);
   if (!user) throw new Error(invalidUserMsg);
   if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);

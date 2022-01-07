@@ -36,15 +36,6 @@ const remove = async (req, res, next) => {
   }
 }
 
-const getAll = async (req, res, next) =>{
-  try{
-      const getData = await usersService.getAll();
-      res.status(200).json({ getData });
-      }catch(e){
-        next(e);
-      };
-}
-
 const getAll = async (req, res, next) => {
   try {
     const params = paginationParams.generate(req);
