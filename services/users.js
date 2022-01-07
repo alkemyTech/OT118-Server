@@ -21,7 +21,18 @@ const create = async (user) => {
     error.status = 400;
     throw error;
   }
+}
 
+const login = async (body) => {
+    const user = await usersRepository.findByEmail(body.email);
+    if (!user) throw new Error(invalidUserMsg);
+    if (!bcrypt.compareSync(body.password, user.password)) throw new Error(invalidUserMsg);
+    return generateToken({id: user.id});
+};
+
+const getAll = async () => {
+  const data = await usersRepository.getAll();
+  return data;
   const dataOrg = await organizationRepository.getById(config.organizationId);
   const template = createWecolmeEmailTemplate(dataOrg);
   await send(data.email, template, "¡Bienvenido!");
@@ -46,6 +57,16 @@ const getAll = async ({baseUrl, page}) => {
     return paginatedResult;
 };
 
+const remove = async (id) => {
+  const user = await usersRepository.getById(id)
+  if (!user){
+    const error = new Error(`User doesn't exist`)
+    error.status = 404
+    throw error
+  }
+  return await usersRepository.remove(id)
+}
+
 const getProfile = async (id) => {
   return await usersRepository.getById(id);
 };
@@ -58,7 +79,8 @@ const getById = async(id) =>{
 module.exports = {
   create,
   login,
-  getAll,  
   getProfile,
   getById,
-}
+  remove,
+  getAll,  
+};

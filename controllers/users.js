@@ -27,6 +27,24 @@ const login = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try{
+    const response = await usersService.remove(req.params.id)
+    return res.status(200).json(response)
+  } catch (e) {
+    next(e)
+  }
+}
+
+const getAll = async (req, res, next) =>{
+  try{
+      const getData = await usersService.getAll();
+      res.status(200).json({ getData });
+      }catch(e){
+        next(e);
+      };
+}
+
 const getAll = async (req, res, next) => {
   try {
     const params = paginationParams.generate(req);
@@ -49,8 +67,9 @@ const getProfile = async (req, res, next) => {
 };
 
 module.exports = {
-  register,
-  login,
-  getAll,
-  getProfile,
+    register,
+    login,
+    getAll,
+    remove,
+    getProfile,
 };
