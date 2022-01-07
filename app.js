@@ -8,7 +8,7 @@ const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 const options = require('./docs/swaggerOptions');
 require('dotenv').config();
-const fileUpload = require('express-fileUpload');
+const fileUpload = require('express-fileupload');
 
 const indexRouter = require('./routes/index');
 const SPECS = swaggerJsDoc(options)
