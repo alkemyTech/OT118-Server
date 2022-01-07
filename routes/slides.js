@@ -1,7 +1,7 @@
 const express = require('express');
 const slidesController = require('../controllers/slides');
 const authMiddleware = require('../middlewares/auth');
-const slidesValidation = require('../middlewares/slideValidator')
+const slidesValidation = require('../middlewares/slides')
 
 const router = express.Router();
 

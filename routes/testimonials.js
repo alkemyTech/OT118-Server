@@ -3,6 +3,7 @@ const router = express.Router();
 
 const authMiddleware = require('../middlewares/auth');
 const testimonialsController = require('../controllers/testimonials');
+const paginationMiddleware = require('../middlewares/pagination')
 const testimonialsMiddleware = require('../middlewares/testimonials');
 /** 
  * @swagger
@@ -109,7 +110,8 @@ const testimonialsMiddleware = require('../middlewares/testimonials');
  * 
  *       
  */
-router.get('/',authMiddleware.isAdmin ,testimonialsController.getAll);
+
+router.get('/',authMiddleware.isAdmin, paginationMiddleware.validator, testimonialsController.getAll);
 /**
  * @swagger
 * /testimonials/{id}:
@@ -147,6 +149,8 @@ router.get('/',authMiddleware.isAdmin ,testimonialsController.getAll);
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
  */
+
+
 
 router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
 /**
@@ -271,6 +275,9 @@ router.delete('/:id', authMiddleware.isAdmin, testimonialsController.remove);
  *             $ref: '#/components/schemas/badRequest'
  */
 router.post('/',authMiddleware.isAdmin, testimonialsMiddleware.inputValidation, testimonialsController.create);
+
+
+
 
 
 module.exports = router;
