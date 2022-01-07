@@ -1,5 +1,7 @@
-const testimonialsRepo = require('../repositories/testimonials');
 const createError = require("http-errors");
+const testimonialsRepo = require('../repositories/testimonials');
+const {paginate} = require("../modules/pagination");
+const pageLimit = 10;
 
 const remove = async (id) => {
   await testimonialsRepo.remove(id);
@@ -19,9 +21,14 @@ const update = async (id, body) => {
   return testimonialUpdated;
 };
 
-const getAll = async () => {
-  const listTestimonials = await testimonialsRepo.getAll();
-  return listTestimonials
+const getAll = async ({baseUrl, page}) => {
+  const count = await testimonialsRepo.count();
+  const paginatedResult = await paginate(baseUrl,page, pageLimit, count);
+  if (count > 0) {
+    paginatedResult.data = await testimonialsRepo.getAll(pageLimit, paginatedResult.offset);
+  }
+  delete paginatedResult.offset;
+  return paginatedResult;
 };
 
 const create = async (body) => {

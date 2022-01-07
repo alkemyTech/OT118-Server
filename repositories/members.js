@@ -1,7 +1,11 @@
 const db = require("../models");
 
-const getAll = async () => {
-  return await db.Members.findAll();
+const getAll = async (limit, offset) => {
+  return await db.Members.findAll({ limit, offset });
+};
+
+const count = async () => {
+  return await db.Members.count();
 };
 
 const getById = async (id) => {
@@ -23,6 +27,7 @@ const remove = async (id) => {
 module.exports = {
   getAll,
   getById,
+  count,
   create,
   update,
   remove,

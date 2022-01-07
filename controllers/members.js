@@ -1,9 +1,11 @@
 const membersService = require("../services/members");
+const paginationParams = require("../modules/paginationParams");
 
 const getAll = async (req, res, next) => {
   try {
-    const data = await membersService.getAll();
-    res.status(200).json({ data });
+    const params = paginationParams.generate(req);
+    const data = await membersService.getAll(params);
+    res.status(200).json( data );
   } catch (error) {
     next(error);
   }

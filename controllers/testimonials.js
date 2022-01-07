@@ -1,4 +1,5 @@
 const testimonialsService = require('../services/testimonials');
+const paginationParams = require("../modules/paginationParams");
 
 const remove = async (req, res, next) => {
   try {
@@ -31,8 +32,9 @@ const update = async (req , res ,next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const data = await testimonialsService.getAll();
-    res.status(200).json({ data });
+    const params = paginationParams.generate(req)
+    const data = await testimonialsService.getAll(params);
+    res.status(200).json( data );
   } catch (error) {
     next(error);
   }
