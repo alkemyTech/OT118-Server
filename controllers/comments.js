@@ -3,7 +3,7 @@ const commentsService = require('../services/comments');
 const remove = async (req, res, next) => {
   try {
     await commentsService.remove(req.params.id);
-    res.status(200).json({ msg: `Comment ${req.params.id} removed succesfully` });
+    res.status(200).json({ msg: `Comment ${req.params.id} removed successfully` });
   } catch (error) {
     next(error);
   }
@@ -12,7 +12,7 @@ const create = async (req, res, next) => {
   try {
     const body = req.body
     const newComment = await commentsService.create(body)
-    res.status(200).json({ msg: 'Comment created succesfully', data: newComment })
+    res.status(200).json({ msg: 'Comment created successfully', data: newComment })
   }
   catch (error){
     next(error)

@@ -56,7 +56,7 @@ const getById = async (req, res, next) => {
 const remove = async (req, res, next) => {
   try {
     await slidesService.remove(req.params.id);
-    res.status(200).json({ msg: `Slide ${req.params.id} removed succesfully` });
+    res.status(200).json({ msg: `Slide ${req.params.id} removed successfully` });
   } catch (error) {
     next(error);
   }

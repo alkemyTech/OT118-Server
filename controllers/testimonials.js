@@ -43,7 +43,7 @@ const getAll = async (req, res, next) => {
 const create = async (req, res, next) => {
   try {
     const data = await testimonialsService.create(req.body);
-    res.status(201).json({ msg: `Testimonial created succesfully`, data });
+    res.status(201).json({ msg: `Testimonial created successfully`, data });
   } catch (error) {
     next(error);
   }

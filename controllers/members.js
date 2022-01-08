@@ -16,7 +16,7 @@ const create = async (req, res, next) => {
     const data = await membersService.create(req.body);
     res
       .status(201)
-      .json({ msg: `Member created succesfully`, data });
+      .json({ msg: `Member created successfully`, data });
   } catch (error) {
     next(error);
   }
@@ -39,7 +39,7 @@ const remove = async (req, res, next) => {
     await membersService.remove(req.params.id);
     res
       .status(200)
-      .json({ msg: `Member ${req.params.id} removed succesfully` });
+      .json({ msg: `Member ${req.params.id} removed successfully` });
   } catch (error) {
     next(error);
   }

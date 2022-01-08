@@ -4,7 +4,7 @@ const create = async (req, res, next) => {
   try {
     const newActivity = await activitiesService.create(req.body);
     res.status(201).json({
-      msg: `Activity created succesfully`,
+      msg: `Activity created successfully`,
       data: newActivity,
     });
   } catch (error) {
@@ -27,7 +27,7 @@ const update = async (req, res, next) => {
   try {
     const updateActivity = await activitiesService.update(id, body);
     res.status(201).json({
-      msg: `Activity updated succesfully`,
+      msg: `Activity updated successfully`,
       data: updateActivity,
     });
   } catch (error) {
