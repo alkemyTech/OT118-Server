@@ -3,12 +3,13 @@ const express = require('express');
 const router = express.Router();
 
 const newsController = require('../controllers/news');
+const commentsController = require("../controllers/comments");
 const newsMiddleware = require('../middlewares/news');
 const authMiddleware = require('../middlewares/auth');
-const commentsController = require("../controllers/comments");
+const paginationMiddleware = require('../middlewares/pagination')
 
 router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
-router.get('/', authMiddleware.isAuth, newsController.getAll);
+router.get('/', authMiddleware.isAuth, paginationMiddleware.validator,  newsController.getAll);
 router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
 router.get('/:id', authMiddleware.isAdmin, newsController.getById);
 router.put('/:id', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.update);
