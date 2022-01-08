@@ -10,10 +10,12 @@ const remove = async (req, res, next) => {
   }
 };
 
+
+
 const update = async (req , res ,next) => {
   try{
     response = await testimonialsService.update(req.params.id , req.body);
-    res.status(200).json({ msg: `Testimonial ${req.params.id} updated succesfully`, data: response });
+    res.status(200).json({ msg: `Testimonial updated succesfully`, data: response });
   }catch (e) {
     next(e);
   }

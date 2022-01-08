@@ -85,9 +85,11 @@ const paginationMiddleware = require('../middlewares/pagination')
  * @swagger
 * /testimonials/{id}:
  *  get:
+ *    security:
+ *      - bearerAuth: []     
  *    summary: Return a Testimonial
  *    tags:
- *      - Testimonials
+ *      - Testimonial
  *    parameters:
  *      - in: path
  *        name: id
@@ -124,6 +126,8 @@ router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
  * @swagger
  * /testimonials/{id}:
  *  put:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Update a testimonial by the id
  *    tags: 
  *      - Testimonial
@@ -165,8 +169,13 @@ router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/tokenError'
- * 
- */
+  *      400:
+ *        description: Bad Request
+ *        content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
+ */     
 
 router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidation ,  testimonialsController.update);
 
@@ -174,6 +183,8 @@ router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidati
  * @swagger
  * /testimonials/{id}:
  *  delete:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Delete a testimonial
  *    tags:
  *      - Testimonial
@@ -206,6 +217,12 @@ router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidati
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
+ *      404:
+ *       description: Not found
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
  */
 
 router.delete('/:id', authMiddleware.isAdmin, testimonialsController.remove);
@@ -213,6 +230,8 @@ router.delete('/:id', authMiddleware.isAdmin, testimonialsController.remove);
  * @swagger
  * /testimonials:
  *  post:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Create a Testimonial
  *    tags:
  *      - Testimonial
@@ -250,6 +269,8 @@ router.post('/',authMiddleware.isAdmin, testimonialsMiddleware.inputValidation, 
  * @swagger
  * /testimonials:
  *  get:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Return a list of Testimonials
  *    tags:
  *      - Testimonial
