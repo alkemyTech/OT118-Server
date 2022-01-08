@@ -159,6 +159,8 @@ router.post('/login', usersMiddleware.loginValidation, usersController.login);
  * @swagger
  * /auth/me:
  *  get:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Return profile user logedd in
  *    tags: [User]
  *    content:
@@ -171,6 +173,13 @@ router.post('/login', usersMiddleware.loginValidation, usersController.login);
  *        description: Profile user
  *        content:
  *          application/json
+ *      
+ *      401:
+ *        description: Unauthorized, expired or invalid token
+ *        content:
+ *          application/json:
+ *              schema:
+ *                  $ref: '#/components/schemas/tokenError'
  * 
  *      404:
  *        description: User not found
