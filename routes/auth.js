@@ -20,6 +20,9 @@ const authMiddleware = require('../middlewares/auth');
  *   schemas:
  *      User:
  *        type: object
+ *        required:
+ *          - email
+ *          - password
  *        properties:
  *          firstname:
  *            type: string
@@ -41,9 +44,6 @@ const authMiddleware = require('../middlewares/auth');
  *          roleId:
  *            type: integer
  *            description: Your role (2 for admin)
- *        required:
- *          - email
- *          - password
  *        example:
  *          firstName: Carlos
  *          lastName: Rodriguez
@@ -102,7 +102,8 @@ const authMiddleware = require('../middlewares/auth');
  * /auth/register:
  *  post:
  *    summary: Create a user
- *    tags: [User]
+ *    tags:
+ *      - users
  *    requestBody:
  *      required: true
  *      content:
@@ -115,8 +116,12 @@ const authMiddleware = require('../middlewares/auth');
  *        content:
  *          application/json:
  *              schema:
- *                 $ref: '#/components/schemas/User'
- *      
+ *                type: object
+ *                properties:
+ *                  msg: 
+ *                    type: string
+ *                  access_token:
+ *                    type: string           
  *      400:
  *       description: Bad request
  *       content:
@@ -131,27 +136,39 @@ router.post('/register', usersMiddleware.registerValidation, usersController.reg
  * /auth/login:
  *  post:
  *    summary: Login user
- *    tags: [User]
+ *    tags:
+ *      - users
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
  *              $ref: '#components/schemas/loginUser'
- * 
  *    responses:
  *      200:
  *        description: Access token 
  *        content:
  *          application/json:
- *                 
- *      
+ *            schema: 
+ *              type: object
+ *              properties:
+ *                access_token:
+ *                  type: string    
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *        description: Authorization information is missing or invalid
+ *        content:
+ *          applicaton/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                ok:
+ *                  type: boolean  
  */
 router.post('/login', usersMiddleware.loginValidation, usersController.login);
 
@@ -162,25 +179,24 @@ router.post('/login', usersMiddleware.loginValidation, usersController.login);
  *    security:
  *      - bearerAuth: []
  *    summary: Return profile user logedd in
- *    tags: [User]
- *    content:
- *      application/json:
- *         schema:
- *            $ref: '#components/schemas/User'
- * 
+ *    tags:
+ *      - users
  *    responses:
  *      200:
  *        description: Profile user
  *        content:
- *          application/json
- *      
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                data:
+ *                  $ref: #components/schemas/User 
  *      401:
  *        description: Unauthorized, expired or invalid token
  *        content:
  *          application/json:
  *              schema:
  *                  $ref: '#/components/schemas/tokenError'
- * 
  *      404:
  *        description: User not found
  *        content:
