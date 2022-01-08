@@ -6,7 +6,7 @@ const create = async (req, res, next) => {
     image = req.files.file;
     fields = req.body;
     const data = await categoriesService.create(image, fields);
-    res.status(201).json({ msg: `Category ${data.name} created succesfully`, data });
+    res.status(201).json({ msg: `Category created succesfully`, data });
   } catch (error) {
     next(error);
   }

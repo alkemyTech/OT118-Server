@@ -16,7 +16,7 @@ const create = async (req, res, next) => {
     const data = await membersService.create(req.body);
     res
       .status(201)
-      .json({ msg: `Member ${data.name} created succesfully`, data });
+      .json({ msg: `Member created succesfully`, data });
   } catch (error) {
     next(error);
   }
