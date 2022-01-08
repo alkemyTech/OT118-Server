@@ -1,4 +1,4 @@
-/* const sgMail = require("@sendgrid/mail");
+const sgMail = require("@sendgrid/mail");
 const { sendGrid_key, sendGrid_mail } = require('../config/config');
 
 sgMail.setApiKey( sendGrid_key);
@@ -15,4 +15,4 @@ const send = async (email, template, subject) => {
 
 module.exports = {
   send
-}; */
+}; 
