@@ -82,8 +82,7 @@ const paginationMiddleware = require('../middlewares/pagination')
  *             
  * 
  * 
- * security:
- *    - bearerAuth: []
+ * 
  * 
  */
 
@@ -92,6 +91,8 @@ const paginationMiddleware = require('../middlewares/pagination')
  * @swagger
  * /members:
  *  get:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Return a list of members
  *    parameters:
  *        - in: query
@@ -139,6 +140,8 @@ router.get("/", authMiddleware.isAdmin, paginationMiddleware.validator, membersC
  * @swagger
  * /members:
  *  post:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Create a member
  *    tags:
  *      - members
@@ -180,6 +183,8 @@ router.post( "/",  authMiddleware.isAuth, memberMiddleware.validator, membersCon
  * @swagger
  * /members/{id}:
  *  put:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Update a member by the id
  *    tags: 
  *      - members
@@ -227,6 +232,8 @@ router.put("/:id", authMiddleware.isAuth, membersController.update);
  * @swagger
  * /members/{id}:
  *  delete:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Delete a member
  *    tags:
  *      - members
