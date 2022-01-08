@@ -41,7 +41,7 @@ const inOwnUser = async (req, res, next) => {
 
     const userToken = validateToken(token)
     const userTokenId = userToken.id
-    if (userTokenId === idUser) {
+    if (userTokenId == idUser) {
         return next()
     }
     const userBd = await usersServices.getById(userTokenId)
@@ -51,7 +51,7 @@ const inOwnUser = async (req, res, next) => {
     const rolAdmin = rolesRepository.findByName('Admin')
     const rolAdminId = rolAdmin.id
 
-    if (userBdRoleId === rolAdminId) {
+    if (userBdRoleId == rolAdminId) {
         return next()
     } else {
         next(createError(403, accessDeniedMsg))

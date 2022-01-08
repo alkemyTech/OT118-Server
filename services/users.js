@@ -5,8 +5,8 @@ const organizationRepository = require('../repositories/organizations');
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../modules/auth");
 const { paginate } = require("../modules/pagination");
-const send = require('../modules/emailSender');
-const createWecolmeEmailTemplate = require('../modules/welcomeEmailTemplate');
+const {send} = require('../modules/emailSender');
+const {createWecolmeEmailTemplate} = require('../modules/welcomeEmailTemplate');
 const config = require('../config/config');
 
 const invalidUserMsg = "email or password is invalid.";
@@ -20,7 +20,7 @@ const create = async (user) => {
   if (!data) throw createError(400);
 
   const dataOrg = await organizationRepository.getById(config.organizationId);
-  const template = createWecolmeEmailTemplate(dataOrg);
+  const template = await createWecolmeEmailTemplate(dataOrg);
   await send(data.email, template, "¡Bienvenido!");
 
   return generateToken({ id: data.id });
