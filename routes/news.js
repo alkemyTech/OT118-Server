@@ -90,6 +90,12 @@ const authMiddleware = require('../middlewares/auth');
  * /news:
  *  get:
  *    summary: Return a list of news
+ *    parameters:
+ *        - in: query
+ *          name: page
+ *          schema:
+ *            type: integer
+ *          description: number of the pagination
  *    tags:
  *      - news
  *    responses:
@@ -99,6 +105,12 @@ const authMiddleware = require('../middlewares/auth');
  *         application/json:
  *           schema:
  *             properties:
+ *               prev:
+ *                 type: string
+ *               next:
+ *                 type: string
+ *               pages:
+ *                 type: integer
  *               data:
  *                 type: array
  *                 items:
@@ -147,7 +159,11 @@ router.get('/', authMiddleware.isAuth, newsController.getAll);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/tokenError'
+ *             properties:
+ *               msg:
+ *                type: string
+ *               data:
+ *                 $ref: '#/components/schemas/tokenError'
  *      
  *      400:
  *       description: Bad request
@@ -183,18 +199,25 @@ router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsCon
  *             properties:
  *               msg:
  *                type: string  
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *       description: Authorization information is missing or invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
+ *      404:
+ *       description: Not found
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
+ *      
  */
 router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
 
