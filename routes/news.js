@@ -79,8 +79,6 @@ const authMiddleware = require('../middlewares/auth');
  *        type: object
  *        properiest:
  * 
- * security:
- *    - bearerAuth: []
  * 
  */
 
@@ -89,6 +87,8 @@ const authMiddleware = require('../middlewares/auth');
  * @swagger
  * /news:
  *  get:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Return a list of news
  *    parameters:
  *        - in: query
@@ -138,6 +138,8 @@ router.get('/', authMiddleware.isAuth, newsController.getAll);
  * @swagger
  * /news:
  *  post:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Create a novelty
  *    tags:
  *      - news
@@ -179,6 +181,8 @@ router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsCon
  * @swagger
  * /news/{id}:
  *  delete:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Delete a novelty
  *    tags:
  *      - news
@@ -226,6 +230,8 @@ router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
  * @swagger
  * /news/{id}:
  *  get:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Return a novelty
  *    tags:
  *      - news
@@ -265,6 +271,8 @@ router.get('/:id', authMiddleware.isAdmin, newsController.getById);
  * @swagger
  * /news/{id}:
  *  put:
+ *    security:
+ *      - bearerAuth: []
  *    summary: Update a new by the id
  *    tags: 
  *      - news
