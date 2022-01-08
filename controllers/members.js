@@ -26,7 +26,7 @@ const update = async (req, res, next) => {
   try {
     const response = await membersService.update(req.params.id, req.body);
     res.status(200).json({
-      msg: `Member ${req.params.id} is updated successfully`,
+      msg: `Member updated successfully`,
       data: response,
     });
   } catch (error) {

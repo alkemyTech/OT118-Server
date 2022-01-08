@@ -27,7 +27,7 @@ const update = async (req, res, next) => {
   try {
     const updateActivity = await activitiesService.update(id, body);
     res.status(201).json({
-      msg: `Activity with ID ${req.params.id} updated succesfully`,
+      msg: `Activity updated succesfully`,
       data: updateActivity,
     });
   } catch (error) {

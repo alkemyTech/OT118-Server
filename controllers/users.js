@@ -62,7 +62,7 @@ const update = async (req, res, next) => {
   try {
     const updateUser = await usersService.update(req.params.id, req.body);
     res.status(200).json({
-      msg: `User with ID ${req.params.id} updated succesfully`,
+      msg: `User updated succesfully`,
       data: updateUser
     });
   } catch (error) {

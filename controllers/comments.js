@@ -44,7 +44,7 @@ const update = async (req, res, next) => {
   try{
     const response = await commentsService.update(req.body, req.params.id)
     res.status(200).json({
-      msg: `Comment ${req.params.id} updated successfully`,
+      msg: `Comment updated successfully`,
       data: response
     })
   }
