@@ -43,7 +43,13 @@ const paginationMiddleware = require('../middlewares/pagination')
  *        description:
  *          type: string
  *          description: description of the member
- *        
+ *      example:
+ *        name: Daniel
+ *        facebookUrl: facebook.com  
+ *        instagramUrl: instagram.com
+ *        linkedinUrl: likedin.com
+ *        image: image.png
+ *        description: Some description      
  *         
  *     tokenError:
  *       type: object    
@@ -79,11 +85,6 @@ const paginationMiddleware = require('../middlewares/pagination')
  *             type: array
  *             items: 
  *               type: string
- *             
- * 
- * 
- * 
- * 
  */
 
 
@@ -119,18 +120,18 @@ const paginationMiddleware = require('../middlewares/pagination')
  *                 type: array
  *                 items:
  *                   $ref: '#/components/schemas/Member'
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *       description: Authorization information is missing or invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
  * 
  *       
  */
@@ -163,19 +164,18 @@ router.get("/", authMiddleware.isAdmin, paginationMiddleware.validator, membersC
  *               data:
  *                 $ref: '#/components/schemas/Member' 
  *             
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
- *      
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *       description: Authorization information is missing or invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
  */
 router.post( "/",  authMiddleware.isAuth, memberMiddleware.validator, membersController.create);
 
@@ -212,6 +212,12 @@ router.post( "/",  authMiddleware.isAuth, memberMiddleware.validator, membersCon
  *                 type: string   
  *                data:
  *                  $ref: '#/components/schemas/Member'
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/badRequest'
  *      401:
  *        description: Authorization information is missing or invalid
  *        content:
