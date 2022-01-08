@@ -3,6 +3,8 @@ const newsRepository = require('../repositories/news');
 const categoryRepository = require('../repositories/categories');
 
 const {newsCategoryName} = require("../config/config");
+const { paginate } = require("../modules/pagination");
+const pageLimit = 10
 
 const create = async (body) => {
     const newsCategory = await categoryRepository.getByName(newsCategoryName)
@@ -39,9 +41,15 @@ const update = async (id, {name, content, image, categoryId}) => {
     return await newsRepository.getById(id);
 }
 
-const getAll = async () => {
-    return await newsRepository.getAll()
-}
+const getAll = async (params) => {
+    const newsCount = await newsRepository.count()
+    const paginationResult = await paginate(params.baseUrl, params.page, pageLimit, newsCount)
+    if(newsCount > 0){
+         paginationResult.data =  await newsRepository.getAll(pageLimit, paginationResult.offset)
+    }
+    delete paginationResult.offset
+    return paginationResult
+};
 
 module.exports = {
     create,
