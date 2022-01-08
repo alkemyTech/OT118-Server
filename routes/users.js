@@ -6,7 +6,7 @@ const paginationMiddleware = require('../middlewares/pagination')
 const usersController = require('../controllers/users');
 const usersMiddleware = require('../middlewares/users')
 
-router.delete('/:id', authMiddleware.inOwnUser, usersController.remove);
+router.delete('/:id', authMiddleware.isOwnUser, usersController.remove);
 router.get('/', authMiddleware.isAdmin, paginationMiddleware.validator, usersController.getAll);
 router.put('/:id' , usersMiddleware.registerValidation, usersController.update );
 

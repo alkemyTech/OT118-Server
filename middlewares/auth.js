@@ -33,7 +33,7 @@ const isAuth = async (req, res, next) => {
 };
 
 
-const inOwnUser = async (req, res, next) => {
+const isOwnUser = async (req, res, next) => {
     const idUser = req.params.id
     const token = req.headers['authorization']
 
@@ -61,5 +61,5 @@ const inOwnUser = async (req, res, next) => {
 module.exports = {
     isAdmin,
     isAuth,
-    inOwnUser
+    isOwnUser
 };
