@@ -38,6 +38,11 @@ const authMiddleware = require('../middlewares/auth');
  *        categoryId:
  *          type: integer
  *          description: id of the organization
+ *      example:
+ *        name: News Name
+ *        content: Some content
+ *        image: image.png
+ *        categoryId: 1        
  *         
  *     tokenError:
  *       type: object    
@@ -73,13 +78,6 @@ const authMiddleware = require('../middlewares/auth');
  *             type: array
  *             items: 
  *               type: string
- *             
- * 
- *     newsValidations:
- *        type: object
- *        properiest:
- * 
- * 
  */
 
 
@@ -115,20 +113,18 @@ const authMiddleware = require('../middlewares/auth');
  *                 type: array
  *                 items:
  *                   $ref: '#/components/schemas/New'
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
- * 
- *       
+ *      401:
+ *       description: Authorization information is missing or invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
  */
 
 router.get('/', authMiddleware.isAuth, newsController.getAll);
@@ -155,9 +151,14 @@ router.get('/', authMiddleware.isAuth, newsController.getAll);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/New'
- *      401:
- *       description: Authorization information is missing or invalid
+ *             type: object
+ *             properties:
+ *               msg: 
+ *                 type: string
+ *               data:      
+ *                 $ref: '#/components/schemas/New'
+ *      400:
+ *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
@@ -165,14 +166,14 @@ router.get('/', authMiddleware.isAuth, newsController.getAll);
  *               msg:
  *                type: string
  *               data:
- *                 $ref: '#/components/schemas/tokenError'
+ *                 $ref: '#/components/schemas/badRequest'
  *      
- *      400:
- *       description: Bad request
+ *      401:
+ *       description: Authorization information is missing or invalid
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/badRequest'
+ *             $ref: '#/components/schemas/tokenError'
  */
 router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
 
@@ -195,32 +196,32 @@ router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsCon
  *        description: The novelty id          
  *    responses:
  *      200:
- *       description: novelty deleted
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               msg:
- *                type: string  
+ *        description: novelty deleted
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                msg:
+ *                  type: string  
  *      400:
- *       description: Bad request
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/badRequest'
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/badRequest'
  *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
+ *        description: Authorization information is missing or invalid
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/tokenError'
  *      404:
- *       description: Not found
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/badRequest'
+ *        description: Not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/badRequest'
  *      
  */
 router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
@@ -244,26 +245,32 @@ router.delete('/:id', authMiddleware.isAdmin, newsController.remove);
  *        description: The new id          
  *    responses:
  *      200:
- *       description: The list of news
- *       content:
- *        application/json:
+ *        description: The new
+ *        content:
+ *          application/json:
  *            schema:
+ *              type: object
  *              properties:
  *                data:
- *                  $ref: '#/components/schemas/New' 
- *                
+ *                  $ref: '#/components/schemas/New'  
+ *      400:
+ *        description: Bad request
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/badRequest'    
  *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
+ *        description: Authorization information is missing or invalid
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/tokenError'
  *      404:
- *       description: Not found
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/badRequest'
+ *        description: Not found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/badRequest'
  */
 router.get('/:id', authMiddleware.isAdmin, newsController.getById);
 
@@ -300,20 +307,25 @@ router.get('/:id', authMiddleware.isAdmin, newsController.getById);
  *                 type: string   
  *                data:
  *                  $ref: '#/components/schemas/New'
- *      
- *      404:
- *        description: The new or category was not found
+ *      400:
+ *        description: Authorization information is missing or invalid
  *        content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/badRequest'
+ *             $ref: '#/components/schemas/tokenError'
  *      401:
  *        description: Authorization information is missing or invalid
  *        content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/tokenError'
- * 
+ *      404:
+ *        description: The new or category was not found
+ *        content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
+ *      
  */
 router.put('/:id', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.update);
 
