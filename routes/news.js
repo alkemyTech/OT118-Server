@@ -3,9 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 const newsController = require('../controllers/news');
+const commentsController = require("../controllers/comments");
 const newsMiddleware = require('../middlewares/news');
 const authMiddleware = require('../middlewares/auth');
-
+const paginationMiddleware = require('../middlewares/pagination')
 
 /**
  * @swagger
@@ -127,7 +128,7 @@ const authMiddleware = require('../middlewares/auth');
  *             $ref: '#/components/schemas/tokenError'
  */
 
-router.get('/', authMiddleware.isAuth, newsController.getAll);
+router.get('/', authMiddleware.isAuth, paginationMiddleware.validator,  newsController.getAll);
 
 
 /**
@@ -328,5 +329,6 @@ router.get('/:id', authMiddleware.isAdmin, newsController.getById);
  *      
  */
 router.put('/:id', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.update);
+router.get('/:id/comments', authMiddleware.isAuth, commentsController.getCommentsByNews);
 
 module.exports = router;

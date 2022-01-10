@@ -1,9 +1,11 @@
 const commentsRepository = require('../repositories/comments');
+const createError = require("http-errors");
 
 const remove = async (id) => {
-  await commentsRepository.remove(id);
+ const removedComment =  await commentsRepository.remove(id);
+ if(!removedComment) throw createError(404, { msg: "Comment not found" });
 };
-const getAll = async() =>{
+const getAll = async() => {
   return await commentsRepository.getAll()
 }
 
@@ -13,19 +15,17 @@ const create = async (body) => {
 
 
 const getCommentsByNews = async (id) => {
-  return await newsRepository.getCommentsByNews(id)
+  return await commentsRepository.getCommentsByNews(id)
 }
 
 const update = async(body, id) => {
   const comment = await commentsRepository.getById(id)
-  if(!comment){
-    const error = new Error('Comment not found')
-    error.status = 409
-    throw error
-  }else{
-    await commentsRepository.update(body, id)
-  }
-  return comment
+  if(!comment) throw createError(404, { msg: "Comment not found" });
+
+  const updatedComment = await commentsRepository.update(body, id);
+  if (updatedComment[0] !== 1) throw createError(400, "Comment couldn't be updated");
+
+  return await commentsRepository.getById(id);
 }
 
 module.exports = {

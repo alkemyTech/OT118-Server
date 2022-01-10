@@ -4,14 +4,19 @@ const create = async (body) => {
   return await db.Categories.create(body);
 };
 
+const count = async () => {
+  return await db.Categories.count();
+};
+
 const update = async (id, body) => {
   return await db.Categories.update(body, { where: { id },});
 }
 
-const getAll = async () => {
+const getAll = async (limit, offset) => {
   const data = await db.Categories.findAll({
+    limit, offset,
     attributes: ['name'],
-    });
+  });
   return data;
 };
 
@@ -22,7 +27,7 @@ const getById = async (id) => {
 };
 
 const remove = async (id) => {
-  await db.Categories.destroy({ where: { id } });
+  return await db.Categories.destroy({ where: { id: id } });
 };
 
 const getByName = async (name) => {
@@ -33,6 +38,7 @@ module.exports = {
   getByName,
   create,
   update,
+  count,
   getAll,
   getById,
   remove

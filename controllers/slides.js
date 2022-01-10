@@ -28,7 +28,8 @@ const update = async (req, res, next) => {
   try {
     const data = await slidesService.update(req.params.id, req.body)
     return res.status(200).json({
-      msg : 'slide updated successfully'
+      msg : 'Slide updated successfully',
+      data: data 
     })
     
   } catch (error) {
@@ -45,9 +46,8 @@ const getById = async (req, res, next) => {
     })
 
   } catch (error) {
-    res.status(404).json({
-      msg: error.message
-    })
+    next(error)
+    
   
   }
   
@@ -56,7 +56,7 @@ const getById = async (req, res, next) => {
 const remove = async (req, res, next) => {
   try {
     await slidesService.remove(req.params.id);
-    res.status(200).json({ msg: `Slide ${req.params.id} removed succesfully` });
+    res.status(200).json({ msg: `Slide ${req.params.id} removed successfully` });
   } catch (error) {
     next(error);
   }

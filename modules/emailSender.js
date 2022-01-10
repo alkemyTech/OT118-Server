@@ -15,4 +15,4 @@ const send = async (email, template, subject) => {
 
 module.exports = {
   send
-};
+}; 

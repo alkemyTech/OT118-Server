@@ -1,4 +1,5 @@
 const testimonialsService = require('../services/testimonials');
+const paginationParams = require("../modules/paginationParams");
 
 const remove = async (req, res, next) => {
   try {
@@ -12,7 +13,7 @@ const remove = async (req, res, next) => {
 const update = async (req , res ,next) => {
   try{
     response = await testimonialsService.update(req.params.id , req.body);
-    res.status(200).json({ msg: `Testimonial ${req.params.id} updated succesfully`, data: response });
+    res.status(200).json({ msg: `Testimonial updated succesfully`, data: response });
   }catch (e) {
     next(e);
   }
@@ -31,8 +32,9 @@ const update = async (req , res ,next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const data = await testimonialsService.getAll();
-    res.status(200).json({ data });
+    const params = paginationParams.generate(req)
+    const data = await testimonialsService.getAll(params);
+    res.status(200).json( data );
   } catch (error) {
     next(error);
   }
@@ -41,7 +43,7 @@ const getAll = async (req, res, next) => {
 const create = async (req, res, next) => {
   try {
     const data = await testimonialsService.create(req.body);
-    res.status(201).json({ msg: `Testimonial ${data.name} created succesfully`, data });
+    res.status(201).json({ msg: `Testimonial created successfully`, data });
   } catch (error) {
     next(error);
   }
