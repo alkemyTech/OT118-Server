@@ -4,7 +4,8 @@ const {paginate} = require("../modules/pagination");
 const pageLimit = 10;
 
 const remove = async (id) => {
-  await testimonialsRepo.remove(id);
+  const removedTestimonial = await testimonialsRepo.remove(id);
+  if(!removedTestimonial) throw createError(404, "Testimonial not found.")
 };
 
 const getById = async (id) => {

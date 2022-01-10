@@ -14,8 +14,10 @@ const getById = async (id) => {
   });
 };
 
-const getAll = async () => {
+const getAll = async (limit, offset) => {
   return await db.News.findAll({
+    limit,
+    offset,
     attributes: ['name', 'content', 'image'],
   });
 }
@@ -28,10 +30,17 @@ const update = async (id, body) => {
   });
 }
 
+const count = async() =>{
+  return await db.News.count()
+}
+
+
+
 module.exports = {
   create,
   remove,
   update,
   getById,
   getAll,
+  count
 }

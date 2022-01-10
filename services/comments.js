@@ -2,7 +2,8 @@ const commentsRepository = require('../repositories/comments');
 const createError = require("http-errors");
 
 const remove = async (id) => {
-  await commentsRepository.remove(id);
+ const removedComment =  await commentsRepository.remove(id);
+ if(!removedComment) throw createError(404, { msg: "Comment not found" });
 };
 const getAll = async() => {
   return await commentsRepository.getAll()

@@ -9,9 +9,9 @@ const createWecolmeEmailTemplate = async (dataOrg) => {
         welcomeText: dataOrg.welcomeText,
         address: dataOrg.address,
         phone: dataOrg.phone,
-        email: dataOrg
+        email: dataOrg.email
     }
-    return await ejs.renderFile(path.join(__dirname, "..", "views", "welcome-email.ejs", data));
+    return await ejs.renderFile(path.join(__dirname, "..", "views", "welcome-email.ejs"), data);
 }
 
 module.exports = {
