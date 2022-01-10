@@ -3,8 +3,8 @@ const router = express.Router();
 
 const authMiddleware = require('../middlewares/auth');
 const testimonialsController = require('../controllers/testimonials');
-const paginationMiddleware = require('../middlewares/pagination')
 const testimonialsMiddleware = require('../middlewares/testimonials');
+const paginationMiddleware = require('../middlewares/pagination')
 /** 
  * @swagger
 * components:
@@ -31,7 +31,11 @@ const testimonialsMiddleware = require('../middlewares/testimonials');
  *          description: The Image of the testimonial
  *        content:
  *          type: string
- *          description: Content of the testimonial         
+ *          description: Content of the testimonial 
+ *      example:
+ *        name: Mi tetimonio n
+ *        image: http://img-n.jpg
+ *        content: contenido del testimonio n     
  *     tokenError:
  *       type: object    
  *       properties:
@@ -77,11 +81,20 @@ const testimonialsMiddleware = require('../middlewares/testimonials');
  * 
  */
 
+
 /**
  * @swagger
  * /testimonials:
  *  get:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Return a list of Testimonials
+ *    parameters:
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *        description: number of the pagination        
  *    tags:
  *      - Testimonial
  *    responses:
@@ -91,34 +104,40 @@ const testimonialsMiddleware = require('../middlewares/testimonials');
  *         application/json:
  *           schema:
  *             properties:
+ *               prev:
+ *                 type: string
+ *               next:
+ *                 type: string
+ *               pages:
+ *                 type: integer                      
  *               data:
  *                 type: array
  *                 items:
  *                   $ref: '#/components/schemas/Testimonial'
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
- * 
- *       
+ *      401:
+ *       description: Authorization information expired or  is invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
  */
-
 router.get('/',authMiddleware.isAdmin, paginationMiddleware.validator, testimonialsController.getAll);
+
 /**
  * @swagger
 * /testimonials/{id}:
  *  get:
+ *    security:
+ *      - bearerAuth: []     
  *    summary: Return a Testimonial
  *    tags:
- *      - Testimonials
+ *      - Testimonial
  *    parameters:
  *      - in: path
  *        name: id
@@ -134,8 +153,13 @@ router.get('/',authMiddleware.isAdmin, paginationMiddleware.validator, testimoni
  *            schema:
  *              properties:
  *                data:
- *                  $ref: '#/components/schemas/Testimonial' 
- *                
+ *                  $ref: '#/components/schemas/Testimonial'
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'          
  *      401:
  *       description: Authorization information is missing or invalid
  *       content:
@@ -150,13 +174,52 @@ router.get('/',authMiddleware.isAdmin, paginationMiddleware.validator, testimoni
  *             $ref: '#/components/schemas/badRequest'
  */
 
-
-
 router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
+
+/**
+ * @swagger
+ * /testimonials:
+ *  post:
+ *    security:
+ *      - bearerAuth: [] 
+ *    summary: Create a Testimonial
+ *    tags:
+ *      - Testimonial
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Testimonial' 
+ *    responses:
+ *      201:
+ *       description: Testimonial created successfully
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Testimonial'
+ *      400:
+ *       description: Bad request
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *       description: Authorization information expired or  is invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
+ */
+
+router.post('/',authMiddleware.isAdmin, testimonialsMiddleware.inputValidation, testimonialsController.create);
+
 /**
  * @swagger
  * /testimonials/{id}:
  *  put:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Update a testimonial by the id
  *    tags: 
  *      - Testimonial
@@ -172,6 +235,7 @@ router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
  *      content:
  *        application/json:
  *          schema:
+ *            type: object
  *            $ref: '#/components/schemas/Testimonial'
  *    responses:
  *      200:
@@ -184,7 +248,12 @@ router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
  *                 type: string   
  *                data:
  *                  $ref: '#/components/schemas/Testimonial'
- *      
+ *      400:
+ *        description: Bad Request
+ *        content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
  *      404:
  *        description: The testimonial was not found
  *        content:
@@ -192,19 +261,20 @@ router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
  *           schema:
  *             $ref: '#/components/schemas/badRequest'
  *      401:
- *        description: Authorization information is missing or invalid
+ *        description: Authorization information expired or is invalid
  *        content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/tokenError'
- * 
- */
-
+ */     
 router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidation ,  testimonialsController.update);
+
 /**
  * @swagger
  * /testimonials/{id}:
  *  delete:
+ *    security:
+ *      - bearerAuth: [] 
  *    summary: Delete a testimonial
  *    tags:
  *      - Testimonial
@@ -224,58 +294,28 @@ router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidati
  *             type: object
  *             properties:
  *               msg:
- *                type: string  
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
+ *                type: string
  *      400:
  *       description: Bad request
  *       content:
  *         application/json:
  *           schema:
+ *             $ref: '#/components/schemas/badRequest'  
+ *      401:
+ *       description: Authorization information expired or  is invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
+ *      404:
+ *       description: Not found
+ *       content:
+ *         application/json:
+ *           schema:
  *             $ref: '#/components/schemas/badRequest'
  */
+
 router.delete('/:id', authMiddleware.isAdmin, testimonialsController.remove);
-
-/**
- * @swagger
- * /testimonials:
- *  post:
- *    summary: Create a Testimonial
- *    tags:
- *      - Testimonial
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/Testimonial' 
- *    responses:
- *      201:
- *       description: Testimonial created successfully
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Testimonial'
- *      401:
- *       description: Authorization information is missing or invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
- *      
- *      400:
- *       description: Bad request
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/badRequest'
- */
-router.post('/',authMiddleware.isAdmin, testimonialsMiddleware.inputValidation, testimonialsController.create);
-
 
 
 

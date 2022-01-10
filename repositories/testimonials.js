@@ -1,9 +1,7 @@
 const db = require('../models');
 
 const remove = async (id) => {
-  const data = await db.Testimonials.destroy({
-    where: { id }
-  });
+  const data = await db.Testimonials.destroy({ where: { id: id } });
   return data;
 }
 
@@ -28,6 +26,10 @@ const update = async(id , body ) => {
 
 
 }
+
+
+
+
 
 
 const getAll = async (limit, offset) => {

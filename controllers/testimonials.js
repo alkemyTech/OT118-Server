@@ -10,6 +10,8 @@ const remove = async (req, res, next) => {
   }
 };
 
+
+
 const update = async (req , res ,next) => {
   try{
     response = await testimonialsService.update(req.params.id , req.body);
