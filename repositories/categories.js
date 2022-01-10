@@ -27,7 +27,7 @@ const getById = async (id) => {
 };
 
 const remove = async (id) => {
-  await db.Categories.destroy({ where: { id } });
+  return await db.Categories.destroy({ where: { id: id } });
 };
 
 const getByName = async (name) => {

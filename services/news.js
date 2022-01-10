@@ -16,7 +16,7 @@ const create = async (body) => {
 
 const remove = async (id) => {
     const wasRemoved = await newsRepository.remove(id);
-    if (!wasRemoved) throw createError(400, "Novelty couldn't be removed.")
+    if (!wasRemoved) throw createError(404, "Novelty not found.")
 }
 
 const getById = async (id) => {

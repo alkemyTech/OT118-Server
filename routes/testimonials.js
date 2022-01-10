@@ -81,6 +81,54 @@ const paginationMiddleware = require('../middlewares/pagination')
  * 
  */
 
+
+/**
+ * @swagger
+ * /testimonials:
+ *  get:
+ *    security:
+ *      - bearerAuth: [] 
+ *    summary: Return a list of Testimonials
+ *    parameters:
+ *      - in: query
+ *        name: page
+ *        schema:
+ *          type: integer
+ *        description: number of the pagination        
+ *    tags:
+ *      - Testimonial
+ *    responses:
+ *      200:
+ *       description: The list of testimonials
+ *       content:
+ *         application/json:
+ *           schema:
+ *             properties:
+ *               prev:
+ *                 type: string
+ *               next:
+ *                 type: string
+ *               pages:
+ *                 type: integer                      
+ *               data:
+ *                 type: array
+ *                 items:
+ *                   $ref: '#/components/schemas/Testimonial'
+ *      400:
+ *       description: Bad request
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *       description: Authorization information expired or  is invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
+ */
+router.get('/',authMiddleware.isAdmin, paginationMiddleware.validator, testimonialsController.getAll);
+
 /**
  * @swagger
 * /testimonials/{id}:
@@ -127,6 +175,45 @@ const paginationMiddleware = require('../middlewares/pagination')
  */
 
 router.get('/:id', authMiddleware.isAdmin, testimonialsController.getById);
+
+/**
+ * @swagger
+ * /testimonials:
+ *  post:
+ *    security:
+ *      - bearerAuth: [] 
+ *    summary: Create a Testimonial
+ *    tags:
+ *      - Testimonial
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Testimonial' 
+ *    responses:
+ *      201:
+ *       description: Testimonial created successfully
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Testimonial'
+ *      400:
+ *       description: Bad request
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/badRequest'
+ *      401:
+ *       description: Authorization information expired or  is invalid
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/tokenError'
+ */
+
+router.post('/',authMiddleware.isAdmin, testimonialsMiddleware.inputValidation, testimonialsController.create);
+
 /**
  * @swagger
  * /testimonials/{id}:
@@ -229,90 +316,8 @@ router.put('/:id' , authMiddleware.isAdmin, testimonialsMiddleware.inputValidati
  */
 
 router.delete('/:id', authMiddleware.isAdmin, testimonialsController.remove);
-/**
- * @swagger
- * /testimonials:
- *  post:
- *    security:
- *      - bearerAuth: [] 
- *    summary: Create a Testimonial
- *    tags:
- *      - Testimonial
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/Testimonial' 
- *    responses:
- *      201:
- *       description: Testimonial created successfully
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Testimonial'
- *      400:
- *       description: Bad request
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/badRequest'
- *      401:
- *       description: Authorization information expired or  is invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
- */
 
-router.post('/',authMiddleware.isAdmin, testimonialsMiddleware.inputValidation, testimonialsController.create);
 
-/**
- * @swagger
- * /testimonials:
- *  get:
- *    security:
- *      - bearerAuth: [] 
- *    summary: Return a list of Testimonials
- *    parameters:
- *      - in: query
- *        name: page
- *        schema:
- *          type: integer
- *        description: number of the pagination        
- *    tags:
- *      - Testimonial
- *    responses:
- *      200:
- *       description: The list of testimonials
- *       content:
- *         application/json:
- *           schema:
- *             properties:
- *               prev:
- *                 type: string
- *               next:
- *                 type: string
- *               pages:
- *                 type: integer                      
- *               data:
- *                 type: array
- *                 items:
- *                   $ref: '#/components/schemas/Testimonial'
- *      400:
- *       description: Bad request
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/badRequest'
- *      401:
- *       description: Authorization information expired or  is invalid
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/tokenError'
- */
 
-router.get('/',authMiddleware.isAdmin, paginationMiddleware.validator, testimonialsController.getAll);
 
 module.exports = router;
