@@ -4,7 +4,8 @@ const router = express.Router();
 
 const categoriesController = require('../controllers/categories');
 const authMiddleware = require('../middlewares/auth');
-const categoryValidator = require('../middlewares/categoryValidator');
+const paginationMiddleware = require('../middlewares/pagination')
+const categoryValidator = require('../middlewares/categories');
 
 /**
  * @swagger
@@ -14,16 +15,17 @@ const categoryValidator = require('../middlewares/categoryValidator');
  *       type: object
  *       required:
  *        - name
+ *        - file
  *       properties:
+ *         file:
+ *           type: file
+ *           description: the category image
  *         name:
  *           type: string
  *           description: the category name
  *         description:
  *           type: string
  *           description: the category description
- *         image:
- *           type: string
- *           description: the category image
  *       example:
  *         name: New Category
  *         description: Category description
@@ -79,7 +81,7 @@ const categoryValidator = require('../middlewares/categoryValidator');
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:   
  *            $ref: '#/components/schemas/Categories' 
  *    responses:
@@ -156,7 +158,7 @@ router.post('/', authMiddleware.isAdmin, categoryValidator.nameOk, categoriesCon
  * 
  *       
  */
-router.get('/', categoriesController.getAll);
+router.get('/', authMiddleware.isAdmin, paginationMiddleware.validator, categoriesController.getAll);
 
 /**
  * @swagger
