@@ -47,7 +47,7 @@ const remove = async (id) => {
   const removedSlide = await slidesRepository.remove(id);
 
   if(!removedSlide){
-    throw createError(400, "Slide couldn't be removed.")
+    throw createError(404, 'Slide not found')
   }
 };
 

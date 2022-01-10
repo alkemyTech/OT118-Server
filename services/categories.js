@@ -38,7 +38,8 @@ const update = async (id, body) => {
 };
 
 const remove = async (id) => {
-  await categoriesRepository.remove(id);
+  if (!await categoriesRepository.remove(id))
+    throw createError(404, { msg: "Category not found" });
 };
 
 module.exports = {
