@@ -11,7 +11,7 @@ const create = async (image, fields) => {
     const imageLink = await imageUpload.upload(image);
     const newNovelty = {...fields, image: imageLink};
 
-    const newsCategory = await categoryRepository.getByName(fields.name)
+    const newsCategory = await categoryRepository.getByName(newsCategoryName)
     if (!newsCategory) throw createError(404, "CategoryId not found.");
 
     newNovelty.categoryId = newsCategory.id;
