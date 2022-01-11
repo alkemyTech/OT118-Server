@@ -2,16 +2,20 @@ const createError = require("http-errors");
 const newsRepository = require('../repositories/news');
 const categoryRepository = require('../repositories/categories');
 
+const imageUpload = require('../modules/fileUpload');
 const {newsCategoryName} = require("../config/config");
 const { paginate } = require("../modules/pagination");
 const pageLimit = 10
 
-const create = async (body) => {
+const create = async (image, fields) => {
+    const imageLink = await imageUpload.upload(image);
+    const newNovelty = {...fields, image: imageLink};
+
     const newsCategory = await categoryRepository.getByName(newsCategoryName)
     if (!newsCategory) throw createError(404, "CategoryId not found.");
 
     body.categoryId = newsCategory.id;
-    return await newsRepository.create(body);
+    return await newsRepository.create(newNovelty);
 }
 
 const remove = async (id) => {

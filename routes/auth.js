@@ -190,7 +190,7 @@ router.post('/login', usersMiddleware.loginValidation, usersController.login);
  *              type: object
  *              properties:
  *                data:
- *                  $ref: #components/schemas/User 
+ *                  $ref: '#components/schemas/User' 
  *      401:
  *        description: Unauthorized, expired or invalid token
  *        content:

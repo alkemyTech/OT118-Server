@@ -27,15 +27,15 @@ const paginationMiddleware = require('../middlewares/pagination')
  *      - image
  *      - categoryId
  *      properties:
+ *        image:
+ *          type: file
+ *          description: Image of the new
  *        name:
  *          type: string
  *          description: The new name
  *        content:
  *          type: string
  *          description: The content of the new
- *        image:
- *          type: string
- *          description: Image of the new
  *        categoryId:
  *          type: integer
  *          description: id of the organization
@@ -143,7 +143,7 @@ router.get('/', authMiddleware.isAuth, paginationMiddleware.validator,  newsCont
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            $ref: '#/components/schemas/New' 
  *    responses:
@@ -176,7 +176,8 @@ router.get('/', authMiddleware.isAuth, paginationMiddleware.validator,  newsCont
  *           schema:
  *             $ref: '#/components/schemas/tokenError'
  */
-router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
+// router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
+router.post('/', authMiddleware.isAdmin, newsController.create);
 
 
 /**
