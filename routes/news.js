@@ -176,8 +176,8 @@ router.get('/', authMiddleware.isAuth, paginationMiddleware.validator,  newsCont
  *           schema:
  *             $ref: '#/components/schemas/tokenError'
  */
-// router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
-router.post('/', authMiddleware.isAdmin, newsController.create);
+router.post('/', authMiddleware.isAdmin, newsMiddleware.inputValidation, newsController.create);
+// router.post('/', authMiddleware.isAdmin, newsController.create);
 
 
 /**
