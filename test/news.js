@@ -98,7 +98,7 @@ describe("News Endpoint",
             describe("Create Novelty", function (){
                 const methodToCall = "create";
                 const categoryNews = {
-                    id: 1,
+                    id: 3,
                     name: "news",
                     image: "http://image.com",
                     description: "Description"
@@ -111,7 +111,12 @@ describe("News Endpoint",
                     categoryMockRepository.verify();
                 });
                 it('should create a new novelty', async function () {
-                    newsMockRepository.expects(methodToCall).withExactArgs(validNoveltyToPost).returns(validNovelty);
+                    const actualNoveltyToCreate = {...validNoveltyToPost};
+
+                    actualNoveltyToCreate.categoryId = categoryNews.id;
+                    validNovelty.categoryId = categoryNews.id;
+
+                    newsMockRepository.expects(methodToCall).withExactArgs(actualNoveltyToCreate).returns(validNovelty);
                     categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(categoryNews)
                     const novelty = await newsService.create(validNoveltyToPost);
                     expect(novelty.name).to.equal(validNovelty.name);
@@ -134,10 +139,8 @@ const asyncErrorExpect = async (method, expectedError) => {
     }
     expect(error).to.be.an('Error');
     if (expectedError) {
-        if (error.msg)
-            expect(error.msg).to.equal(expectedError.msg);
-        else
-            expect(error.message).to.equal(expectedError.msg);
+        if (error.msg) expect(error.msg).to.equal(expectedError.msg);
+        else expect(error.message).to.equal(expectedError.msg);
         if (error.status) {
             expect(error.status).to.be.equal(expectedError.status);
         }
