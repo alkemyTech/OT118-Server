@@ -4,6 +4,8 @@ const expect = chai.expect;
 
 const newsRepo = require("../repositories/news");
 const newsService = require("../services/news");
+const categRepo = require("../repositories/categories");
+const CategService = require("../services/categories");
 
 // Common errors
 const expectedErrors = {
@@ -18,11 +20,14 @@ const expectedErrors = {
 describe("News Endpoint",
     function () {
         let newsMockedRepo;
+        let categMockedRepo;
         beforeEach(() => {
             newsMockedRepo = sinon.mock(newsRepo);
+            categMockedRepo = sinon.mock(categRepo);
         })
         afterEach(() => {
             newsMockedRepo.verify();
+            categMockedRepo.verify();
         });
         describe("News Service", function () {
             const validRepositoryResponse = {
@@ -70,6 +75,7 @@ describe("News Endpoint",
                 const methodToCall = "create"
                 it('should return novelty created', async function () {
                     newsMockedRepo.expects(methodToCall).withExactArgs(noveltyToPost).returns(validCreatedResponse);
+                    categMockedRepo.expects("getByName").withExactArgs('news').returns(true);
                     const novelty = await newsService.create(noveltyToPost);
                     expect(novelty).equal(validCreatedResponse);
                 });
