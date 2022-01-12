@@ -72,7 +72,7 @@ describe("News Endpoint",
                 const methodToCall = "create"
                 it('should return novelty created', async function () {
                     newsMockedRepo.expects(methodToCall).withExactArgs({...noveltyToPost}).returns(validCreatedResponse);
-                    categMockedRepo.expects("getByName").withExactArgs('news').returns({id: 1});
+                    categMockedRepo.expects("getByName").withExactArgs('news').returns({id: noveltyToPost.categoryId});
                     const novelty = await newsService.create(noveltyToPost);
                     expect(novelty).equal(validCreatedResponse);
                 });
