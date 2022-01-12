@@ -33,11 +33,11 @@ describe("News Endpoint",
                 createdAt: "2021-12-22T13:44:07.000Z",
                 updatedAt: "2021-12-27T13:39:29.000Z"
             };
-            const validNoveltyToPost = {
+            const noveltyToPost = {
                 name: validNovelty.name,
                 content: validNovelty.content,
                 image: validNovelty.image,
-                categoryId: validNovelty.categoryId,
+                categoryId: validNovelty.categoryId
             };
             beforeEach(() => {
                 newsMockRepository = sinon.mock(newsRepository);
@@ -57,6 +57,37 @@ describe("News Endpoint",
                     const newsId = 12;
                     newsMockRepository.expects(methodToCall).once().withExactArgs(newsId).returns(stubResponse);
                     await asyncErrorExpect(() => newsService.getById(newsId), expectedErrors.newsNotFound)
+                });
+            })
+            describe("Create new novelty", function (){
+                const methodToCall = "create";
+                const categoryNews = {
+                    id: 3,
+                    name: "news",
+                    image: "http://image.com",
+                    description: "Description"
+                }
+                const getCategoryByName = "getByName";
+                beforeEach( () => {
+                    categoryMockRepository = sinon.mock(categoryRepository);
+                })
+                afterEach(() => {
+                    categoryMockRepository.verify();
+                });
+                it('should create a new novelty', async function () {
+                    const actualNoveltyToCreate = {...noveltyToPost};
+
+                    actualNoveltyToCreate.categoryId = categoryNews.id;
+                    validNovelty.categoryId = categoryNews.id;
+
+                    newsMockRepository.expects(methodToCall).withExactArgs(actualNoveltyToCreate).returns(validNovelty);
+                    categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(categoryNews)
+                    const novelty = await newsService.create(noveltyToPost);
+                    expect(novelty).equal(validNovelty);
+                });
+                it('should throw categoryId not found error', async function () {
+                    categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
+                    await asyncErrorExpect(() => newsService.create(validNovelty.id), expectedErrors.categoryIdNotFound)
                 });
             })
             describe("Get all with pagination", function (){
@@ -93,37 +124,6 @@ describe("News Endpoint",
                 it('should throw novelty not found error', async function () {
                     newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(undefined);
                     await asyncErrorExpect(() => newsService.remove(validNovelty.id), expectedErrors.newsNotFound)
-                });
-            })
-            describe("Create Novelty", function (){
-                const methodToCall = "create";
-                const categoryNews = {
-                    id: 3,
-                    name: "news",
-                    image: "http://image.com",
-                    description: "Description"
-                }
-                const getCategoryByName = "getByName";
-                beforeEach( () => {
-                    categoryMockRepository = sinon.mock(categoryRepository);
-                })
-                afterEach(() => {
-                    categoryMockRepository.verify();
-                });
-                it('should create a new novelty', async function () {
-                    const actualNoveltyToCreate = {...validNoveltyToPost};
-
-                    actualNoveltyToCreate.categoryId = categoryNews.id;
-                    validNovelty.categoryId = categoryNews.id;
-
-                    newsMockRepository.expects(methodToCall).withExactArgs(actualNoveltyToCreate).returns(validNovelty);
-                    categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(categoryNews)
-                    const novelty = await newsService.create(validNoveltyToPost);
-                    expect(novelty.name).to.equal(validNovelty.name);
-                });
-                it('should throw categoryId not found error', async function () {
-                    categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
-                    await asyncErrorExpect(() => newsService.create(validNovelty.id), expectedErrors.categoryIdNotFound)
                 });
             })
         })
