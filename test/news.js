@@ -39,14 +39,19 @@ describe("News Endpoint",
                 });
             })
             describe("Get all with pagination", function (){
+                const params = {
+                    baseUrl: "http:/localhost/news",
+                    page: 2,
+                }
                 it('should return paginated novelty data', async function () {
-                    const params = {
-                        baseUrl: "http:/localhost/news",
-                        page: 2,
-                    }
-                    newsMockedRepo.expects("count").returns(25);
-                    newsMockedRepo.expects("getAll").returns([validRepositoryResponse]);
+                    const limit = 10;
+                    const offset = (params.page-1) * limit;
+
+                    newsMockedRepo.expects("count").returns(30);
+                    newsMockedRepo.expects("getAll").withExactArgs(limit,offset).returns([validRepositoryResponse]);
+
                     const novelty = await newsService.getAll(params)
+
                     expect(novelty.pages).to.be.greaterThan(1);
                     expect(novelty.data).to.be.an('Array');
                     expect(novelty.data).to.be.not.empty;
@@ -54,10 +59,6 @@ describe("News Endpoint",
                     expect(novelty.next).to.equal(`${params.baseUrl}?page=3`);
                 });
                 it('should throw a invalid page error', async function () {
-                    const params = {
-                        baseUrl: "http:/localhost/news",
-                        page: 2,
-                    }
                     newsMockedRepo.expects("count").returns(10);
                     await asyncNotFoundError(() => newsService.getAll(params), "Parameter 'page' is out of range", 400)
                 });
