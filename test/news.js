@@ -72,7 +72,6 @@ describe("News Endpoint",
                     newsMockedRepo.expects(methodToCall).withExactArgs(noveltyToPost).returns(validCreatedResponse);
                     const novelty = await newsService.create(noveltyToPost);
                     expect(novelty).equal(validCreatedResponse);
-                    // await newsService.remove(validRepositoryResponse.id)
                 });
                 // it('should throw not found error', async function () {
                 //     const stubResponse = undefined;
