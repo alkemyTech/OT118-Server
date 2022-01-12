@@ -7,38 +7,34 @@ const newsService = require("../services/news");
 
 describe("News Endpoint",
     function () {
-        describe("GET /news/:id", function () {
-            let newsSinonGetById;
-            before(() => {
-                newsSinonGetById = sinon.stub(newsRepo, "getById");
-            })
-            after(() => {
-                newsSinonGetById.resetBehavior();
-            })
+        let newsMockedRepo;
+        beforeEach(() => {
+            newsMockedRepo = sinon.mock(newsRepo);
+        })
+        describe("News Service", function () {
+            const methodToCall = "getById"
+            const validRepositoryResponse = {
+                id: 3,
+                name: "Romario was seen playing football",
+                content: "Something Happen",
+                image: "https://image.url.com",
+                categoryId: 1,
+                createdAt: "2021-12-22T13:44:07.000Z",
+                updatedAt: "2021-12-27T13:39:29.000Z"
+            };
+
             it('should return a novelty', async function () {
-                const mockObject = {
-                    id: 3,
-                    name: "Romario was seen playing football",
-                    content: "Something Happen",
-                    image: "https://image.url.com",
-                    categoryId: 1,
-                    createdAt: "2021-12-22T13:44:07.000Z",
-                    updatedAt: "2021-12-27T13:39:29.000Z"
-                }
-                newsSinonGetById.returns(mockObject);
-                const novelty = await newsService.getById(mockObject.id)
-                expect(newsSinonGetById.calledOnce).to.be.true;
-                expect(novelty.id).to.equal(mockObject.id);
-                expect(novelty.name).to.equal(mockObject.name);
-                expect(novelty.content).to.equal(mockObject.content);
-                expect(novelty.categoryId).to.equal(mockObject.categoryId);
-                expect(novelty.createdAt).to.equal(mockObject.createdAt);
-                expect(novelty.updatedAt).to.equal(mockObject.updatedAt);
+                newsMockedRepo.expects(methodToCall).withExactArgs(validRepositoryResponse.id).returns(validRepositoryResponse);
+                const novelty = await newsService.getById(validRepositoryResponse.id)
+                newsMockedRepo.verify();
+                expect(novelty).equal(validRepositoryResponse);
             });
             it('should throw not found error', async function () {
-                const stub = undefined;
-                newsSinonGetById.returns(stub)
-                await asyncNotFoundError(() => newsService.getById(), "Novelty not found.", 404)
+                const stubResponse = undefined;
+                const newsId = 12;
+                newsMockedRepo.expects(methodToCall).once().withExactArgs(newsId).returns(stubResponse);
+                await asyncNotFoundError(() => newsService.getById(newsId), "Novelty not found.", 404)
+                newsMockedRepo.verify();
             });
         })
     });
