@@ -5,6 +5,16 @@ const expect = chai.expect;
 const newsRepo = require("../repositories/news");
 const newsService = require("../services/news");
 
+// Common errors
+const expectedErrors = {
+    newsNotFound: { msg: "Novelty not found.", status: 404},
+    categoryIdNotFound: { msg: "CategoryId not found.", status: 404},
+    paginationRange:{ msg: "Parameter 'page' is out of range", status: 400 },
+    noveltyNotUpdated: { msg: "Novelty couldn't be updated", status: 400 }
+}
+
+
+
 describe("News Endpoint",
     function () {
         let newsMockedRepo;
@@ -15,7 +25,6 @@ describe("News Endpoint",
             newsMockedRepo.verify();
         });
         describe("News Service", function () {
-            const methodToCall = "getById"
             const validRepositoryResponse = {
                 id: 3,
                 name: "Romario was seen playing football",
@@ -26,6 +35,7 @@ describe("News Endpoint",
                 updatedAt: "2021-12-27T13:39:29.000Z"
             };
             describe("Get By ID", function (){
+                const methodToCall = "getById"
                 it('should return a novelty', async function () {
                     newsMockedRepo.expects(methodToCall).withExactArgs(validRepositoryResponse.id).returns(validRepositoryResponse);
                     const novelty = await newsService.getById(validRepositoryResponse.id)
@@ -35,7 +45,7 @@ describe("News Endpoint",
                     const stubResponse = undefined;
                     const newsId = 12;
                     newsMockedRepo.expects(methodToCall).once().withExactArgs(newsId).returns(stubResponse);
-                    await asyncNotFoundError(() => newsService.getById(newsId), "Novelty not found.", 404)
+                    await asyncErrorExpect(() => newsService.getById(newsId), expectedErrors.newsNotFound)
                 });
             })
             describe("Get all with pagination", function (){
@@ -60,14 +70,25 @@ describe("News Endpoint",
                 });
                 it('should throw a invalid page error', async function () {
                     newsMockedRepo.expects("count").returns(10);
-                    await asyncNotFoundError(() => newsService.getAll(params), "Parameter 'page' is out of range", 400)
+                    await asyncErrorExpect(() => newsService.getAll(params), expectedErrors.paginationRange)
+                });
+            })
+            describe("Delete Novelty", function (){
+                const methodToCall = "remove";
+                it('should delete a novelty', async function () {
+                    newsMockedRepo.expects(methodToCall).withExactArgs(validRepositoryResponse.id).returns(true);
+                    await newsService.remove(validRepositoryResponse.id)
+                });
+                it('should throw not found error', async function () {
+                    newsMockedRepo.expects(methodToCall).withExactArgs(validRepositoryResponse.id).returns(undefined);
+                    await asyncErrorExpect(() => newsService.remove(validRepositoryResponse.id), expectedErrors.newsNotFound)
                 });
             })
         })
     });
 
 
-const asyncNotFoundError = async (method, errorMessage, statusCode) => {
+const asyncErrorExpect = async (method, expectedError) => {
     let error = null;
     try {
         await method();
@@ -75,13 +96,13 @@ const asyncNotFoundError = async (method, errorMessage, statusCode) => {
         error = err;
     }
     expect(error).to.be.an('Error');
-    if (errorMessage) {
+    if (expectedError) {
         if (error.msg)
-            expect(error.msg).to.equal(errorMessage);
+            expect(error.msg).to.equal(expectedError.msg);
         else
-            expect(error.message).to.equal(errorMessage);
-    }
-    if (statusCode) {
-        expect(error.status).to.be.equal(statusCode);
+            expect(error.message).to.equal(expectedError.msg);
+        if (error.status) {
+            expect(error.status).to.be.equal(expectedError.status);
+        }
     }
 }
