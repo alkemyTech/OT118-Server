@@ -34,6 +34,24 @@ describe("News Endpoint",
                 createdAt: "2021-12-22T13:44:07.000Z",
                 updatedAt: "2021-12-27T13:39:29.000Z"
             };
+            const validCreatedResponse = {
+                msg: "Novelty created successfully",
+                data: {
+                    id: 16,
+                    name: "Novelty",
+                    content: "Something Happen",
+                    image: "https://image.url.com",
+                    categoryId: 1,
+                    updatedAt: "2022-01-12T18:06:15.097Z",
+                    createdAt: "2022-01-12T18:06:15.097Z"
+                }
+            };
+            const noveltyToPost = {
+                name: validCreatedResponse.data.name,
+                content: validCreatedResponse.data.content,
+                image: validCreatedResponse.data.image,
+                categoryId: validCreatedResponse.data.categoryId
+            };
             describe("Get By ID", function (){
                 const methodToCall = "getById"
                 it('should return a novelty', async function () {
@@ -47,6 +65,21 @@ describe("News Endpoint",
                     newsMockedRepo.expects(methodToCall).once().withExactArgs(newsId).returns(stubResponse);
                     await asyncErrorExpect(() => newsService.getById(newsId), expectedErrors.newsNotFound)
                 });
+            })
+            describe("Create new novelty", function (){
+                const methodToCall = "create"
+                it('should return novelty created', async function () {
+                    newsMockedRepo.expects(methodToCall).withExactArgs(noveltyToPost).returns(validCreatedResponse);
+                    const novelty = await newsService.create(noveltyToPost);
+                    expect(novelty).equal(validCreatedResponse);
+                    // await newsService.remove(validRepositoryResponse.id)
+                });
+                // it('should throw not found error', async function () {
+                //     const stubResponse = undefined;
+                //     const newsId = 12;
+                //     newsMockedRepo.expects(methodToCall).once().withExactArgs(newsId).returns(stubResponse);
+                //     await asyncErrorExpect(() => newsService.getById(newsId), expectedErrors.newsNotFound)
+                // });
             })
             describe("Get all with pagination", function (){
                 const params = {
