@@ -8,6 +8,7 @@ const pageLimit = 10
 
 const create = async (body) => {
     const newsCategory = await categoryRepository.getByName(newsCategoryName)
+    console.log(newsCategory);
     if (!newsCategory) throw createError(404, "CategoryId not found.");
 
     body.categoryId = newsCategory.id;

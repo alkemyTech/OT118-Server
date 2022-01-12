@@ -40,22 +40,19 @@ describe("News Endpoint",
                 updatedAt: "2021-12-27T13:39:29.000Z"
             };
             const validCreatedResponse = {
-                msg: "Novelty created successfully",
-                data: {
-                    id: 16,
-                    name: "Novelty",
-                    content: "Something Happen",
-                    image: "https://image.url.com",
-                    categoryId: 1,
-                    updatedAt: "2022-01-12T18:06:15.097Z",
-                    createdAt: "2022-01-12T18:06:15.097Z"
-                }
+                id: 16,
+                name: "Novelty",
+                content: "Something Happen",
+                image: "https://image.url.com",
+                categoryId: 1,
+                updatedAt: "2022-01-12T18:06:15.097Z",
+                createdAt: "2022-01-12T18:06:15.097Z"
             };
             const noveltyToPost = {
-                name: validCreatedResponse.data.name,
-                content: validCreatedResponse.data.content,
-                image: validCreatedResponse.data.image,
-                categoryId: validCreatedResponse.data.categoryId
+                name: validCreatedResponse.name,
+                content: validCreatedResponse.content,
+                image: validCreatedResponse.image,
+                categoryId: validCreatedResponse.categoryId
             };
             describe("Get By ID", function (){
                 const methodToCall = "getById"
