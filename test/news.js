@@ -4,20 +4,19 @@ const expect = chai.expect;
 
 const newsRepository = require("../repositories/news");
 const categoryRepository = require("../repositories/categories");
-
 const newsService = require("../services/news");
-
+const aws3 = require("../modules/s3");
 const {newsCategoryName} = require('../config/config');
 
 // Common errors
+
 const expectedErrors = {
     newsNotFound: { msg: "Novelty not found.", status: 404},
     categoryIdNotFound: { msg: "CategoryId not found.", status: 404},
     paginationRange:{ msg: "Parameter 'page' is out of range", status: 400 },
-    noveltyNotUpdated: { msg: "Novelty couldn't be updated", status: 400 }
+    noveltyNotUpdated: { msg: "Novelty couldn't be updated", status: 400 },
+    fileIsNotAValidImage: { msg: "File must be a valid image", status: 400 }
 }
-
-
 
 describe("News Endpoint",
     function () {
@@ -36,7 +35,6 @@ describe("News Endpoint",
             const noveltyToPost = {
                 name: validNovelty.name,
                 content: validNovelty.content,
-                image: validNovelty.image,
                 categoryId: validNovelty.categoryId
             };
             beforeEach(() => {
@@ -60,7 +58,9 @@ describe("News Endpoint",
                 });
             })
             describe("Create new novelty", function (){
+                let awsS3Mock;
                 const methodToCall = "create";
+                const methodToCallAws = "uploadToBucket";
                 const categoryNews = {
                     id: 3,
                     name: "news",
@@ -68,38 +68,56 @@ describe("News Endpoint",
                     description: "Description"
                 }
                 const getCategoryByName = "getByName";
+                const mockUploadResponse = {
+                    Location: "https://fake-upload/imagen.png"
+                }
+                const file = {
+                    name: "validimagen.png"
+                }
+
                 beforeEach( () => {
                     categoryMockRepository = sinon.mock(categoryRepository);
+                    awsS3Mock = sinon.mock(aws3);
                 })
                 afterEach(() => {
                     categoryMockRepository.verify();
+                    awsS3Mock.verify();
                 });
                 it('should create a new novelty', async function () {
+                    awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
                     const actualNoveltyToCreate = {...noveltyToPost};
-
                     actualNoveltyToCreate.categoryId = categoryNews.id;
+
+                    actualNoveltyToCreate.image = mockUploadResponse.Location;
                     validNovelty.categoryId = categoryNews.id;
+                    validNovelty.image = mockUploadResponse.Location;
 
                     newsMockRepository.expects(methodToCall).withExactArgs(actualNoveltyToCreate).returns(validNovelty);
                     categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(categoryNews)
-                    const novelty = await newsService.create(noveltyToPost);
+                    const novelty = await newsService.create(file,noveltyToPost);
                     expect(novelty).equal(validNovelty);
                 });
                 it('should throw categoryId not found error', async function () {
+                    awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
                     categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
-                    await asyncErrorExpect(() => newsService.create(validNovelty.id), expectedErrors.categoryIdNotFound)
+                    await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.categoryIdNotFound)
+                });
+                it('should throw file is not a valid image', async function () {
+                    file.name = "invalidImagen.pdf";
+                    await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
                 });
             })
             describe("Get all with pagination", function (){
                 const params = {
                     baseUrl: "http:/localhost/news",
-                    page: 2,
-                }
-                it('should return paginated novelty data', async function () {
-                    const limit = 10;
+                    page: 1,
+                };
+                const limit = 10;
+                const maxPage = 3
+                let newsCount = 30;
+                it('should return the first page', async function () {
                     const offset = (params.page-1) * limit;
-
-                    newsMockRepository.expects("count").returns(30);
+                    newsMockRepository.expects("count").returns(newsCount);
                     newsMockRepository.expects("getAll").withExactArgs(limit,offset).returns([validNovelty]);
 
                     const novelty = await newsService.getAll(params)
@@ -107,15 +125,59 @@ describe("News Endpoint",
                     expect(novelty.pages).to.be.greaterThan(1);
                     expect(novelty.data).to.be.an('Array');
                     expect(novelty.data).to.be.not.empty;
-                    expect(novelty.prev).to.equal(`${params.baseUrl}?page=1`);
-                    expect(novelty.next).to.equal(`${params.baseUrl}?page=3`);
+                    expect(novelty.prev).to.equal(null);
+                    expect(novelty.next).to.equal(`${params.baseUrl}?page=${params.page+1}`);
+                    expect(novelty.pages).to.equal(maxPage);
                 });
-                it('should throw a invalid page error', async function () {
-                    newsMockRepository.expects("count").returns(10);
+                it('should return paginated novelty data', async function () {
+                    params.page = 2;
+                    const offset = (params.page-1) * limit;
+                    newsMockRepository.expects("count").returns(newsCount);
+                    newsMockRepository.expects("getAll").withExactArgs(limit,offset).returns([validNovelty]);
+
+                    const novelty = await newsService.getAll(params)
+
+                    expect(novelty.pages).to.be.greaterThan(1);
+                    expect(novelty.data).to.be.an('Array');
+                    expect(novelty.data).to.be.not.empty;
+                    expect(novelty.prev).to.equal(`${params.baseUrl}?page=${params.page-1}`);
+                    expect(novelty.next).to.equal(`${params.baseUrl}?page=${params.page+1}`);
+                    expect(novelty.pages).to.equal(maxPage);
+                });
+
+                it('should return the last page', async function () {
+                    params.page = 3;
+                    const offset = (params.page-1) * limit;
+                    newsMockRepository.expects("count").returns(newsCount);
+                    newsMockRepository.expects("getAll").withExactArgs(limit,offset).returns([validNovelty]);
+
+                    const novelty = await newsService.getAll(params)
+
+                    expect(novelty.pages).to.be.greaterThan(1);
+                    expect(novelty.data).to.be.an('Array');
+                    expect(novelty.data).to.be.not.empty;
+                    expect(novelty.prev).to.equal(`${params.baseUrl}?page=${params.page-1}`);
+                    expect(novelty.next).to.equal(null);
+                    expect(novelty.pages).to.equal(maxPage);
+                });
+                it('should throw a invalid page error', async function (){
+                    params.page = 4;
+                    newsMockRepository.expects("count").returns(newsCount);
                     await asyncErrorExpect(() => newsService.getAll(params), expectedErrors.paginationRange)
                 });
             })
             describe("Delete Novelty", function (){
+                const methodToCall = "remove";
+                it('should delete a novelty', async function () {
+                    newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(true);
+                    await newsService.remove(validNovelty.id)
+                });
+                it('should throw novelty not found error', async function () {
+                    newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(undefined);
+                    await asyncErrorExpect(() => newsService.remove(validNovelty.id), expectedErrors.newsNotFound)
+                });
+            });
+            describe("Update Novelty",function (){
                 const methodToCall = "remove";
                 it('should delete a novelty', async function () {
                     newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(true);
