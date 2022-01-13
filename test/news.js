@@ -125,20 +125,16 @@ describe("News Endpoint",
                     categoryMockRepository.verify();
                 });
                 it('should update a novelty', async function () {
-                    // Update News ID
                     const noveltyToUpdate = 3;
-                    // Update Body
                     const  noveltyBody = {
                         name: "Romario was seen playing football",
                         content: "Something Happen",
                         image: "https://image.url.com",
                         categoryId: 1
                     }
-                    // Call category by id once
+
                     categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
-                    // Call news by id twice
                     newsMockRepository.expects(getNewById).twice().returns(validNovelty);
-                    // Call news update once, returns rows updated not entity
                     newsMockRepository.expects(methodToCall).withExactArgs(noveltyToUpdate,{... noveltyBody}).returns([1]);
                     const novelty = await newsService.update(noveltyToUpdate, noveltyBody);
                     expect(novelty).equal(validNovelty);
