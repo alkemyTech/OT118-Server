@@ -2,7 +2,7 @@ const chai = require("chai");
 const sinon = require("sinon");
 const expect = chai.expect;
 
-const inputValidation = require("../middlewares/news");
+const {inputValidation} = require("../middlewares/news");
 const {asyncValidation, getSpecificError} = require("./middleware-utils");
 
 describe("News Middleware", () => {
@@ -24,7 +24,7 @@ describe("News Middleware", () => {
             content: "Something Happen",
             categoryId: 1,
         }
-        const error = await asyncValidation(params, inputValidation.inputValidation)
+        const error = await asyncValidation(params, inputValidation)
         expect(params.next.threw("BadRequestError")).to.be.false
         expect(params.next.alwaysCalledWith()).to.be.true
 
@@ -36,7 +36,7 @@ describe("News Middleware", () => {
             content: "Something Happen",
             categoryId: 1,
         }
-        const error = await asyncValidation(params, inputValidation.inputValidation)
+        const error = await asyncValidation(params, inputValidation)
         expect(params.next.threw("BadRequestError")).to.be.true
         expect(error.msg).to.equal("Input validation error")
     })
@@ -46,7 +46,7 @@ describe("News Middleware", () => {
             content: "Something Happen",
             categoryId: 1,
         }
-        const error = await asyncValidation(params, inputValidation.inputValidation)
+        const error = await asyncValidation(params, inputValidation)
 
         expect(params.next.threw("BadRequestError")).to.be.true
         expect(error.errors).to.be.an('array')
