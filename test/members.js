@@ -7,9 +7,7 @@ const membersService = require("../services/members");
 
 const expectedErrors = {
     memberNotFound: { msg: "Member not found", status: 404},
-    categoryIdNotFound: { msg: "CategoryId not found.", status: 404},
     paginationRange:{ msg: "Parameter 'page' is out of range", status: 400 },
-    noveltyNotUpdated: { msg: "Novelty couldn't be updated", status: 400 },
 }
 
 describe("Members Endpoint",
