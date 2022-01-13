@@ -74,7 +74,6 @@ describe("Organization endpoint", function () {
             const org = await orgService.update(orgToUpdate, orgBody);
             expect(org).equal(validOrgResponse);
         })
-        it('Should return ')
     })
 })
 
