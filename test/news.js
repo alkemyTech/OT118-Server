@@ -37,7 +37,22 @@ describe("News Endpoint",
                 content: validNovelty.content,
                 categoryId: validNovelty.categoryId
             };
-            beforeEach(() => {
+            const categoryNews = {
+                id: 3,
+                name: "news",
+                image: "http://image.com",
+                description: "Description"
+            };
+            const noveltyToUpdate = 3;
+            const  noveltyBody = {
+                name: "Romario was seen playing football",
+                content: "Something Happen",
+                image: "https://image.url.com",
+                categoryId: 1
+            };
+            const getCategoryById = "getById";
+            const getNewById = "getById";
+        beforeEach(() => {
                 newsMockRepository = sinon.mock(newsRepository);
             })
             afterEach(() => {
@@ -111,6 +126,33 @@ describe("News Endpoint",
                     await asyncErrorExpect(() => newsService.create(undefined,noveltyToPost))
                 });
             })
+            describe("Update a novelty", function (){
+                const methodToCall = "update";
+
+                beforeEach( () => {
+                    categoryMockRepository = sinon.mock(categoryRepository);
+                })
+                afterEach(() => {
+                    categoryMockRepository.verify();
+                });
+                it('should update a novelty', async function () {
+
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
+                    newsMockRepository.expects(getNewById).twice().returns(validNovelty);
+                    newsMockRepository.expects(methodToCall).withExactArgs(noveltyToUpdate,{... noveltyBody}).returns([1]);
+                    const novelty = await newsService.update(noveltyToUpdate, noveltyBody);
+                    expect(novelty).equal(validNovelty);
+                });
+                it('should throw categoryId not found error', async function () {
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(undefined);
+                    await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.categoryIdNotFound);
+                });
+                it('should throw novelty not found error', async function () {
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
+                    newsMockRepository.expects(getNewById).once().returns(undefined);
+                    await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.newsNotFound);
+                });
+            })
             describe("Get all with pagination", function (){
                 const params = {
                     baseUrl: "http:/localhost/news",
@@ -178,17 +220,6 @@ describe("News Endpoint",
                     await asyncErrorExpect(() => newsService.remove(validNovelty.id), expectedErrors.newsNotFound)
                 });
             });
-            describe("Update Novelty",function (){
-                const methodToCall = "remove";
-                it('should delete a novelty', async function () {
-                    newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(true);
-                    await newsService.remove(validNovelty.id)
-                });
-                it('should throw novelty not found error', async function () {
-                    newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(undefined);
-                    await asyncErrorExpect(() => newsService.remove(validNovelty.id), expectedErrors.newsNotFound)
-                });
-            })
         })
     });
 
