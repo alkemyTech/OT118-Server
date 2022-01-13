@@ -37,7 +37,22 @@ describe("News Endpoint",
                 content: validNovelty.content,
                 categoryId: validNovelty.categoryId
             };
-            beforeEach(() => {
+            const categoryNews = {
+                id: 3,
+                name: "news",
+                image: "http://image.com",
+                description: "Description"
+            };
+            const noveltyToUpdate = 3;
+            const  noveltyBody = {
+                name: "Romario was seen playing football",
+                content: "Something Happen",
+                image: "https://image.url.com",
+                categoryId: 1
+            };
+            const getCategoryById = "getById";
+            const getNewById = "getById";
+        beforeEach(() => {
                 newsMockRepository = sinon.mock(newsRepository);
             })
             afterEach(() => {
@@ -109,14 +124,6 @@ describe("News Endpoint",
             })
             describe("Update a novelty", function (){
                 const methodToCall = "update";
-                const categoryNews = {
-                    id: 3,
-                    name: "news",
-                    image: "http://image.com",
-                    description: "Description"
-                }
-                const getCategoryById = "getById";
-                const getNewById = "getById";
 
                 beforeEach( () => {
                     categoryMockRepository = sinon.mock(categoryRepository);
@@ -125,13 +132,6 @@ describe("News Endpoint",
                     categoryMockRepository.verify();
                 });
                 it('should update a novelty', async function () {
-                    const noveltyToUpdate = 3;
-                    const  noveltyBody = {
-                        name: "Romario was seen playing football",
-                        content: "Something Happen",
-                        image: "https://image.url.com",
-                        categoryId: 1
-                    }
 
                     categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
                     newsMockRepository.expects(getNewById).twice().returns(validNovelty);
@@ -140,24 +140,10 @@ describe("News Endpoint",
                     expect(novelty).equal(validNovelty);
                 });
                 it('should throw categoryId not found error', async function () {
-                    const noveltyToUpdate = 3;
-                    const  noveltyBody = {
-                        name: "Romario was seen playing football",
-                        content: "Something Happen",
-                        image: "https://image.url.com",
-                        categoryId: 1
-                    }
                     categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(undefined);
                     await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.categoryIdNotFound);
                 });
                 it('should throw novelty not found error', async function () {
-                    const noveltyToUpdate = 3;
-                    const  noveltyBody = {
-                        name: "Romario was seen playing football",
-                        content: "Something Happen",
-                        image: "https://image.url.com",
-                        categoryId: 1
-                    }
                     categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
                     newsMockRepository.expects(getNewById).once().returns(undefined);
                     await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.newsNotFound);
