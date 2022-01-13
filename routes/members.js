@@ -177,7 +177,7 @@ router.get("/", authMiddleware.isAdmin, paginationMiddleware.validator, membersC
  *           schema:
  *             $ref: '#/components/schemas/tokenError'
  */
-router.post( "/",  authMiddleware.isAuth, memberMiddleware.validator, membersController.create);
+router.post( "/",  authMiddleware.isAuth, memberMiddleware.inputValidation, membersController.create);
 
 /**
  * @swagger
