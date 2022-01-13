@@ -150,10 +150,18 @@ describe("News Endpoint",
                     categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(undefined);
                     await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.categoryIdNotFound);
                 });
-                // it('should throw file is not a valid image', async function () {
-                //     file.name = "invalidImagen.pdf";
-                //     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
-                // });
+                it('should throw novelty not found error', async function () {
+                    const noveltyToUpdate = 3;
+                    const  noveltyBody = {
+                        name: "Romario was seen playing football",
+                        content: "Something Happen",
+                        image: "https://image.url.com",
+                        categoryId: 1
+                    }
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
+                    newsMockRepository.expects(getNewById).once().returns(undefined);
+                    await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.newsNotFound);
+                });
             })
             describe("Get all with pagination", function (){
                 const params = {
