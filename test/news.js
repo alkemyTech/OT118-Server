@@ -108,9 +108,7 @@ describe("News Endpoint",
                 });
             })
             describe("Update a novelty", function (){
-                // let awsS3Mock;
                 const methodToCall = "update";
-                // const methodToCallAws = "uploadToBucket";
                 const categoryNews = {
                     id: 3,
                     name: "news",
@@ -118,46 +116,44 @@ describe("News Endpoint",
                     description: "Description"
                 }
                 const getCategoryById = "getById";
-                // const mockUploadResponse = {
-                //     Location: "https://fake-upload/imagen.png"
-                // }
-                // const file = {
-                //     name: "validimagen.png"
-                // }
+                const getNewById = "getById";
 
                 beforeEach( () => {
                     categoryMockRepository = sinon.mock(categoryRepository);
-                    // awsS3Mock = sinon.mock(aws3);
                 })
                 afterEach(() => {
                     categoryMockRepository.verify();
-                    // awsS3Mock.verify();
                 });
                 it('should update a novelty', async function () {
-                    // awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
-                    noveltyToPost.image = "https://image.url.com";
-                    const actualNoveltyToCreate = {...noveltyToPost};
-                    actualNoveltyToCreate.categoryId = categoryNews.id;
+                    const actualNoveltyToUpdate = {
+                        id: 3,
+                        name: "Romario was seen playing football",
+                        content: "Something Happen",
+                        image: "https://image.url.com",
+                        categoryId: 1
+                    }
 
-                    actualNoveltyToCreate.image = validNovelty.image;
-                    validNovelty.categoryId = categoryNews.id;
-                    validNovelty.image = "Image.jpg";
-
-                    newsMockRepository.expects(methodToCall).withExactArgs(categoryNews.id, actualNoveltyToCreate).returns(validNovelty);
-                    categoryMockRepository.expects(getCategoryById).withExactArgs(actualNoveltyToCreate.categoryId).returns(categoryNews)
-                    console.log(noveltyToPost);
-                    const novelty = await newsService.update(categoryNews.id,noveltyToPost);
+                    //newsMockRepository.expects(getNewById).withExactArgs(validNovelty.id).returns(validNovelty);
+                    console.log(categoryNews.id);
+                    console.log({...actualNoveltyToUpdate});
+                    newsMockRepository.expects(methodToCall).withExactArgs({...actualNoveltyToUpdate}).returns(validNovelty);
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs({id: 1}).returns(categoryNews);
+                    const novelty = await newsService.update(actualNoveltyToUpdate.id,
+                        actualNoveltyToUpdate.name,
+                        actualNoveltyToUpdate.content,
+                        actualNoveltyToUpdate.image,
+                        actualNoveltyToUpdate.categoryId);
                     expect(novelty).equal(validNovelty);
                 });
-                it('should throw categoryId not found error', async function () {
-                    awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
-                    categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
-                    await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.categoryIdNotFound)
-                });
-                it('should throw file is not a valid image', async function () {
-                    file.name = "invalidImagen.pdf";
-                    await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
-                });
+                // it('should throw categoryId not found error', async function () {
+                //     awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
+                //     categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
+                //     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.categoryIdNotFound)
+                // });
+                // it('should throw file is not a valid image', async function () {
+                //     file.name = "invalidImagen.pdf";
+                //     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
+                // });
             })
             describe("Get all with pagination", function (){
                 const params = {
