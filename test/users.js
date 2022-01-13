@@ -56,26 +56,58 @@ describe('Users endpoint', function() {
 
         describe('get all with pagination', function() {
             const params = {
-                baseUrl: 'http://localhost/news',
-                page: 2
+                baseUrl: 'http://localhost/users',
+                page: 1
             }
+            const limit = 10;
+            const maxPage = 3;
+            let usersCount = 30
 
+            it('should return the first page', async function () {
+                const offset = (params.page-1 ) * limit;
+                usersMockedRepo.expects('count').returns(usersCount);
+                usersMockedRepo.expects("getAll").withExactArgs(limit,offset).returns([userToGet]);
+                
+                const users = await usersService.getAll(params);
+
+                expect(users.data).to.be.an('Array');
+                expect(users.data).to.be.not.empty;
+                expect(users.prev).to.equal(null);
+                expect(users.next).to.equal(`${params.baseUrl}?page=${params.page+1}`);
+                expect(users.pages).to.equal(maxPage);
+
+                
+            });
             it('should return paginated users data', async function() {
-                const limit = 10;
+                params.page = 2;
                 const offset = (params.page-1) * limit
 
-                usersMockedRepo.expects("count").returns(30)
+                usersMockedRepo.expects("count").returns(usersCount)
                 usersMockedRepo.expects("getAll").withExactArgs(limit,offset).returns([userToGet]);
 
                 const users = await usersService.getAll(params)
 
-                expect(users.pages).to.be.greaterThan(1);
                 expect(users.data).to.be.an('Array');
                 expect(users.data).to.be.not.empty;
-                expect(users.prev).to.equal(`${params.baseUrl}?page=1`);
-                expect(users.next).to.equal(`${params.baseUrl}?page=3`);
+                expect(users.prev).to.equal(`${params.baseUrl}?page=${params.page-1}`);
+                expect(users.next).to.equal(`${params.baseUrl}?page=${params.page+1}`);
+                expect(users.pages).to.equal(maxPage);
             })
-            
+            it('should return the last page', async function() {
+                params.page = 3;
+                const offset = (params.page - 1) * limit;
+                usersMockedRepo.expects("count").returns(usersCount);
+                usersMockedRepo.expects("getAll").withExactArgs(limit,offset).returns([userToGet]);
+
+                const users = await usersService.getAll(params)
+
+                expect(users.data).to.be.an('Array');
+                expect(users.data).to.be.not.empty;
+                expect(users.prev).to.equal(`${params.baseUrl}?page=${params.page-1}`);
+                expect(users.next).to.equal(null);
+                expect(users.pages).to.equal(maxPage);
+
+            })
             it('should throw a invalid page error', async function() {
                 usersMockedRepo.expects('count').returns(10);
                 await asyncErrorExpect(() => usersService.getAll(params), expectedErrors.paginationRange)
