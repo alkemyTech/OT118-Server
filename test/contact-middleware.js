@@ -2,8 +2,8 @@ const chai = require("chai");
 const sinon = require("sinon");
 const expect = chai.expect;
 
-const {inputValidation} = require("../middlewares/contacts");
-const {asyncValidation, getSpecificError} = require("./middleware-utils");
+const inputValidation = require("../middlewares/contacts");
+const{ asyncValidation, getSpecificError }= require("./middleware-utils");
 
 
  
@@ -30,7 +30,12 @@ const {asyncValidation, getSpecificError} = require("./middleware-utils");
                 }
                 const error = await asyncValidation(params, inputValidation)
                 expect(params.next.threw("BadRequestError")).to.be.true
-                expect(error.msg).to.equal("You must complete the email")
+                expect(error.errors).to.be.an('array')
+                
+                const nameError = getSpecificError(error, "name");
+                expect(nameError).to.be.an('object');
+   
+                expect(nameError.msg).to.equal("you must complete the name")
             } )
             it('is invalid without email', async function (){
                 params.req.body = {
@@ -41,7 +46,12 @@ const {asyncValidation, getSpecificError} = require("./middleware-utils");
                 }
                 const error = await asyncValidation(params, inputValidation)
                 expect(params.next.threw("BadRequestError")).to.be.true
-                expect(error.msg).to.equal("You must complete the email")
+                expect(error.errors).to.be.an('array')
+                
+                const namError = getSpecificError(error, "email");
+                expect(namError).to.be.an('object');
+                expect(namError.msg).to.equal("you must complete the email")
+                
             } )
             it('is valid with name and email and call next', async function (){
                 // Correct Case
@@ -70,21 +80,4 @@ const {asyncValidation, getSpecificError} = require("./middleware-utils");
     
 
 
-const asyncErrorExpect = async (method, expectedError) => {
-    let error = null;
-    try {
-        await method();
-    } catch (err) {
-        error = err;
-    }
-    expect(error).to.be.an('Error');
-    if (expectedError) {
-        if (error.msg)
-            expect(error.msg).to.equal(expectedError.msg);
-        else
-            expect(error.message).to.equal(expectedError.msg);
-        if (error.status) {
-            expect(error.status).to.be.equal(expectedError.status);
-        }
-    }
-}
+
