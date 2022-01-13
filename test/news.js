@@ -72,7 +72,7 @@ describe("News Endpoint",
                     Location: "https://fake-upload/imagen.png"
                 }
                 const file = {
-                    name: "validimagen.png"
+                    name: "validImage.png"
                 }
 
                 beforeEach( () => {
@@ -103,8 +103,11 @@ describe("News Endpoint",
                     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.categoryIdNotFound)
                 });
                 it('should throw file is not a valid image', async function () {
-                    file.name = "invalidImagen.pdf";
+                    file.name = "invalidImage.pdf";
                     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
+                });
+                it('should throw file is undefined error', async function () {
+                    await asyncErrorExpect(() => newsService.create(undefined,noveltyToPost))
                 });
             })
             describe("Get all with pagination", function (){
