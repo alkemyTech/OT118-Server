@@ -134,7 +134,7 @@ describe('Users endpoint', function() {
         describe('update a user', function() {
             it('should update a user', async function() {
                 usersMockedRepo.expects('getById').withExactArgs(validUser.id).atLeast(2).returns(validUser);
-                usersMockedRepo.expects('update').withExactArgs(validUser.id, userToUpdate).returns(validUser)
+                usersMockedRepo.expects('update').withExactArgs(validUser.id, userToUpdate).returns([1])
 
                 const userUpdated = await usersService.update(validUser.id,userToUpdate)
 
