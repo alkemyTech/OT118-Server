@@ -117,8 +117,7 @@ describe('Users endpoint', function() {
         });
 
         describe('Delete a user', function() {
-            const methodToCall = 'remove';
-
+            
             it('should delete a user', async function() {
                 usersMockedRepo.expects('getById').withExactArgs(validUser.id).returns(validUser);
                 usersMockedRepo.expects("remove").withExactArgs(validUser.id).returns(true);
@@ -126,7 +125,6 @@ describe('Users endpoint', function() {
             })
             it('should throw user not found error', async function() {
                 usersMockedRepo.expects('getById').withExactArgs(validUser.id).returns(null);
-                //usersMockedRepo.expects('remove').withExactArgs(validUser.id).returns(undefined);
                 await asyncErrorExpect(() => usersService.remove(validUser.id), expectedErrors.usersNotFound)
 
             }) 
@@ -144,7 +142,7 @@ describe('Users endpoint', function() {
             })
             it('should throw hash password error', async function() {
                 usersMockedRepo.expects('getById').withExactArgs(validUser.id).returns(validUser);
-                
+
                 delete userToUpdate.password
 
                 await asyncErrorExpect(() => usersService.update(validUser.id,userToUpdate), expectedErrors.hashError)
