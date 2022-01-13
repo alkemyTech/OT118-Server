@@ -20,26 +20,26 @@ describe("Organization endpoint", function () {
     afterEach(() => {
         orgMockedRepo.verify();
     });
+
+    const validOrgResponse = {
+        name: "Somos Mas",
+        image: "URL Image",
+        address: "Address Org",
+        phone: 1234567890,
+        welcomeText: "Welcome!",
+        aboutUsText: "About org",
+        urlFacebook: "URL Facebook",
+        urlLinkedin: "URL Linkedin",
+        urlInstagram: "URL Instagram",
+        Slides: [{
+            imageUrl: "imagen1.jpg",
+            text: "esta es la imagen 1",
+            order: 1,
+            organizationId: 1
+        }]
+    };
     
     describe("Get public info",  function () {
-
-        const validOrgResponse = {
-            name: "Somos Mas",
-            image: "URL Image",
-            address: "Address Org",
-            phone: 1234567890,
-            welcomeText: "Welcome!",
-            aboutUsText: "About org",
-            urlFacebook: "URL Facebook",
-            urlLinkedin: "URL Linkedin",
-            urlInstagram: "URL Instagram",
-            Slides: [{
-                imageUrl: "imagen1.jpg",
-                text: "esta es la imagen 1",
-                order: 1,
-                organizationId: 1
-            }]
-        };
 
         it("Should return an organization", async function () {
             orgMockedRepo.expects("getPublicInfo").returns(validOrgResponse);
@@ -55,7 +55,27 @@ describe("Organization endpoint", function () {
         })
     })
 
-    describe("Organization Updated")
+    describe("Update organization", function () {
+
+        const orgToUpdate = 1;
+        const  orgBody = {
+            name: "Other name",
+            image: "Other URL image",
+            address: "Address Org updated",
+            phone: 1234567890,
+            welcomeText: "Welcome!",
+            aboutUsText: "About org",
+            urlFacebook: "URL Facebook",
+            urlLinkedin: "URL Linkedin",
+            urlInstagram: "URL Instagram",
+        };
+        it('should return Organization updated successfully', async function () {
+            orgMockedRepo.expects("update").returns(validOrgResponse);
+            const org = await orgService.update(orgToUpdate, orgBody);
+            expect(org).equal(validOrgResponse);
+        })
+        it('Should return ')
+    })
 })
 
 const asyncErrorExpect = async (method, expectedError) => {
