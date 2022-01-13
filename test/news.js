@@ -139,11 +139,17 @@ describe("News Endpoint",
                     const novelty = await newsService.update(noveltyToUpdate, noveltyBody);
                     expect(novelty).equal(validNovelty);
                 });
-                // it('should throw categoryId not found error', async function () {
-                //     awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
-                //     categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
-                //     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.categoryIdNotFound)
-                // });
+                it('should throw categoryId not found error', async function () {
+                    const noveltyToUpdate = 3;
+                    const  noveltyBody = {
+                        name: "Romario was seen playing football",
+                        content: "Something Happen",
+                        image: "https://image.url.com",
+                        categoryId: 1
+                    }
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(undefined);
+                    await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.categoryIdNotFound);
+                });
                 // it('should throw file is not a valid image', async function () {
                 //     file.name = "invalidImagen.pdf";
                 //     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
