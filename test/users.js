@@ -10,7 +10,7 @@ const usersService = require('../services/users');
 
 const expectedErrors = {
     userNotFound: { msg: "User not found.", status: 404},
-    categoryIdNotFound: { msg: "CategoryId not found.", status: 404},
+    hashError: { msg: "Illegal arguments: undefined, string", status: 500},
     paginationRange:{ msg: "Parameter 'page' is out of range", status: 400 },
     userNotUpdated: { msg: "User couldn't be updated", status: 400 }
 }
@@ -67,7 +67,7 @@ describe('Users endpoint', function() {
                 const offset = (params.page-1 ) * limit;
                 usersMockedRepo.expects('count').returns(usersCount);
                 usersMockedRepo.expects("getAll").withExactArgs(limit,offset).returns([userToGet]);
-                
+
                 const users = await usersService.getAll(params);
 
                 expect(users.data).to.be.an('Array');
@@ -142,10 +142,17 @@ describe('Users endpoint', function() {
 
                 expect(userUpdated).equal(validUser)
             })
+            it('should throw hash password error', async function() {
+                usersMockedRepo.expects('getById').withExactArgs(validUser.id).returns(validUser);
+                
+                delete userToUpdate.password
+
+                await asyncErrorExpect(() => usersService.update(validUser.id,userToUpdate), expectedErrors.hashError)
+
+            })
             it('should throw user not found error', async function() {
                 usersMockedRepo.expects('getById').withExactArgs(validUser.id).returns(null);
                 await asyncErrorExpect(() => usersService.update(validUser.id,userToUpdate), expectedErrors.usersNotFound)
-
 
             })
 
@@ -161,6 +168,7 @@ const asyncErrorExpect = async (method, expectedError) => {
         await method();
     } catch (err) {
         error = err;
+        
     }
     expect(error).to.be.an('Error');
     if (expectedError) {
