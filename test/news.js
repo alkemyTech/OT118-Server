@@ -107,6 +107,58 @@ describe("News Endpoint",
                     await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
                 });
             })
+            describe("Update a novelty", function (){
+                // let awsS3Mock;
+                const methodToCall = "update";
+                // const methodToCallAws = "uploadToBucket";
+                const categoryNews = {
+                    id: 3,
+                    name: "news",
+                    image: "http://image.com",
+                    description: "Description"
+                }
+                const getCategoryById = "getById";
+                // const mockUploadResponse = {
+                //     Location: "https://fake-upload/imagen.png"
+                // }
+                // const file = {
+                //     name: "validimagen.png"
+                // }
+
+                beforeEach( () => {
+                    categoryMockRepository = sinon.mock(categoryRepository);
+                    // awsS3Mock = sinon.mock(aws3);
+                })
+                afterEach(() => {
+                    categoryMockRepository.verify();
+                    // awsS3Mock.verify();
+                });
+                it('should update a novelty', async function () {
+                    // awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
+                    noveltyToPost.image = "https://image.url.com";
+                    const actualNoveltyToCreate = {...noveltyToPost};
+                    actualNoveltyToCreate.categoryId = categoryNews.id;
+
+                    actualNoveltyToCreate.image = validNovelty.image;
+                    validNovelty.categoryId = categoryNews.id;
+                    validNovelty.image = "Image.jpg";
+
+                    newsMockRepository.expects(methodToCall).withExactArgs(categoryNews.id, actualNoveltyToCreate).returns(validNovelty);
+                    categoryMockRepository.expects(getCategoryById).withExactArgs(actualNoveltyToCreate.categoryId).returns(categoryNews)
+                    console.log(noveltyToPost);
+                    const novelty = await newsService.update(categoryNews.id,noveltyToPost);
+                    expect(novelty).equal(validNovelty);
+                });
+                it('should throw categoryId not found error', async function () {
+                    awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
+                    categoryMockRepository.expects(getCategoryByName).withExactArgs(newsCategoryName).returns(undefined)
+                    await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.categoryIdNotFound)
+                });
+                it('should throw file is not a valid image', async function () {
+                    file.name = "invalidImagen.pdf";
+                    await asyncErrorExpect(() => newsService.create(file,noveltyToPost), expectedErrors.fileIsNotAValidImage)
+                });
+            })
             describe("Get all with pagination", function (){
                 const params = {
                     baseUrl: "http:/localhost/news",
@@ -177,17 +229,6 @@ describe("News Endpoint",
                     await asyncErrorExpect(() => newsService.remove(validNovelty.id), expectedErrors.newsNotFound)
                 });
             });
-            describe("Update Novelty",function (){
-                const methodToCall = "remove";
-                it('should delete a novelty', async function () {
-                    newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(true);
-                    await newsService.remove(validNovelty.id)
-                });
-                it('should throw novelty not found error', async function () {
-                    newsMockRepository.expects(methodToCall).withExactArgs(validNovelty.id).returns(undefined);
-                    await asyncErrorExpect(() => newsService.remove(validNovelty.id), expectedErrors.newsNotFound)
-                });
-            })
         })
     });
 
