@@ -6,6 +6,7 @@ const privateKey = secret;
 const authExpiration = expires;
 
 exports.generateToken = (info) => {
+    console.log("PASE POR ACA ")
     return jwt.sign(info, privateKey, {
         expiresIn: authExpiration
     });

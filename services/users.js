@@ -4,6 +4,7 @@ const rolesRepository = require("../repositories/roles");
 const organizationRepository = require("../repositories/organizations");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../modules/auth");
+const jwt = require("../modules/auth"); // prueba de emi
 const { paginate } = require("../modules/pagination");
 const { send } = require("../modules/emailSender");
 const { createWecolmeEmailTemplate } = require("../modules/welcomeEmailTemplate");
@@ -19,11 +20,11 @@ const create = async (user) => {
   const data = await usersRepository.create(user);
   if (!data) throw createError(400);
 
-  const dataOrg = await organizationRepository.getById(config.organizationId);
-  const template = await createWecolmeEmailTemplate(dataOrg);
-  await send(data.email, template, "¡Bienvenido!");
+  // const dataOrg = await organizationRepository.getById(config.organizationId);
+  // const template = await createWecolmeEmailTemplate(dataOrg);
+  // await send(data.email, template, "¡Bienvenido!");
 
-  return generateToken({ id: data.id });
+  return jwt.generateToken({ id: data.id });
 };
 
 const login = async (body) => {
