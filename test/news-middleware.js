@@ -5,10 +5,6 @@ const expect = chai.expect;
 const {inputValidation} = require("../middlewares/news");
 const {asyncValidation, getSpecificError} = require("./middleware-utils");
 
-const errors = [
-    {}
-]
-
 describe("News Middleware", () => {
     let params;
     const baseNovelty = {
@@ -28,8 +24,8 @@ describe("News Middleware", () => {
     })
     describe("General Validations", () => {
         it('should pass all validations', async function () {
-            // Correct Case
             params.req.body = {...baseNovelty}
+
             const error = await asyncValidation(params, inputValidation)
             expect(params.next.threw("BadRequestError")).to.be.false
             expect(params.next.alwaysCalledWith()).to.be.true
@@ -37,10 +33,9 @@ describe("News Middleware", () => {
             expect(error).to.be.null
         })
         it('should throw 3 validation errors', async function () {
-            /// Error case
             params.req.body = {}
-
             const error = await asyncValidation(params, inputValidation)
+
             expect(params.next.threw("BadRequestError")).to.be.true
             expect(error.msg).to.equal("Input validation error")
             expect(error.errors.length).to.equal(3);
@@ -101,6 +96,7 @@ describe("News Middleware", () => {
 
 
 const genericExpectsError = (parameter, msg, error, spy) => {
+    expect(error.msg).to.equal("Input validation error")
     expect(spy.threw("BadRequestError")).to.be.true
     expect(error.errors).to.be.an('array')
 
