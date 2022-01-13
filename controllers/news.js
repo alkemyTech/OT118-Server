@@ -3,8 +3,9 @@ const paginationParams = require("../modules/paginationParams")
 
 const create = async (req, res, next) => {
   try {
-    const body = req.body;
-    const newNovelty = await newsService.create(body);
+    image = req.files.image;
+    fields = req.body;
+    const newNovelty = await newsService.create(image, fields);
     res.status(201).json({msg: "Novelty created successfully", data: newNovelty});
   } catch (error) {
     next(error);
