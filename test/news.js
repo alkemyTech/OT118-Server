@@ -25,7 +25,7 @@ describe("News Endpoint",
             let categoryMockRepository;
             const validNovelty = {
                 id: 3,
-                name: "Romario was seen playing football",
+                name: "Novelty Name",
                 content: "Something Happen",
                 image: "https://image.url.com",
                 categoryId: 1,
@@ -86,9 +86,10 @@ describe("News Endpoint",
                 it('should create a new novelty', async function () {
                     awsS3Mock.expects(methodToCallAws).returns(mockUploadResponse);
                     const actualNoveltyToCreate = {...noveltyToPost};
-                    actualNoveltyToCreate.categoryId = categoryNews.id;
 
+                    actualNoveltyToCreate.categoryId = categoryNews.id;
                     actualNoveltyToCreate.image = mockUploadResponse.Location;
+
                     validNovelty.categoryId = categoryNews.id;
                     validNovelty.image = mockUploadResponse.Location;
 
@@ -125,7 +126,6 @@ describe("News Endpoint",
 
                     const novelty = await newsService.getAll(params)
 
-                    expect(novelty.pages).to.be.greaterThan(1);
                     expect(novelty.data).to.be.an('Array');
                     expect(novelty.data).to.be.not.empty;
                     expect(novelty.prev).to.equal(null);
@@ -140,7 +140,6 @@ describe("News Endpoint",
 
                     const novelty = await newsService.getAll(params)
 
-                    expect(novelty.pages).to.be.greaterThan(1);
                     expect(novelty.data).to.be.an('Array');
                     expect(novelty.data).to.be.not.empty;
                     expect(novelty.prev).to.equal(`${params.baseUrl}?page=${params.page-1}`);
@@ -156,7 +155,6 @@ describe("News Endpoint",
 
                     const novelty = await newsService.getAll(params)
 
-                    expect(novelty.pages).to.be.greaterThan(1);
                     expect(novelty.data).to.be.an('Array');
                     expect(novelty.data).to.be.not.empty;
                     expect(novelty.prev).to.equal(`${params.baseUrl}?page=${params.page-1}`);
