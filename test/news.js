@@ -152,6 +152,12 @@ describe("News Endpoint",
                     newsMockRepository.expects(getNewById).once().returns(undefined);
                     await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.newsNotFound);
                 });
+                it('should throw novelty could not be updated error', async function () {
+                    categoryMockRepository.expects(getCategoryById).once().withExactArgs(1).returns(categoryNews);
+                    newsMockRepository.expects(getNewById).once().returns(validNovelty);
+                    newsMockRepository.expects(methodToCall).withExactArgs(noveltyToUpdate,{... noveltyBody}).returns([0]);
+                    await asyncErrorExpect(() => newsService.update(noveltyToUpdate, noveltyBody), expectedErrors.noveltyNotUpdated);
+                });
             })
             describe("Get all with pagination", function (){
                 const params = {
