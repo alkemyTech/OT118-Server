@@ -4,9 +4,10 @@ const expect = chai.expect;
 
 const orgRepository = require('../repositories/organizations');
 const orgService = require('../services/organizations');
+const Config = require('../config/config')
 
 const expectedErrors = {
-    OrganizationNotFound: { msg: "Organization not found.", status: 404},
+    OrganizationNotFound: { msg: "Public information not found", status: 404},
     OrganizationNotUpdated: { msg: "Organization couldn't be updated", status: 400 }
 }
 
@@ -40,10 +41,36 @@ describe("Organization endpoint", function () {
             }]
         };
 
-        it("Should return an organization", async function ()  {
-            orgMockedRepo.expects("get").returns(validOrgResponse);
-            const org = await orgService.getPublicInfo();
+        it("Should return an organization", async function () {
+            orgMockedRepo.expects("getPublicInfo").returns(validOrgResponse);
+            const org = await orgService.getPublicInfo(Config.organizationId);
             expect(org).equal(validOrgResponse);
         })
+        it("Should return public info not found", async function () {
+            const orgId = 2;
+            orgMockedRepo.expects("getPublicInfo").returns(null);
+            await asyncErrorExpect(() => 
+                orgService.getPublicInfo(orgId)
+            , expectedErrors.OrganizationNotFound)
+        })
     })
-});
+
+    describe("Organization Updated")
+})
+
+const asyncErrorExpect = async (method, expectedError) => {
+    let error = null;
+    try {
+        await method();
+    } catch (err) {
+        error = err;
+    }
+    expect(error).to.be.an('Error');
+    if (expectedError) {
+        if (error.msg) expect(error.msg).to.equal(expectedError.msg);
+        else expect(error.message).to.equal(expectedError.msg);
+        if (error.status) {
+            expect(error.status).to.be.equal(expectedError.status);
+        }
+    }
+}
