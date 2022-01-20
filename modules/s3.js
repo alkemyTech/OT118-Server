@@ -22,6 +22,7 @@ const uploadToBucket = async (file) => {
                 Bucket: awsS3.bucketName,
                 Key: uuidv4() + extension,
                 Body: stream,
+                ContentType: file.mimetype || 'image/jpeg',
                 ACL: "public-read"
             }).promise();
         return uploadedFile;
@@ -30,4 +31,4 @@ const uploadToBucket = async (file) => {
     }
 };
 
-module.exports = uploadToBucket
+module.exports = {uploadToBucket}
