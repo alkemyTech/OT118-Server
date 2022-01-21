@@ -30,4 +30,4 @@ const uploadToBucket = async (file) => {
     }
 };
 
-module.exports = uploadToBucket
+module.exports = {uploadToBucket}

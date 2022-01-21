@@ -8,7 +8,7 @@ const upload = async (file) => {
     const extensionsOk = [".jpg", ".png", ".gif"];
     if (!extensionsOk.includes(extension))
       throw createError(400, { msg: "File must be a valid image" });
-    const link = await aws3(file);
+    const link = await aws3.uploadToBucket(file);
     return link.Location;
   } catch (error) {
     throw error;
