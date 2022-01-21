@@ -12,7 +12,9 @@ const update = async (id, body) => {
 };
 
 const getPublicInfo = async (id) => {
-  return await organizationRepository.getPublicInfo(id)
+  const publicInfo = await organizationRepository.getPublicInfo(id);
+  if (!publicInfo) throw createError(404, { msg: "Public information not found" });
+  return publicInfo;
 }
 
 module.exports = {
